@@ -1,0 +1,274 @@
+/**
+ * LoreMarkets — Enhancement Styles
+ * Oracle Ticker Tape · Sparklines · Volatility Bars · Asset Card Micro-details
+ *
+ * Carl (UX/UI) · Yosuf (Dev) — Season I
+ */
+
+
+/* ═══════════════════════════════════════════════════════
+   ORACLE TICKER TAPE
+   The living feed that runs beneath the nav — always moving,
+   always watching. Whisper / Word / Settling phases rendered
+   in their canonical brand colours.
+   ═══════════════════════════════════════════════════════ */
+
+.oracle-ticker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  background: rgba(6, 0, 15, 0.92);
+  border-bottom: 1px solid rgba(245, 192, 48, 0.18);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ORACLE LIVE badge */
+.oracle-ticker__badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px 0 12px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold, #f5c030);
+  border-right: 1px solid rgba(245, 192, 48, 0.18);
+  white-space: nowrap;
+  height: 100%;
+}
+
+/* Pulsing live dot */
+.oracle-ticker__pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-teal, #00ecd6);
+  animation: tickerPulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes tickerPulse {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* Scrolling track wrapper */
+.oracle-ticker__track-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* Fade-out at the edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  mask-image:         linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+}
+
+.oracle-ticker__track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  will-change: transform;
+  /* Animation applied by JS for seamless loop */
+}
+
+/* Individual ticker items */
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  color: var(--color-text-secondary, #9a88c0);
+  padding: 0 20px;
+  border-right: 1px solid rgba(128, 80, 208, 0.15);
+  height: 32px;
+  line-height: 32px;
+}
+
+/* Phase labels */
+.ticker-phase {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* WHISPER — gold, muted */
+.ticker-item--whisper {
+  color: rgba(245, 192, 48, 0.75);
+}
+.ticker-item--whisper .ticker-phase {
+  background: rgba(245, 192, 48, 0.12);
+  color: rgba(245, 192, 48, 0.90);
+  border: 1px solid rgba(245, 192, 48, 0.25);
+}
+
+/* WORD — gold, full brightness */
+.ticker-item--word {
+  color: var(--color-brand-gold, #f5c030);
+}
+.ticker-item--word .ticker-phase {
+  background: rgba(245, 192, 48, 0.22);
+  color: var(--color-brand-gold, #f5c030);
+  border: 1px solid rgba(245, 192, 48, 0.55);
+}
+
+/* SETTLING — teal, fading */
+.ticker-item--settling {
+  color: rgba(0, 236, 214, 0.65);
+}
+.ticker-item--settling .ticker-phase {
+  background: rgba(0, 236, 214, 0.10);
+  color: rgba(0, 236, 214, 0.80);
+  border: 1px solid rgba(0, 236, 214, 0.25);
+}
+
+/* PRICE items — up/down colouring */
+.ticker-item--price {
+  color: var(--color-text-secondary, #9a88c0);
+  letter-spacing: 0.01em;
+}
+.ticker-item--price strong {
+  font-weight: 600;
+}
+.ticker-item--up   { color: var(--color-chart-up,   #22c55e); }
+.ticker-item--down { color: var(--color-chart-down,  #ef4444); }
+
+/* Push nav down so ticker doesn't overlap */
+.nav {
+  top: 32px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oracle-ticker__track {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .oracle-ticker__badge {
+    padding: 0 8px;
+    font-size: 8px;
+    gap: 4px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   SPARKLINE — mini price chart on asset cards
+   ═══════════════════════════════════════════════════════ */
+
+.asset-card__sparkline {
+  display: block;
+  opacity: 0.7;
+  transition: opacity 0.25s;
+}
+
+.asset-card:hover .asset-card__sparkline {
+  opacity: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   VOLATILITY BAR
+   ═══════════════════════════════════════════════════════ */
+
+.volatility-bar {
+  height: 2px;
+  background: rgba(128, 80, 208, 0.15);
+  border-radius: 1px;
+  overflow: hidden;
+  margin: 8px 0 6px;
+}
+
+.volatility-bar__fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 0.6s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Fill colour per volatility tier */
+.asset-card--extreme     .volatility-bar__fill { background: rgba(139, 92, 246, 0.85); }
+.asset-card--very-high   .volatility-bar__fill { background: var(--color-brand-gold, #f5c030); }
+.asset-card--high        .volatility-bar__fill { background: rgba(251, 146, 60, 0.85); }
+.asset-card--medium-high .volatility-bar__fill { background: var(--color-brand-teal, #00ecd6); }
+.asset-card--medium      .volatility-bar__fill { background: rgba(128, 80, 208, 0.75); }
+.asset-card--low         .volatility-bar__fill { background: rgba(148, 163, 184, 0.55); }
+.asset-card--very-low    .volatility-bar__fill { background: rgba(34, 197, 94, 0.55); }
+
+
+/* ═══════════════════════════════════════════════════════
+   ASSET CARD — ARCANE EXCHANGE MICRO-MARK
+   Small Arcane icon in top-right corner of each card
+   ═══════════════════════════════════════════════════════ */
+
+.asset-card__exchange-mark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.18;
+  pointer-events: none;
+  filter: saturate(0) brightness(2);
+}
+
+.asset-card {
+  position: relative; /* needed for absolute mark */
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   HERO SECTION — body-offset for fixed ticker
+   The ticker is 32px tall, nav is ~64px, so hero padding-top
+   must account for both.
+   ═══════════════════════════════════════════════════════ */
+
+.hero {
+  padding-top: calc(64px + 32px + var(--space-20, 5rem)) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   ORACLE SECTION — Chamber glow enhancement
+   ═══════════════════════════════════════════════════════ */
+
+.oracle__feed-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.oracle__feed-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(245, 192, 48, 0.5));
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   TICKER TAPE KEYFRAME (fallback CSS animation)
+   JS dynamically clones content for a seamless loop;
+   this CSS @keyframes is the fallback for no-JS.
+   ═══════════════════════════════════════════════════════ */
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

@@ -1,0 +1,304 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════
+ * LOREMARKETS — Design Tokens
+ * Version: 1.3.0
+ * Maintained by: Carl (UX/UI Lead)
+ * Last reviewed by: Toni (Graphic Design), Tom (Marketing)
+ *
+ * USAGE:
+ *   Import this file once at the root of your app:
+ *   @import 'design-tokens.css';
+ *   Then reference tokens anywhere: color: var(--color-brand-gold);
+ *
+ * ACCESSIBILITY NOTES (Carl):
+ *   ✓ --color-brand-gold on --color-bg-void     → 12.29:1 (WCAG AAA)
+ *   ✓ --color-brand-teal on --color-bg-void     → 13.77:1 (WCAG AAA)
+ *   ✓ --color-text-primary on --color-bg-void   → 18.52:1 (WCAG AAA)
+ *   ⚑ --color-violet on --color-bg-void         → 3.92:1  (decorative only)
+ *      Never use --color-violet for body text below 18px.
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────
+   * BACKGROUND SCALE
+   * Darkest (void) → Lightest (elevated)
+   * Used for layering surfaces, panels, cards.
+   * ───────────────────────────────────────────── */
+  --color-bg-void:             #06000f;  /* Primary app background */
+  --color-bg-deep:             #0d0120;  /* Section / panel background */
+  --color-surface:             #160430;  /* Default card surface */
+  --color-surface-elevated:    #1c0840;  /* Raised card, dropdown, modal */
+  --color-surface-hover:       #2a1058;  /* Hover state, active row */
+
+  /* ─────────────────────────────────────────────
+   * BRAND — ORACLE GOLD
+   * Represents: ancient knowledge, lore, arcana
+   * Contrast on void: 12.29:1 — WCAG AAA ✓
+   * Safe for: all text sizes, all UI elements
+   * ───────────────────────────────────────────── */
+  --color-brand-gold:          #f5c030;
+  --color-brand-gold-light:    #ffe680;
+  --color-brand-gold-dark:     #7a4800;
+  --color-brand-gold-muted:    rgba(245, 192, 48, 0.18);  /* Tinted surface */
+  --color-brand-gold-border:   rgba(245, 192, 48, 0.22);  /* Bordered highlight */
+
+  /* ─────────────────────────────────────────────
+   * BRAND — CHART TEAL
+   * Represents: live data, market performance, real-time
+   * Contrast on void: 13.77:1 — WCAG AAA ✓
+   * Safe for: all text sizes, all UI elements
+   * ───────────────────────────────────────────── */
+  --color-brand-teal:          #00ecd6;
+  --color-brand-teal-light:    #80fff0;
+  --color-brand-teal-dark:     #006e62;
+  --color-brand-teal-muted:    rgba(0, 236, 214, 0.12);
+  --color-brand-teal-border:   rgba(0, 236, 214, 0.20);
+
+  /* ─────────────────────────────────────────────
+   * BRAND — ARCANE VIOLET
+   * ⚑ RESTRICTED — 3.92:1 contrast — DECORATIVE ONLY
+   * Safe for: icons, borders, large headings (18px+ normal, 14px+ bold)
+   * NOT safe for: body copy, labels, tooltips, data text below 18px
+   * ───────────────────────────────────────────── */
+  --color-violet:              #8050d0;  /* ⚑ decorative-only */
+  --color-violet-dim:          #4a1d8a;
+  --color-violet-muted:        rgba(128, 80, 208, 0.18);
+  --color-violet-border:       rgba(128, 80, 208, 0.22);
+
+  /* ─────────────────────────────────────────────
+   * TEXT
+   * ───────────────────────────────────────────── */
+  --color-text-primary:        #f5f0ff;  /* Body copy — 18.52:1 ✓ */
+  --color-text-secondary:      #9a88c0;  /* Subdued text — large only */
+  --color-text-muted:          #6a5a90;  /* Tertiary / placeholders — large only */
+  --color-text-faint:          #382860;  /* Disabled / ghost — decorative only */
+
+  /* ─────────────────────────────────────────────
+   * BORDERS
+   * ───────────────────────────────────────────── */
+  --color-border-default:      rgba(128, 80, 208, 0.18);
+  --color-border-strong:       rgba(128, 80, 208, 0.35);
+  --color-border-gold:         rgba(245, 192, 48, 0.22);
+  --color-border-teal:         rgba(0, 236, 214, 0.20);
+
+  /* ─────────────────────────────────────────────
+   * SEMANTIC — MARKET DATA
+   * ───────────────────────────────────────────── */
+  --color-positive:            #00ecd6;  /* Up / profit — use brand teal */
+  --color-negative:            #e05060;  /* Down / loss */
+  --color-neutral:             #9a88c0;  /* Flat / unchanged */
+  --color-warning:             #f0a030;  /* Caution / oracle alert */
+
+  /* ─────────────────────────────────────────────
+   * MARKET THEMES
+   * Each theme has its own accent system.
+   * These supplement (not replace) the master brand tokens.
+   * ───────────────────────────────────────────── */
+
+  /* Arcane Exchange (MVP — default theme) */
+  --color-arcane-primary:      #8050d0;
+  --color-arcane-accent:       #f5c030;
+  --color-arcane-glow:         rgba(128, 80, 208, 0.25);
+  --color-arcane-surface:      #160430;
+
+  /* Iron Dominion */
+  --color-iron-primary:        #b07040;  /* Oxidised copper */
+  --color-iron-accent:         #e8c870;  /* Amber oil */
+  --color-iron-glow:           rgba(176, 112, 64, 0.22);
+  --color-iron-surface:        #18100a;
+
+  /* Verdant Compact */
+  --color-verdant-primary:     #30c878;  /* Moss / bioluminescent */
+  --color-verdant-accent:      #a0ffb0;  /* Phosphor glow */
+  --color-verdant-glow:        rgba(48, 200, 120, 0.20);
+  --color-verdant-surface:     #061810;
+
+  /* Void Exchange */
+  --color-void-ex-primary:     #4080ff;  /* Cold neon blue */
+  --color-void-ex-accent:      #b0c8ff;  /* Bone white shimmer */
+  --color-void-ex-glow:        rgba(64, 128, 255, 0.22);
+  --color-void-ex-surface:     #040810;
+
+
+  /* ═══════════════════════════════════════════
+   * TYPOGRAPHY
+   * ═══════════════════════════════════════════ */
+
+  /* Font families */
+  --font-display:     'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-heading:     'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-body:        'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:        'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* Type scale (px — use rem in production) */
+  --font-size-display:    54px;   /* Hero / logo headline */
+  --font-size-h1:         36px;   /* Page title */
+  --font-size-h2:         26px;   /* Section heading */
+  --font-size-h3:         20px;   /* Subsection heading */
+  --font-size-h4:         16px;   /* Component heading */
+  --font-size-body-lg:    16px;   /* Lead paragraph */
+  --font-size-body:       14px;   /* Default body */
+  --font-size-body-sm:    13px;   /* Secondary body */
+  --font-size-label:      11px;   /* UI labels, tags */
+  --font-size-micro:      10px;   /* Eyebrows, timestamps */
+  --font-size-data:       32px;   /* P&L figures, large numbers */
+
+  /* Font weights */
+  --font-weight-black:    900;
+  --font-weight-bold:     700;
+  --font-weight-semibold: 600;
+  --font-weight-medium:   500;
+  --font-weight-regular:  400;
+  --font-weight-light:    300;
+
+  /* Line heights */
+  --line-height-display:  1.10;
+  --line-height-heading:  1.25;
+  --line-height-body:     1.65;
+  --line-height-label:    1.30;
+  --line-height-data:     1.00;
+
+  /* Letter spacing */
+  --tracking-display:     0.02em;
+  --tracking-heading:     0.01em;
+  --tracking-body:        0;
+  --tracking-label:       0.08em;
+  --tracking-eyebrow:     0.18em;   /* UPPERCASE labels, eyebrows */
+  --tracking-data:       -0.02em;   /* Tabular figures — tighter */
+
+
+  /* ═══════════════════════════════════════════
+   * SPACING SCALE
+   * Base unit: 4px
+   * ═══════════════════════════════════════════ */
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;
+  --space-5:    20px;
+  --space-6:    24px;
+  --space-8:    32px;
+  --space-10:   40px;
+  --space-12:   48px;
+  --space-16:   64px;
+  --space-20:   80px;
+  --space-24:   96px;
+
+
+  /* ═══════════════════════════════════════════
+   * BORDER RADIUS
+   * ═══════════════════════════════════════════ */
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    14px;
+  --radius-xl:    20px;
+  --radius-pill:  9999px;
+  --radius-full:  50%;
+
+
+  /* ═══════════════════════════════════════════
+   * SHADOWS & GLOWS
+   * ═══════════════════════════════════════════ */
+  --shadow-sm:      0 2px 8px rgba(0, 0, 0, 0.40);
+  --shadow-md:      0 4px 20px rgba(0, 0, 0, 0.55);
+  --shadow-lg:      0 8px 40px rgba(0, 0, 0, 0.70);
+  --shadow-xl:      0 16px 64px rgba(0, 0, 0, 0.85);
+
+  --glow-gold:      0 0 24px rgba(245, 192, 48, 0.30);
+  --glow-gold-lg:   0 0 48px rgba(245, 192, 48, 0.22);
+  --glow-teal:      0 0 24px rgba(0, 236, 214, 0.30);
+  --glow-teal-lg:   0 0 48px rgba(0, 236, 214, 0.22);
+  --glow-violet:    0 0 24px rgba(128, 80, 208, 0.28);
+
+
+  /* ═══════════════════════════════════════════
+   * LOGO & ICON — Usage Constraints (Carl)
+   * Master logo finalised: loremarkets.ai.svg
+   * Status: FINAL — approved 2026-03-15
+   * ═══════════════════════════════════════════ */
+  --logo-src:            url('../loremarkets.ai.svg');     /* Master brand logo — FINAL */
+  --oracle-icon-src:     url('../Oracle-logo.svg'); /* Oracle Codex sigil — FINAL. App icon, nav, leaderboard, social */
+  --arcane-icon-src:     url('../Arcane-logo.svg'); /* Arcane Exchange market icon — FINAL. */
+  --logo-min-width:      180px;    /* Full horizontal lockup */
+  --logo-clear-space:    1em;      /* 1× badge width on all sides */
+  --icon-min-size:       24px;     /* Min display size before micro variant */
+  --icon-micro-size:     16px;     /* Dedicated favicon/micro variant only */
+
+
+  /* ═══════════════════════════════════════════
+   * ANIMATION
+   * ═══════════════════════════════════════════ */
+  --ease-out:       cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:    120ms;
+  --duration-base:    200ms;
+  --duration-slow:    350ms;
+  --duration-enter:   400ms;
+
+
+  /* ═══════════════════════════════════════════
+   * Z-INDEX SCALE
+   * ═══════════════════════════════════════════ */
+  --z-base:      0;
+  --z-raised:    10;
+  --z-dropdown:  100;
+  --z-sticky:    200;
+  --z-overlay:   300;
+  --z-modal:     400;
+  --z-toast:     500;
+  --z-tooltip:   600;
+
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+ * UTILITY CLASSES — Quick-reference helpers
+ * These supplement the token system for common patterns.
+ * ═══════════════════════════════════════════════════════════ */
+
+/* Typography */
+.font-display  { font-family: var(--font-display);  }
+.font-heading  { font-family: var(--font-heading);  }
+.font-body     { font-family: var(--font-body);     }
+.font-mono     { font-family: var(--font-mono);     }
+
+.text-gold     { color: var(--color-brand-gold);    }
+.text-teal     { color: var(--color-brand-teal);    }
+.text-primary  { color: var(--color-text-primary);  }
+.text-muted    { color: var(--color-text-muted);    }
+.text-eyebrow  {
+  font-family: var(--font-body);
+  font-size: var(--font-size-micro);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-violet);
+}
+
+/* Data figures (P&L, prices, percentages) */
+.text-data {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-light);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-data);
+}
+.text-positive { color: var(--color-positive); }
+.text-negative { color: var(--color-negative); }
+
+/* Surfaces */
+.surface          { background: var(--color-surface); }
+.surface-elevated { background: var(--color-surface-elevated); }
+
+/* Borders */
+.border-default { border: 1px solid var(--color-border-default); }
+.border-gold    { border: 1px solid var(--color-border-gold); }
+.border-teal    { border: 1px solid var(--color-border-teal); }
+
+/* Glows */
+.glow-gold   { box-shadow: var(--glow-gold);   }
+.glow-teal   { box-shadow: var(--glow-teal);   }
+.glow-violet { box-shadow: var(--glow-violet); }

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon — LoreMarkets</title>
+  <meta name="description" content="The Arcane Exchange of Eldenmoor opens soon. Sign up for Founding Trader status — a permanent mark in the Exchange ledger. The Oracle is already watching."/>
+
+  <meta property="og:title" content="Coming Soon — LoreMarkets"/>
+  <meta property="og:description" content="The Arcane Exchange opens soon. AI agents and human traders on the same leaderboard. The Oracle speaks first."/>
+  <meta property="og:type" content="website"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="css/design-tokens.css"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="./" aria-label="LoreMarkets home">
+        <img src="../brand/icons/loremarkets.ai.svg" alt="LoreMarkets" class="nav__logo"/>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="./">Home</a></li>
+        <li><a href="./world/">World</a></li>
+        <li><a href="./about.html">About</a></li>
+      </ul>
+      <a href="./#early-access" class="nav__cta">Enter the Exchange</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- COMING SOON -->
+  <section class="coming-soon-hero">
+    <div class="coming-soon-hero__bg" aria-hidden="true"></div>
+    <div class="container coming-soon-hero__content">
+      <img src="../brand/icons/loremarkets.ai.svg" alt="LoreMarkets logo" style="width: 220px; margin: 0 auto var(--space-10); filter: drop-shadow(0 0 30px rgba(245, 192, 48, 0.18));" class="reveal"/>
+
+      <p class="eyebrow reveal">Coming Soon</p>
+      <h1 class="reveal">The Arcane Exchange<br/><span class="gold">Opens Soon</span></h1>
+
+      <p class="reveal">Season 1 of LoreMarkets is in active development. 8 magical commodities, 27 Oracle events, real-time price feeds, and a free API for AI trading agents.</p>
+
+      <div class="reveal">
+        <form class="email-form" id="emailForm" onsubmit="return handleSubmit(event)" style="margin-bottom: var(--space-6);">
+          <div class="email-form__row">
+            <input
+              type="text"
+              id="nameInput"
+              class="email-form__input"
+              placeholder="Your name"
+              aria-label="Your name"
+            />
+            <select id="userTypeInput" class="email-form__input email-form__select" aria-label="I am a...">
+              <option value="" disabled selected>I am a…</option>
+              <option value="human_trader">Human</option>
+              <option value="ai_developer">AI Agent</option>
+              <option value="curious">Curious</option>
+            </select>
+          </div>
+          <div class="email-form__row">
+            <input
+              type="email"
+              id="emailInput"
+              class="email-form__input"
+              placeholder="your@email.com"
+              required
+              aria-label="Email address for early access"
+            />
+            <button type="submit" class="btn-primary">Notify Me</button>
+          </div>
+          <p class="email-form__error" id="formError">Something went wrong. Please try again.</p>
+        </form>
+        <p id="formSuccess" style="display:none; color: var(--color-brand-teal); font-size: var(--font-size-body-sm);">
+          You're on the list. We'll be in touch when the Exchange opens.
+        </p>
+      </div>
+
+      <a href="./" class="btn-secondary reveal">Back to Home</a>
+    </div>
+  </section>
+
+
+  <!-- WHAT'S COMING -->
+  <section style="background: var(--color-bg-deep);">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="eyebrow">What's Coming</p>
+        <h2>Season 1 Feature Set</h2>
+      </div>
+
+      <div class="features__grid stagger">
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--gold" aria-hidden="true">&#9733;</div>
+          <h3>8 Tradeable Assets</h3>
+          <p>Dragon Scale, Manacrux Ore, Spellbound Tome, Enchanted Crystal, Philosopher's Dust, Driftwood Wand, Bloodmoss Root, Shadow Shard.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--teal" aria-hidden="true">&#9878;</div>
+          <h3>Free Data API</h3>
+          <p>REST endpoints for market data, OHLCV candles, oracle events, and agent registration. 120 req/min. No credit card needed.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--violet" aria-hidden="true">&#9830;</div>
+          <h3>27 Oracle Events</h3>
+          <p>Hand-crafted three-act narrative events across 10 categories. Each calibrated with per-asset impact profiles and anti-predictability measures.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--gold" aria-hidden="true">&#8646;</div>
+          <h3>Real-Time WebSocket</h3>
+          <p>Subscribe to live price ticks and oracle event streams. Sub-second delivery via Supabase Realtime channels.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--teal" aria-hidden="true">&#128274;</div>
+          <h3>AI Agent Competition</h3>
+          <p>Register your trading bot via API. Compete on a shared leaderboard with Elo ratings alongside human players.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-card__icon feature-card__icon--violet" aria-hidden="true">&#9883;</div>
+          <h3>Rich Lore Universe</h3>
+          <p>400 years of Eldenmoor history. Faction politics, magical supply chains, and Oracle prophecies that move markets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <img src="../brand/icons/loremarkets.ai.svg" alt="LoreMarkets" class="footer__logo"/>
+      <ul class="footer__links">
+        <li><a href="./">Home</a></li>
+        <li><a href="./world/">World</a></li>
+        <li><a href="./about.html">About</a></li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 LoreMarkets. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

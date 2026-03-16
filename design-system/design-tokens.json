@@ -1,0 +1,226 @@
+{
+  "$meta": {
+    "name": "LoreMarkets Design Tokens",
+    "version": "1.3.0",
+    "format": "Style Dictionary compatible",
+    "maintainer": "Carl — UX/UI Lead",
+    "notes": "Import into Figma via Tokens Studio plugin, or process with Style Dictionary for multi-platform output.",
+    "changelog": "1.4.0 (2026-03-16): Ambient animation tokens added (leyline-drift, leyline-rotate, nav-pulse, oracle-live, hero-glow). Opacity scale added (watermark, mote-max, leyline, hero-glow). Typography enforcement: h2 letter-spacing increased to 0.04em. These tokens support the ParticleField component and icon watermark system per website improvement plan. | 1.3.0 (2026-03-15): Arcane Exchange icon finalised — Arcane-logo.svg committed. arcane-icon-src token added. | 1.2.0 (2026-03-15): Oracle Codex icon finalised — Oracle-logo.svg committed. oracle-icon-src token added. | 1.1.0 (2026-03-15): Logo finalised — loremarkets.ai.svg committed as master asset. Logo src token added."
+  },
+
+  "color": {
+
+    "bg": {
+      "void":          { "value": "#06000f",  "comment": "Primary app background" },
+      "deep":          { "value": "#0d0120",  "comment": "Section / panel background" },
+      "surface":       { "value": "#160430",  "comment": "Default card surface" },
+      "elevated":      { "value": "#1c0840",  "comment": "Raised card, dropdown, modal" },
+      "hover":         { "value": "#2a1058",  "comment": "Hover state, active row" }
+    },
+
+    "brand": {
+      "gold": {
+        "DEFAULT":     { "value": "#f5c030",              "comment": "Primary brand accent. Contrast on void: 12.29:1 — WCAG AAA" },
+        "light":       { "value": "#ffe680",              "comment": "Gold shimmer / highlight" },
+        "dark":        { "value": "#7a4800",              "comment": "Gold shadow / 3D depth" },
+        "muted":       { "value": "rgba(245,192,48,0.18)","comment": "Tinted surface fill" },
+        "border":      { "value": "rgba(245,192,48,0.22)","comment": "Highlighted card border" }
+      },
+      "teal": {
+        "DEFAULT":     { "value": "#00ecd6",              "comment": "Data accent. Contrast on void: 13.77:1 — WCAG AAA" },
+        "light":       { "value": "#80fff0",              "comment": "Teal glow / highlight" },
+        "dark":        { "value": "#006e62",              "comment": "Teal shadow" },
+        "muted":       { "value": "rgba(0,236,214,0.12)", "comment": "Tinted surface fill" },
+        "border":      { "value": "rgba(0,236,214,0.20)", "comment": "Teal accent border" }
+      },
+      "violet": {
+        "DEFAULT":     { "value": "#8050d0",              "comment": "⚑ DECORATIVE ONLY. 3.92:1 contrast — fails WCAG AA for normal text below 18px." },
+        "dim":         { "value": "#4a1d8a",              "comment": "Deeper violet for borders, icons" },
+        "muted":       { "value": "rgba(128,80,208,0.18)","comment": "Tinted surface fill" },
+        "border":      { "value": "rgba(128,80,208,0.22)","comment": "Default card border colour" }
+      }
+    },
+
+    "text": {
+      "primary":       { "value": "#f5f0ff",  "comment": "Body text. 18.52:1 on void — WCAG AAA" },
+      "secondary":     { "value": "#9a88c0",  "comment": "Subdued. Large text only." },
+      "muted":         { "value": "#6a5a90",  "comment": "Tertiary. Large text only." },
+      "faint":         { "value": "#382860",  "comment": "Disabled / ghost. Decorative only." }
+    },
+
+    "semantic": {
+      "positive":      { "value": "#00ecd6",  "comment": "Up / profit (use brand teal)" },
+      "negative":      { "value": "#e05060",  "comment": "Down / loss" },
+      "neutral":       { "value": "#9a88c0",  "comment": "Flat / unchanged" },
+      "warning":       { "value": "#f0a030",  "comment": "Caution / oracle alert" }
+    },
+
+    "border": {
+      "default":       { "value": "rgba(128,80,208,0.18)", "comment": "Standard card border" },
+      "strong":        { "value": "rgba(128,80,208,0.35)", "comment": "Emphasis border" },
+      "gold":          { "value": "rgba(245,192,48,0.22)",  "comment": "Featured item border" },
+      "teal":          { "value": "rgba(0,236,214,0.20)",   "comment": "Active / data border" }
+    },
+
+    "market": {
+      "arcane": {
+        "primary":     { "value": "#8050d0",  "comment": "Arcane Exchange — primary" },
+        "accent":      { "value": "#f5c030",  "comment": "Arcane Exchange — accent" },
+        "surface":     { "value": "#160430",  "comment": "Arcane Exchange — surface" },
+        "glow":        { "value": "rgba(128,80,208,0.25)", "comment": "Arcane Exchange — ambient glow" }
+      },
+      "iron": {
+        "primary":     { "value": "#b07040",  "comment": "Iron Dominion — oxidised copper" },
+        "accent":      { "value": "#e8c870",  "comment": "Iron Dominion — amber oil" },
+        "surface":     { "value": "#18100a",  "comment": "Iron Dominion — surface" },
+        "glow":        { "value": "rgba(176,112,64,0.22)", "comment": "Iron Dominion — ambient glow" }
+      },
+      "verdant": {
+        "primary":     { "value": "#30c878",  "comment": "Verdant Compact — bioluminescent moss" },
+        "accent":      { "value": "#a0ffb0",  "comment": "Verdant Compact — phosphor glow" },
+        "surface":     { "value": "#061810",  "comment": "Verdant Compact — surface" },
+        "glow":        { "value": "rgba(48,200,120,0.20)", "comment": "Verdant Compact — ambient glow" }
+      },
+      "void": {
+        "primary":     { "value": "#4080ff",  "comment": "Void Exchange — cold neon blue" },
+        "accent":      { "value": "#b0c8ff",  "comment": "Void Exchange — bone white shimmer" },
+        "surface":     { "value": "#040810",  "comment": "Void Exchange — surface" },
+        "glow":        { "value": "rgba(64,128,255,0.22)", "comment": "Void Exchange — ambient glow" }
+      }
+    }
+  },
+
+  "font": {
+    "family": {
+      "display":   { "value": "'Cinzel Decorative', 'Cinzel', Georgia, serif",            "comment": "Logo, hero, ceremonial headlines" },
+      "heading":   { "value": "'Cinzel', Georgia, 'Times New Roman', serif",              "comment": "Section headings H1–H3" },
+      "body":      { "value": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",   "comment": "All body copy, UI, labels" },
+      "mono":      { "value": "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace","comment": "Code, addresses, technical strings" }
+    },
+    "size": {
+      "display":   { "value": "54px",  "comment": "Hero / logo display" },
+      "h1":        { "value": "36px",  "comment": "Page title" },
+      "h2":        { "value": "26px",  "comment": "Section heading" },
+      "h3":        { "value": "20px",  "comment": "Subsection heading" },
+      "h4":        { "value": "16px",  "comment": "Component heading" },
+      "body-lg":   { "value": "16px",  "comment": "Lead paragraph" },
+      "body":      { "value": "14px",  "comment": "Default body" },
+      "body-sm":   { "value": "13px",  "comment": "Secondary body" },
+      "label":     { "value": "11px",  "comment": "UI labels, tags" },
+      "micro":     { "value": "10px",  "comment": "Eyebrows, timestamps" },
+      "data":      { "value": "32px",  "comment": "P&L figures, market prices" }
+    },
+    "weight": {
+      "black":     { "value": "900" },
+      "bold":      { "value": "700" },
+      "semibold":  { "value": "600" },
+      "medium":    { "value": "500" },
+      "regular":   { "value": "400" },
+      "light":     { "value": "300" }
+    },
+    "lineHeight": {
+      "display":   { "value": "1.10" },
+      "heading":   { "value": "1.25" },
+      "body":      { "value": "1.65" },
+      "label":     { "value": "1.30" },
+      "data":      { "value": "1.00" }
+    },
+    "letterSpacing": {
+      "display":          { "value": "0.02em" },
+      "heading":          { "value": "0.01em" },
+      "heading-section":  { "value": "0.04em", "comment": "h2 page section headings — increased for Cinzel enforcement. Replaces heading token in section contexts." },
+      "body":             { "value": "0" },
+      "label":            { "value": "0.08em" },
+      "eyebrow":          { "value": "0.18em",  "comment": "UPPERCASE eyebrow labels" },
+      "data":             { "value": "-0.02em", "comment": "Tabular figures — tighter" }
+    }
+  },
+
+  "spacing": {
+    "1":   { "value": "4px"  },
+    "2":   { "value": "8px"  },
+    "3":   { "value": "12px" },
+    "4":   { "value": "16px" },
+    "5":   { "value": "20px" },
+    "6":   { "value": "24px" },
+    "8":   { "value": "32px" },
+    "10":  { "value": "40px" },
+    "12":  { "value": "48px" },
+    "16":  { "value": "64px" },
+    "20":  { "value": "80px" },
+    "24":  { "value": "96px" }
+  },
+
+  "radius": {
+    "sm":   { "value": "6px"    },
+    "md":   { "value": "10px"   },
+    "lg":   { "value": "14px"   },
+    "xl":   { "value": "20px"   },
+    "pill": { "value": "9999px" },
+    "full": { "value": "50%"    }
+  },
+
+  "shadow": {
+    "sm":   { "value": "0 2px 8px rgba(0,0,0,0.40)"   },
+    "md":   { "value": "0 4px 20px rgba(0,0,0,0.55)"  },
+    "lg":   { "value": "0 8px 40px rgba(0,0,0,0.70)"  },
+    "xl":   { "value": "0 16px 64px rgba(0,0,0,0.85)" }
+  },
+
+  "glow": {
+    "gold":     { "value": "0 0 24px rgba(245,192,48,0.30)"   },
+    "gold-lg":  { "value": "0 0 48px rgba(245,192,48,0.22)"   },
+    "teal":     { "value": "0 0 24px rgba(0,236,214,0.30)"    },
+    "teal-lg":  { "value": "0 0 48px rgba(0,236,214,0.22)"    },
+    "violet":   { "value": "0 0 24px rgba(128,80,208,0.28)"   }
+  },
+
+  "animation": {
+    "easing": {
+      "out":      { "value": "cubic-bezier(0.22, 1, 0.36, 1)"      },
+      "in-out":   { "value": "cubic-bezier(0.65, 0, 0.35, 1)"      },
+      "spring":   { "value": "cubic-bezier(0.34, 1.56, 0.64, 1)"   }
+    },
+    "duration": {
+      "fast":     { "value": "120ms" },
+      "base":     { "value": "200ms" },
+      "slow":     { "value": "350ms" },
+      "enter":    { "value": "400ms" }
+    },
+    "ambient": {
+      "leyline-drift":  { "value": "60s",  "comment": "Particle/ley-line mote drift cycle. Use on ParticleField component." },
+      "leyline-rotate": { "value": "90s",  "comment": "Radial ley-line gradient slow rotation cycle." },
+      "nav-pulse":      { "value": "4s",   "comment": "Gold nav border pulse cycle — opacity 0.3→0.7→0.3." },
+      "oracle-live":    { "value": "1.5s", "comment": "Oracle feed live dot pulse — teal, ease-in-out infinite." },
+      "hero-glow":      { "value": "8s",   "comment": "Hero logo gold glow breathe cycle." }
+    }
+  },
+
+  "opacity": {
+    "watermark":   { "value": "0.08", "comment": "Background icon watermark (Oracle-logo, Arcane-logo behind section headings)." },
+    "mote-max":    { "value": "0.22", "comment": "Ambient particle/mote maximum opacity. Never exceed this." },
+    "leyline":     { "value": "0.04", "comment": "Ley-line radial gradient ambient opacity. Subliminal — felt, not noticed." },
+    "hero-glow":   { "value": "0.18", "comment": "Hero logo drop shadow max opacity: 0 0 48px rgba(245,192,48,0.18)." }
+  },
+
+  "zIndex": {
+    "base":     { "value": "0"   },
+    "raised":   { "value": "10"  },
+    "dropdown": { "value": "100" },
+    "sticky":   { "value": "200" },
+    "overlay":  { "value": "300" },
+    "modal":    { "value": "400" },
+    "toast":    { "value": "500" },
+    "tooltip":  { "value": "600" }
+  },
+
+  "logo": {
+    "src":        { "value": "../loremarkets.ai.svg",     "comment": "Master brand logo — FINAL. Approved 2026-03-15. Single source of truth for all lockups." },
+    "oracleIconSrc": { "value": "../Oracle-logo.svg",       "comment": "Oracle Codex sigil mark — FINAL. Approved 2026-03-15. Use for app icon, nav badge, social profile, leaderboard, tournament assets." },
+    "arcaneIconSrc": { "value": "../Arcane-logo.svg", "comment": "Arcane Exchange market icon — FINAL. Approved 2026-03-15. Use on Arcane Exchange market screens, cards, and lobby." },
+    "minWidth":   { "value": "180px",  "comment": "Minimum full horizontal lockup width" },
+    "clearSpace": { "value": "1em",    "comment": "1× badge width clearance on all sides" },
+    "iconMin":    { "value": "24px",   "comment": "Minimum icon size before micro variant" },
+    "iconMicro":  { "value": "16px",   "comment": "Dedicated favicon/micro variant only" }
+  }
+}

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LoreMarkets — Brand System v2 · Pre-Launch Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────── TOKENS ─────────────────── */
+:root {
+  --void:        #06000f;
+  --deep:        #0d0120;
+  --surface:     #160430;
+  --card:        #1c0840;
+  --elevated:    #2a1058;
+  --gold:        #f5c030;
+  --gold-light:  #ffe680;
+  --gold-dark:   #7a4800;
+  --teal:        #00ecd6;
+  --teal-light:  #80fff0;
+  --teal-dark:   #006e62;
+  --violet:      #8050d0;   /* decorative only — 4.28:1, fails AA for body text */
+  --white:       #f5f0ff;
+  --muted:       #6a5a90;
+  --faint:       #382860;
+  --pass-aaa:    #00c875;
+  --pass-aa:     #80d040;
+  --fail:        #e05060;
+}
+
+/* ─────────────────── RESET ─────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ─────────────────── LAYOUT ─────────────────── */
+.page { max-width: 1080px; margin: 0 auto; padding: 64px 40px 120px; }
+
+section { margin-bottom: 96px; }
+
+.section-eyebrow {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 5px; text-transform: uppercase;
+  color: var(--violet); margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--white); margin-bottom: 32px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(128,80,208,0.18);
+  position: relative;
+}
+.section-title::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0;
+  width: 64px; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ─────────────────── MASTHEAD ─────────────────── */
+.masthead {
+  text-align: center;
+  padding: 80px 0 72px;
+  border-bottom: 1px solid rgba(245,192,48,0.12);
+  margin-bottom: 80px;
+  position: relative;
+}
+.masthead-badge {
+  display: inline-block;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase;
+  background: rgba(128,80,208,0.18);
+  border: 1px solid rgba(128,80,208,0.3);
+  color: var(--violet);
+  padding: 6px 16px; border-radius: 20px;
+  margin-bottom: 24px;
+}
+.masthead h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(30px, 4.5vw, 54px);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 45%, var(--gold-dark) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 28px rgba(245,192,48,0.28));
+}
+.masthead-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; color: var(--muted); letter-spacing: 2px;
+  margin-bottom: 28px;
+}
+.masthead-team {
+  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+}
+.team-pill {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted);
+}
+.team-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+/* ─────────────────── BRIEF CARDS ─────────────────── */
+.brief-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  margin-bottom: 0;
+}
+@media (max-width: 680px) { .brief-grid { grid-template-columns: 1fr; } }
+
+.brief-card {
+  background: var(--surface);
+  border-radius: 14px; padding: 28px;
+  border: 1px solid rgba(128,80,208,0.18);
+}
+.brief-card.gold-accent { border-color: rgba(245,192,48,0.18); }
+.brief-card.teal-accent { border-color: rgba(0,236,214,0.15); }
+
+.brief-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+}
+.brief-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+  flex-shrink: 0;
+}
+.brief-avatar.gold { background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); color: #06000f; }
+.brief-avatar.teal { background: linear-gradient(135deg, var(--teal-light), var(--teal-dark)); color: #06000f; }
+.brief-name { font-family: 'Cinzel', serif; font-size: 14px; }
+.brief-role { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+.brief-points { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.brief-points li {
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+  padding-left: 18px; position: relative;
+}
+.brief-points li::before {
+  content: '─'; position: absolute; left: 0;
+  color: var(--faint); font-size: 10px;
+  top: 5px;
+}
+.brief-points li strong { color: var(--white); font-weight: 500; }
+.brief-points li.flagged { color: #e0a060; }
+.brief-points li.flagged::before { content: '⚑'; color: #e0a060; font-size: 9px; }
+.brief-points li.pass { color: var(--pass-aaa); }
+.brief-points li.pass::before { content: '✓'; color: var(--pass-aaa); font-size: 10px; }
+
+/* ─────────────────── ICON SHOWCASE ─────────────────── */
+.icon-hero-wrap {
+  background: radial-gradient(ellipse at center, #1e0850 0%, #080018 70%);
+  border: 1px solid rgba(245,192,48,0.1);
+  border-radius: 16px;
+  padding: 52px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.icon-scale-row {
+  display: flex; align-items: flex-end; gap: 28px;
+  flex-wrap: wrap; padding: 28px;
+  background: var(--surface); border-radius: 12px;
+  border: 1px solid rgba(128,80,208,0.14);
+}
+.icon-scale-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.icon-scale-item img { display: block; image-rendering: -webkit-optimize-contrast; }
+.scale-chip {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); text-align: center;
+}
+.scale-chip span { display: block; font-size: 8px; color: var(--faint); margin-top: 2px; }
+
+/* ─────────────────── LOGO PROPOSALS ─────────────────── */
+.proposals-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 860px) { .proposals-grid { grid-template-columns: 1fr; } }
+
+.proposal-card {
+  border-radius: 14px; overflow: hidden;
+  border: 2px solid rgba(128,80,208,0.18);
+  transition: border-color 0.2s;
+}
+.proposal-card.recommended {
+  border-color: rgba(245,192,48,0.45);
+  box-shadow: 0 0 32px rgba(245,192,48,0.08);
+}
+.proposal-canvas {
+  background: #080018;
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px 20px;
+  min-height: 180px;
+  position: relative;
+}
+.proposal-canvas::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(40,16,96,0.5) 0%, transparent 70%);
+  pointer-events: none;
+}
+.proposal-meta {
+  background: var(--card);
+  padding: 18px 20px;
+}
+.proposal-label {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 700; color: var(--white);
+  margin-bottom: 4px;
+}
+.proposal-tag {
+  display: inline-block;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 10px;
+  margin-bottom: 10px;
+}
+.proposal-tag.rec     { background: rgba(245,192,48,0.15); color: var(--gold); }
+.proposal-tag.alt     { background: rgba(0,236,214,0.12); color: var(--teal); }
+.proposal-tag.context { background: rgba(128,80,208,0.18); color: var(--violet); }
+.proposal-desc {
+  font-size: 11px; color: var(--muted); line-height: 1.7; margin-bottom: 10px;
+}
+.proposal-use {
+  font-size: 10px; letter-spacing: 1px; color: var(--faint);
+}
+
+.proposal-vote {
+  background: var(--surface);
+  border-top: 1px solid rgba(128,80,208,0.12);
+  padding: 14px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.vote-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.vote-tally {
+  display: flex; gap: 6px;
+}
+.vote-dot { width: 8px; height: 8px; border-radius: 50%; }
+.vote-dot.active-gold { background: var(--gold); }
+.vote-dot.active-teal { background: var(--teal); }
+.vote-dot.inactive    { background: rgba(255,255,255,0.12); }
+
+/* ─────────────────── ACCESSIBILITY AUDIT ─────────────────── */
+.contrast-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--surface); border-radius: 12px; overflow: hidden;
+}
+.contrast-table th {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 500; padding: 14px 16px;
+  border-bottom: 1px solid rgba(128,80,208,0.18);
+  text-align: left;
+}
+.contrast-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(128,80,208,0.08);
+  font-size: 12px; color: var(--muted);
+  vertical-align: middle;
+}
+.contrast-table tr:last-child td { border-bottom: none; }
+.contrast-table td:first-child { color: var(--white); font-weight: 500; }
+
+.swatch-pair {
+  display: flex; align-items: center; gap: 8px;
+}
+.c-swatch {
+  width: 14px; height: 14px; border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+.ratio-badge {
+  display: inline-block;
+  font-family: monospace; font-size: 12px; font-weight: 600;
+  padding: 3px 8px; border-radius: 6px;
+}
+.ratio-badge.aaa { background: rgba(0,200,117,0.15); color: var(--pass-aaa); }
+.ratio-badge.aa  { background: rgba(128,208,64,0.15); color: var(--pass-aa); }
+.ratio-badge.fail { background: rgba(224,80,96,0.15); color: var(--fail); }
+
+.wcag-pill {
+  display: inline-block; font-size: 9px; letter-spacing: 1px;
+  padding: 2px 7px; border-radius: 8px; margin-left: 4px;
+}
+.wcag-pill.pass { background: rgba(0,200,117,0.15); color: var(--pass-aaa); }
+.wcag-pill.fail { background: rgba(224,80,96,0.15); color: var(--fail); }
+
+.access-note {
+  background: rgba(224,80,96,0.08);
+  border: 1px solid rgba(224,80,96,0.2);
+  border-radius: 10px; padding: 16px 20px;
+  margin-top: 16px;
+}
+.access-note-pass {
+  background: rgba(0,200,117,0.06);
+  border: 1px solid rgba(0,200,117,0.18);
+  border-radius: 10px; padding: 16px 20px;
+  margin-top: 12px;
+}
+
+/* ─────────────────── COLOUR PALETTE ─────────────────── */
+.palette-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.swatch-block { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+.swatch-color { height: 64px; position: relative; }
+.swatch-hex {
+  position: absolute; bottom: 5px; right: 7px;
+  font-size: 8px; font-family: monospace;
+  color: rgba(255,255,255,0.65); letter-spacing: 1px;
+}
+.swatch-info { background: var(--surface); padding: 9px 10px; }
+.swatch-name { font-size: 11px; font-weight: 500; color: var(--white); }
+.swatch-use  { font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+/* ─────────────────── TYPOGRAPHY ─────────────────── */
+.type-stack { display: flex; flex-direction: column; gap: 14px; }
+.type-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 20px; flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid rgba(128,80,208,0.12);
+  border-radius: 10px; padding: 22px 26px;
+}
+.type-spec { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: right; min-width: 140px; }
+
+/* ─────────────────── TOKENS ─────────────────── */
+.token-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--surface); border-radius: 12px; overflow: hidden;
+  font-family: monospace;
+}
+.token-table th {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 400; padding: 12px 16px;
+  border-bottom: 1px solid rgba(128,80,208,0.18);
+  text-align: left;
+}
+.token-table td { padding: 11px 16px; font-size: 12px; border-bottom: 1px solid rgba(128,80,208,0.07); color: var(--white); }
+.token-table tr:last-child td { border-bottom: none; }
+.token-table .token-name { color: #80c0ff; }
+.token-table .token-value { color: var(--gold); }
+.token-table .token-role { color: var(--muted); font-family: 'Inter', sans-serif; font-size: 11px; }
+
+/* ─────────────────── FOOTER ─────────────────── */
+.page-footer {
+  border-top: 1px solid rgba(245,192,48,0.10);
+  margin-top: 80px; padding-top: 36px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-copy { font-size: 11px; color: var(--faint); letter-spacing: 1px; }
+.footer-credits { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-credit { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--faint); }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- MASTHEAD                                                 -->
+<!-- ════════════════════════════════════════════════════════ -->
+<header class="masthead">
+  <div class="masthead-badge">Brand System · v2.3 · Logo · Oracle · Arcane Exchange — Finalised ✓</div>
+  <h1>LoreMarkets</h1>
+  <p class="masthead-sub">Identity Iteration — 3D Cartoon Dark-Mystical · Adventure Time ✕ Dark Fantasy</p>
+  <div class="masthead-team">
+    <div class="team-pill">
+      <div class="team-dot" style="background:var(--gold);"></div>Toni — Graphic Design
+    </div>
+    <div class="team-pill">
+      <div class="team-dot" style="background:var(--teal);"></div>Carl — UX / UI
+    </div>
+    <div class="team-pill">
+      <div class="team-dot" style="background:var(--violet);"></div>Tom — Marketing
+    </div>
+  </div>
+</header>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 00 — FINAL APPROVED LOGO                                 -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">00 — Final Approved Logo</div>
+  <div class="section-title">LoreMarkets Master Logo — Approved 2026-03-15</div>
+
+  <div class="icon-hero-wrap" style="flex-direction:column; gap:28px;">
+    <img src="../loremarkets.ai.svg"
+         alt="LoreMarkets master logo — final approved"
+         style="max-width:480px; width:100%; display:block;" />
+    <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center;">
+      <div style="text-align:center;">
+        <img src="../loremarkets.ai.svg" alt="LoreMarkets logo at 240px" style="width:240px; display:block; margin:0 auto 8px;" />
+        <div class="scale-chip">240px<span>Header / Email</span></div>
+      </div>
+      <div style="text-align:center;">
+        <img src="../loremarkets.ai.svg" alt="LoreMarkets logo at 120px" style="width:120px; display:block; margin:0 auto 8px;" />
+        <div class="scale-chip">120px<span>Social / App Store</span></div>
+      </div>
+      <div style="text-align:center;">
+        <img src="../loremarkets.ai.svg" alt="LoreMarkets logo at 64px" style="width:64px; display:block; margin:0 auto 8px;" />
+        <div class="scale-chip">64px<span>Nav / Badge</span></div>
+      </div>
+      <div style="text-align:center;">
+        <img src="../loremarkets.ai.svg" alt="LoreMarkets logo at 32px" style="width:32px; display:block; margin:0 auto 8px;" />
+        <div class="scale-chip">32px<span>Favicon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="brief-card gold-accent" style="margin-top:20px;">
+    <div class="brief-header">
+      <div class="brief-avatar gold" style="font-size:11px;">T</div>
+      <div>
+        <div class="brief-name">Toni — Master Graphic Designer</div>
+        <div class="brief-role">Asset Delivery · 2026-03-15</div>
+      </div>
+    </div>
+    <ul class="brief-points">
+      <li class="pass"><strong>Status: FINAL.</strong> Master file committed to <code style="font-family:monospace; color:var(--teal); font-size:12px;">loremarkets.ai.svg</code>. This is the single source of truth for all lockups.</li>
+      <li class="pass"><strong>Dark-mode native.</strong> Asset designed on void black — luminous on all dark surfaces. No separate dark variant needed.</li>
+      <li><strong>Format:</strong> SVG (scalable). Export PNG at 512px, 256px, 128px, 64px, 32px from this file for raster use cases (OG image, app store).</li>
+      <li><strong>Micro/favicon variant:</strong> Export the icon mark only at 32×32 and 16×16. Do not use the full lockup below 64px — switch to icon-only at that size.</li>
+      <li><strong>Clear space:</strong> 1× badge-width clearance on all sides. Do not crowd the logo against nav elements or content blocks.</li>
+      <li class="flagged"><strong>Do not:</strong> recolour, stretch, add drop shadows to wordmark text, or place on any background lighter than <code style="font-family:monospace; color:var(--gold); font-size:12px;">#1c0840</code>.</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:20px; padding:16px 20px; background:rgba(245,192,48,0.06); border:1px solid rgba(245,192,48,0.2); border-radius:10px;">
+    <p style="font-size:12px; color:var(--muted); line-height:1.7;">
+      🖼️ <strong style="color:var(--gold);">TONI → CARL: ASSET DELIVERY</strong> &nbsp;·&nbsp;
+      Asset: Master Logo Lockup &nbsp;·&nbsp;
+      File: <code style="color:var(--teal); font-size:11px;">loremarkets.ai.svg</code> &nbsp;·&nbsp;
+      Dark mode variant: ✓ (native) &nbsp;·&nbsp;
+      Light mode variant: ✗ (not yet — flag to Arif for backlog) &nbsp;·&nbsp;
+      Design token: <code style="color:var(--teal); font-size:11px;">--logo-src</code> added to design-tokens v1.1.0
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 01 — TEAM BRIEFS                                         -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">01 — Pre-Design Review (Archive)</div>
+  <div class="section-title">Carl × Tom Feedback Brief</div>
+
+  <div class="brief-grid">
+
+    <!-- CARL -->
+    <div class="brief-card teal-accent">
+      <div class="brief-header">
+        <div class="brief-avatar teal">C</div>
+        <div>
+          <div class="brief-name" style="color:var(--teal);">Carl</div>
+          <div class="brief-role">UX / UI Design Lead</div>
+        </div>
+      </div>
+      <ul class="brief-points">
+        <li><strong>Single Bézier arc, not a jagged multi-point line.</strong> One confident curve reads better at every size and communicates market momentum more elegantly.</li>
+        <li><strong>Use <code>clipPath</code> on the hex.</strong> In v1, bloom and glow elements bled outside the badge outline. That's sloppy at production scale. Clip everything.</li>
+        <li><strong>3D text extrusion → crisp drop-shadow.</strong> The dark-offset text copy in v1 causes muddy rendering on OLED and at zoom. Replace with <code>feDropShadow stdDeviation="1"</code>.</li>
+        <li><strong>Book: symbolic, not illustrated.</strong> Two curved wing-pages + gold spine = immediately readable at 32px. The ruling lines, runes, and bar chart on pages are invisible at anything below 128px — cut them.</li>
+        <li class="flagged"><strong>Arcane Violet (#8050d0) fails WCAG AA</strong> for normal text (4.28:1 vs 4.5:1 required). Flag: use only for decorative/large elements — never for body copy or labels below 18px.</li>
+        <li class="pass"><strong>Oracle Gold #f5c030</strong> on Void Black: 12.63:1 — WCAG AAA ✓</li>
+        <li class="pass"><strong>Chart Teal #00ecd6</strong> on Void Black: 13.84:1 — WCAG AAA ✓</li>
+        <li><strong>Minimum clear space:</strong> 1× badge width on all sides for full lockup. 0.5× for icon-only use. Do not break this — especially in the nav bar.</li>
+        <li><strong>Favicon variant needed:</strong> At 16×16 the grimoire detail is gone. Create a dedicated micro mark: solid hex badge with teal centre-dot only. No book, no arc.</li>
+      </ul>
+    </div>
+
+    <!-- TOM -->
+    <div class="brief-card gold-accent">
+      <div class="brief-header">
+        <div class="brief-avatar gold">T</div>
+        <div>
+          <div class="brief-name" style="color:var(--gold);">Tom</div>
+          <div class="brief-role">Marketing Lead</div>
+        </div>
+      </div>
+      <ul class="brief-points">
+        <li><strong>"TRADE THE LEGEND"</strong> is the tagline. It belongs as a tertiary element below the lockup — not inside the logo frame. Logos don't contain taglines.</li>
+        <li><strong>Three use-case lockups, not one.</strong> We need: (A) Horizontal Primary for website/email, (B) Modern Unity for social/app store, (C) Badge Authority for favicon/merch. Different contexts, same DNA.</li>
+        <li><strong>Gold = ancient knowledge (Lore). Teal = live data (Markets).</strong> This palette split tells our story visually. Enforce it religiously — don't let teal bleed into the logomark's primary text or gold bleed into chart elements.</li>
+        <li><strong>Not crypto, not fintech.</strong> Our risk: gold + dark purple reads as DeFi to some audiences. The teal chart arc is our differentiator — it signals simulation and game. Lean into it in all marketing contexts.</li>
+        <li><strong>The grimoire metaphor is correct.</strong> Book = Lore. Chart = Markets. Every touchpoint should reinforce this visual story. Don't drift from it in sub-brand assets.</li>
+        <li><strong>Social profile test:</strong> The icon at 40×40 on Twitter must be instantly recognisable as LoreMarkets — not a generic badge. The teal glow in the upper portion (the chart apex star) is our unique identifier at small sizes. Protect it.</li>
+        <li><strong>Copy hook tied to the icon:</strong> "The most dangerous trades are the ones written in lore." — this is ad copy that our icon visually supports. The brand is cohesive.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 02 — ICON v2                                            -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">02 — Oracle Codex Sigil · FINAL ✓</div>
+  <div class="section-title">Oracle Codex — Approved 2026-03-15</div>
+
+  <div class="icon-hero-wrap">
+    <img src="../Oracle-logo.svg" width="240" height="240" alt="LoreMarkets Oracle Codex icon — hexagonal arcane badge, final approved"/>
+  </div>
+
+  <!-- Scale test -->
+  <div class="icon-scale-row">
+    <div class="icon-scale-item">
+      <img src="../Oracle-logo.svg" width="160" height="160" alt="Oracle icon at 512px"/>
+      <div class="scale-chip">512px <span>Hero / OG image</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Oracle-logo.svg" width="80" height="80" alt="Oracle icon at 128px"/>
+      <div class="scale-chip">128px <span>Avatar / card</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Oracle-logo.svg" width="48" height="48" alt="Oracle icon at 64px"/>
+      <div class="scale-chip">64px <span>Nav / sidebar</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Oracle-logo.svg" width="32" height="32" alt="Oracle icon at 32px"/>
+      <div class="scale-chip">32px <span>Leaderboard row</span></div>
+    </div>
+    <div class="icon-scale-item" style="background:#0e0122; padding:6px; border-radius:6px;">
+      <img src="../Oracle-logo.svg" width="16" height="16" alt="Oracle icon at 16px"/>
+      <div class="scale-chip" style="margin-top:6px;">16px <span>Favicon / micro</span></div>
+    </div>
+
+    <!-- Spacer + note -->
+    <div style="margin-left: auto; max-width: 260px;">
+      <p style="font-size:11px; color:var(--muted); line-height:1.75;">
+        <span style="color:var(--teal); font-weight:500;">Carl's 16px rule:</span>
+        The hex silhouette + teal glow is the recognisable fingerprint at micro sizes. Export a dedicated 16×16 favicon from <code style="color:var(--teal); font-size:10px;">Oracle-logo.svg</code> — hex + centred teal dot, no book detail.
+      </p>
+    </div>
+  </div>
+
+  <div class="brief-card gold-accent" style="margin-top:20px;">
+    <div class="brief-header">
+      <div class="brief-avatar gold" style="font-size:11px;">T</div>
+      <div>
+        <div class="brief-name">Toni — Master Graphic Designer</div>
+        <div class="brief-role">Oracle Asset Delivery · 2026-03-15</div>
+      </div>
+    </div>
+    <ul class="brief-points">
+      <li class="pass"><strong>Status: FINAL.</strong> Oracle Codex sigil committed to <code style="font-family:monospace; color:var(--teal); font-size:12px;">Oracle-logo.svg</code>. Single source of truth for all icon use cases.</li>
+      <li class="pass"><strong>Dark-mode native.</strong> Designed on void black — no dark variant needed.</li>
+      <li><strong>Use cases:</strong> App icon · Favicon base (export 32×32, 16×16) · Social profile avatar · Nav badge · Leaderboard row · Tournament assets · Discord server icon.</li>
+      <li><strong>Minimum display size:</strong> 24px. Below that, use hex-dot micro variant only.</li>
+      <li class="flagged"><strong>Do not:</strong> recolour the icon, add external drop shadows, or display below 16px without the dedicated micro variant.</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:20px; padding:16px 20px; background:rgba(245,192,48,0.06); border:1px solid rgba(245,192,48,0.2); border-radius:10px;">
+    <p style="font-size:12px; color:var(--muted); line-height:1.7;">
+      🔮 <strong style="color:var(--gold);">TONI → CARL: ORACLE ASSET DELIVERY</strong> &nbsp;·&nbsp;
+      Asset: Oracle Codex Sigil Mark &nbsp;·&nbsp;
+      File: <code style="color:var(--teal); font-size:11px;">Oracle-logo.svg</code> &nbsp;·&nbsp;
+      Design token: <code style="color:var(--teal); font-size:11px;">--oracle-icon-src</code> added to design-tokens v1.2.0
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 02b — ARCANE EXCHANGE MARKET ICON                        -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">02b — Market Icon · FINAL ✓</div>
+  <div class="section-title">Arcane Exchange — Approved 2026-03-15</div>
+
+  <div class="icon-hero-wrap">
+    <img src="../Arcane-logo.svg" width="240" height="240" alt="Arcane Exchange market icon — final approved"/>
+  </div>
+
+  <div class="icon-scale-row">
+    <div class="icon-scale-item">
+      <img src="../Arcane-logo.svg" width="160" height="160" alt="Arcane Exchange icon at 512px"/>
+      <div class="scale-chip">512px <span>Market hero / OG</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Arcane-logo.svg" width="80" height="80" alt="Arcane Exchange icon at 128px"/>
+      <div class="scale-chip">128px <span>Lobby card</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Arcane-logo.svg" width="48" height="48" alt="Arcane Exchange icon at 64px"/>
+      <div class="scale-chip">64px <span>Market tab / nav</span></div>
+    </div>
+    <div class="icon-scale-item">
+      <img src="../Arcane-logo.svg" width="32" height="32" alt="Arcane Exchange icon at 32px"/>
+      <div class="scale-chip">32px <span>Leaderboard row</span></div>
+    </div>
+    <div class="icon-scale-item" style="background:#0e0122; padding:6px; border-radius:6px;">
+      <img src="../Arcane-logo.svg" width="16" height="16" alt="Arcane Exchange icon at 16px"/>
+      <div class="scale-chip" style="margin-top:6px;">16px <span>Micro / badge</span></div>
+    </div>
+  </div>
+
+  <div class="brief-card gold-accent" style="margin-top:20px;">
+    <div class="brief-header">
+      <div class="brief-avatar gold" style="font-size:11px;">T</div>
+      <div>
+        <div class="brief-name">Toni — Master Graphic Designer</div>
+        <div class="brief-role">Arcane Exchange Asset Delivery · 2026-03-15</div>
+      </div>
+    </div>
+    <ul class="brief-points">
+      <li class="pass"><strong>Status: FINAL.</strong> Asset committed to <code style="font-family:monospace; color:var(--teal); font-size:12px;">Arcane-logo.svg</code>.</li>
+      <li class="pass"><strong>Dark-mode native.</strong> Designed on void black — no dark variant needed.</li>
+      <li><strong>Use cases:</strong> Arcane Exchange market screens · Lobby tile · Market selection card · In-game market badge · Spectator overlay.</li>
+      <li><strong>Token:</strong> <code style="font-family:monospace; color:var(--teal); font-size:12px;">--arcane-icon-src</code> — use via CSS custom property or <code style="font-family:monospace; color:var(--teal); font-size:12px;">arcaneIconSrc</code> from design-tokens.json.</li>
+      <li class="flagged"><strong>Do not:</strong> recolour, mix with Iron Dominion or Void Exchange palettes, or display below 16px without a dedicated micro crop.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 03 — THREE LOGO PROPOSALS                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">03 — Logo Proposals (Archive)</div>
+  <div class="section-title">Three Lockups — Vote Closed · Logo Finalised</div>
+
+  <div class="proposals-grid">
+
+    <!-- ── PROPOSAL A — THE DUALITY (RECOMMENDED PRIMARY) ── -->
+    <div class="proposal-card recommended">
+      <div class="proposal-canvas" style="min-height:220px;">
+        <!-- Proposal A: icon left, LORE / MARKETS stacked right -->
+        <svg viewBox="0 0 620 200" width="100%" style="max-width:560px; position:relative; z-index:1;"
+          aria-label="LoreMarkets logo: Proposal A — The Duality horizontal lockup">
+          <defs>
+            <style>@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&amp;family=Cinzel:wght@600&amp;display=swap');</style>
+            <linearGradient id="pA-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#ffe680"/>
+              <stop offset="42%"  stop-color="#f0b820"/>
+              <stop offset="100%" stop-color="#7a4800"/>
+            </linearGradient>
+            <linearGradient id="pA-teal" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#80fff0"/>
+              <stop offset="42%"  stop-color="#00ecd6"/>
+              <stop offset="100%" stop-color="#006e62"/>
+            </linearGradient>
+            <filter id="pA-glow">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feColorMatrix values="1 0.8 0 0 0.06  0.5 0.4 0 0 0  0 0 0 0 0  0 0 0 0.32 0" in="b" result="c"/>
+              <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="pA-tglow">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feColorMatrix values="0 0.1 0 0 0  0 0.9 0 0 0.05  0 0.6 0.8 0 0.06  0 0 0 0.28 0" in="b" result="c"/>
+              <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <!-- tight 1px shadow (Carl recommendation) -->
+            <filter id="pA-wordShadow">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.6"/>
+            </filter>
+          </defs>
+          <!-- Icon (referenced) -->
+          <image href="../Oracle-logo.svg" x="10" y="8" width="184" height="184"/>
+          <!-- Gold rule separator -->
+          <line x1="212" y1="18" x2="212" y2="182"
+            stroke="#f0b820" stroke-width="1" opacity="0.32"/>
+          <!-- LORE -->
+          <text x="228" y="118"
+            font-family="'Cinzel Decorative', 'Cinzel', Georgia, serif"
+            font-size="88" font-weight="700"
+            fill="url(#pA-gold)"
+            filter="url(#pA-glow) url(#pA-wordShadow)">LORE</text>
+          <!-- MARKETS -->
+          <text x="234" y="163"
+            font-family="'Cinzel', Georgia, serif"
+            font-size="36" font-weight="600"
+            letter-spacing="11"
+            fill="url(#pA-teal)"
+            filter="url(#pA-tglow) url(#pA-wordShadow)">MARKETS</text>
+          <!-- Thin rule between LORE and MARKETS -->
+          <line x1="228" y1="131" x2="590" y2="131"
+            stroke="#f0b820" stroke-width="0.75" opacity="0.28"/>
+          <!-- Tagline -->
+          <text x="236" y="186"
+            font-family="'Cinzel', Georgia, serif"
+            font-size="11" letter-spacing="4"
+            fill="#6a4ab0" opacity="0.85">TRADE THE LEGEND</text>
+        </svg>
+      </div>
+      <div class="proposal-meta">
+        <div class="proposal-label">Proposal A — The Duality</div>
+        <span class="proposal-tag rec">★ Recommended Primary</span>
+        <p class="proposal-desc">Classic horizontal lockup. LORE commands in gold. MARKETS grounds in teal. The duality of the brand name is the visual story — you can read the split in a single glance. The thin gold rule and tight tracking on MARKETS creates hierarchy without competition.</p>
+        <div class="proposal-use">Best for: website header · email header · presentation title slide · OpenGraph</div>
+      </div>
+      <div class="proposal-vote">
+        <div class="vote-label">Team votes</div>
+        <div class="vote-tally">
+          <div class="vote-dot active-gold" title="Toni"></div>
+          <div class="vote-dot active-teal" title="Carl"></div>
+          <div class="vote-dot active-gold" title="Tom"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROPOSAL B — MODERN UNITY ── -->
+    <div class="proposal-card">
+      <div class="proposal-canvas" style="min-height:220px;">
+        <svg viewBox="0 0 620 200" width="100%" style="max-width:560px; position:relative; z-index:1;"
+          aria-label="LoreMarkets logo: Proposal B — Modern Unity, single-line colour-split wordmark">
+          <defs>
+            <linearGradient id="pB-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#ffe680"/>
+              <stop offset="50%"  stop-color="#f0b820"/>
+              <stop offset="100%" stop-color="#7a4800"/>
+            </linearGradient>
+            <linearGradient id="pB-teal" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#80fff0"/>
+              <stop offset="50%"  stop-color="#00ecd6"/>
+              <stop offset="100%" stop-color="#006e62"/>
+            </linearGradient>
+            <!-- Clip: LORE portion (left ~155px of wordmark starting at x=222) -->
+            <clipPath id="pB-loreClip">
+              <rect x="220" y="40" width="152" height="130"/>
+            </clipPath>
+            <!-- Clip: MARKETS portion (right side from ~372 onwards) -->
+            <clipPath id="pB-marketsClip">
+              <rect x="372" y="40" width="280" height="130"/>
+            </clipPath>
+            <filter id="pB-glow">
+              <feGaussianBlur stdDeviation="7" result="b"/>
+              <feColorMatrix values="1 0.7 0 0 0.06  0.4 0.3 0 0 0  0 0 0 0 0  0 0 0 0.28 0" in="b" result="c"/>
+              <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="pB-tglow">
+              <feGaussianBlur stdDeviation="7" result="b"/>
+              <feColorMatrix values="0 0.1 0 0 0  0 0.8 0 0 0.05  0 0.5 0.7 0 0.06  0 0 0 0.25 0" in="b" result="c"/>
+              <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="pB-shadow">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.55"/>
+            </filter>
+          </defs>
+          <!-- Icon -->
+          <image href="../Oracle-logo.svg" x="10" y="8" width="184" height="184"/>
+          <!-- LOREMARKETS full text in gold — then clip for LORE portion -->
+          <text clip-path="url(#pB-loreClip)" x="222" y="120"
+            font-family="'Cinzel Decorative', 'Cinzel', Georgia, serif"
+            font-size="52" font-weight="700" letter-spacing="2"
+            fill="url(#pB-gold)"
+            filter="url(#pB-glow) url(#pB-shadow)">LOREMARKETS</text>
+          <!-- LOREMARKETS in teal — clip for MARKETS portion -->
+          <text clip-path="url(#pB-marketsClip)" x="222" y="120"
+            font-family="'Cinzel Decorative', 'Cinzel', Georgia, serif"
+            font-size="52" font-weight="700" letter-spacing="2"
+            fill="url(#pB-teal)"
+            filter="url(#pB-tglow) url(#pB-shadow)">LOREMARKETS</text>
+          <!-- Decorative diamond rule under wordmark -->
+          <line x1="222" y1="133" x2="374" y2="133" stroke="#f0b820" stroke-width="0.75" opacity="0.3"/>
+          <circle cx="378" cy="133" r="3" fill="#f0b820" opacity="0.55"/>
+          <line x1="382" y1="133" x2="534" y2="133" stroke="#00ecd6" stroke-width="0.75" opacity="0.3"/>
+          <!-- Tagline -->
+          <text x="225" y="158"
+            font-family="'Cinzel', Georgia, serif"
+            font-size="11" letter-spacing="4"
+            fill="#6a4ab0" opacity="0.8">TRADE THE LEGEND</text>
+        </svg>
+      </div>
+      <div class="proposal-meta">
+        <div class="proposal-label">Proposal B — Modern Unity</div>
+        <span class="proposal-tag alt">Recommended Social</span>
+        <p class="proposal-desc">Single-word treatment with a colour-split technique. LORE in gold flows seamlessly into MARKETS in teal — one brand name, two worlds, zero explanation. The diamond separator is a lore artefact. Cleaner at smaller sizes than Proposal A.</p>
+        <div class="proposal-use">Best for: social media profile · app store listing · mobile splash · press kit</div>
+      </div>
+      <div class="proposal-vote">
+        <div class="vote-label">Team votes</div>
+        <div class="vote-tally">
+          <div class="vote-dot active-teal" title="Carl"></div>
+          <div class="vote-dot active-gold" title="Tom"></div>
+          <div class="vote-dot inactive"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROPOSAL C — BADGE AUTHORITY ── -->
+    <div class="proposal-card">
+      <div class="proposal-canvas" style="min-height:220px;">
+        <svg viewBox="0 0 280 320" width="100%" style="max-width:240px; max-height:260px; position:relative; z-index:1;"
+          aria-label="LoreMarkets logo: Proposal C — Badge Authority, stacked vertical lockup">
+          <defs>
+            <linearGradient id="pC-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#ffe680"/>
+              <stop offset="45%"  stop-color="#f0b820"/>
+              <stop offset="100%" stop-color="#7a4800"/>
+            </linearGradient>
+            <filter id="pC-glow">
+              <feGaussianBlur stdDeviation="5" result="b"/>
+              <feColorMatrix values="1 0.7 0 0 0.06  0.4 0.3 0 0 0  0 0 0 0 0  0 0 0 0.25 0" in="b" result="c"/>
+              <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="pC-shadow">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.55"/>
+            </filter>
+          </defs>
+          <!-- Icon centred -->
+          <image href="../Oracle-logo.svg" x="40" y="10" width="200" height="200"/>
+          <!-- Thin gold rule below icon -->
+          <line x1="48" y1="222" x2="232" y2="222" stroke="#f0b820" stroke-width="0.75" opacity="0.3"/>
+          <!-- LOREMARKETS tracked wide below -->
+          <text x="140" y="256" text-anchor="middle"
+            font-family="'Cinzel', Georgia, serif"
+            font-size="20" font-weight="600"
+            letter-spacing="6"
+            fill="url(#pC-gold)"
+            filter="url(#pC-glow) url(#pC-shadow)">LOREMARKETS</text>
+          <!-- Tagline -->
+          <text x="140" y="282" text-anchor="middle"
+            font-family="'Cinzel', Georgia, serif"
+            font-size="9.5" letter-spacing="4"
+            fill="#6a4ab0" opacity="0.8">TRADE THE LEGEND</text>
+        </svg>
+      </div>
+      <div class="proposal-meta">
+        <div class="proposal-label">Proposal C — Badge Authority</div>
+        <span class="proposal-tag context">Recommended Print / Merch</span>
+        <p class="proposal-desc">The icon is the hero. The wordmark is secondary — tracked wide and subordinate. Ceremonial and authoritative. Works brilliantly on dark merchandise, tournament badges, and Discord server icons where the square/circular format is dominant.</p>
+        <div class="proposal-use">Best for: merchandise · tournament assets · Discord icon · game loading screen</div>
+      </div>
+      <div class="proposal-vote">
+        <div class="vote-label">Team votes</div>
+        <div class="vote-tally">
+          <div class="vote-dot active-gold" title="Toni"></div>
+          <div class="vote-dot inactive"></div>
+          <div class="vote-dot inactive"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recommendation summary -->
+  <div style="background:rgba(245,192,48,0.06); border:1px solid rgba(245,192,48,0.2); border-radius:12px; padding:22px 26px;">
+    <p style="font-family:'Cinzel',serif; font-size:13px; color:var(--gold); letter-spacing:2px; margin-bottom:10px;">TEAM RECOMMENDATION</p>
+    <p style="font-size:13px; color:var(--muted); line-height:1.8;">
+      <strong style="color:var(--white);">Proposal A</strong> is the primary lockup — 3/3 votes. It has the clearest hierarchy, the strongest dual-brand storytelling, and works across the widest range of use cases.
+      <strong style="color:var(--white);">Proposal B</strong> ships as the social/mobile variant — it compresses better and the gradient-split is a visual hook in crowded feeds.
+      <strong style="color:var(--white);">Proposal C</strong> is the merch/game-context variant. All three should be in the brand asset kit.
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 04 — ACCESSIBILITY AUDIT                                -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">04 — Accessibility</div>
+  <div class="section-title">WCAG 2.1 Contrast Audit — Carl's Sign-off</div>
+
+  <table class="contrast-table">
+    <thead>
+      <tr>
+        <th>Colour Pair</th>
+        <th>Swatches</th>
+        <th>Ratio</th>
+        <th>Normal Text (4.5:1)</th>
+        <th>Large Text (3:1)</th>
+        <th>UI Components (3:1)</th>
+        <th>Usage Ruling</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Oracle Gold on Void Black</td>
+        <td>
+          <div class="swatch-pair">
+            <div class="c-swatch" style="background:#f5c030;"></div>
+            <div style="font-size:10px; color:var(--muted);">on</div>
+            <div class="c-swatch" style="background:#06000f;"></div>
+          </div>
+        </td>
+        <td><span class="ratio-badge aaa">12.63 : 1</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td style="color:var(--pass-aaa); font-size:11px;">Primary brand text, headings, logo wordmark. Unrestricted use.</td>
+      </tr>
+      <tr>
+        <td>Chart Teal on Void Black</td>
+        <td>
+          <div class="swatch-pair">
+            <div class="c-swatch" style="background:#00ecd6;"></div>
+            <div style="font-size:10px; color:var(--muted);">on</div>
+            <div class="c-swatch" style="background:#06000f;"></div>
+          </div>
+        </td>
+        <td><span class="ratio-badge aaa">13.84 : 1</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td style="color:var(--pass-aaa); font-size:11px;">Data labels, chart elements, MARKETS wordmark. Unrestricted use.</td>
+      </tr>
+      <tr>
+        <td>Moonveil White on Void Black</td>
+        <td>
+          <div class="swatch-pair">
+            <div class="c-swatch" style="background:#f5f0ff;"></div>
+            <div style="font-size:10px; color:var(--muted);">on</div>
+            <div class="c-swatch" style="background:#06000f;"></div>
+          </div>
+        </td>
+        <td><span class="ratio-badge aaa">18.9 : 1</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td style="color:var(--pass-aaa); font-size:11px;">Body text, UI labels. Best choice for all body copy.</td>
+      </tr>
+      <tr>
+        <td>Arcane Violet on Void Black</td>
+        <td>
+          <div class="swatch-pair">
+            <div class="c-swatch" style="background:#8050d0;"></div>
+            <div style="font-size:10px; color:var(--muted);">on</div>
+            <div class="c-swatch" style="background:#06000f;"></div>
+          </div>
+        </td>
+        <td><span class="ratio-badge fail">3.92 : 1</span></td>
+        <td><span class="wcag-pill fail">Fails AA ✗</span></td>
+        <td><span class="wcag-pill pass">AA ✓</span></td>
+        <td><span class="wcag-pill pass">AA ✓</span></td>
+        <td style="color:#e0a060; font-size:11px;"><strong style="color:#e08050;">Restricted.</strong> Decorative elements, UI chrome, large headings (18px+ normal, 14px+ bold) only. Never body text.</td>
+      </tr>
+      <tr>
+        <td>Oracle Gold on Deep Purple Card</td>
+        <td>
+          <div class="swatch-pair">
+            <div class="c-swatch" style="background:#f5c030;"></div>
+            <div style="font-size:10px; color:var(--muted);">on</div>
+            <div class="c-swatch" style="background:#1c0840;"></div>
+          </div>
+        </td>
+        <td><span class="ratio-badge aaa">10.4 : 1</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td><span class="wcag-pill pass">AAA ✓</span></td>
+        <td style="color:var(--pass-aaa); font-size:11px;">Safe for card-elevated contexts. Strong pass.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="access-note">
+    <p style="font-size:12px; color:#e0a060; line-height:1.75;">
+      <strong>⚑ Carl's flag:</strong> Arcane Violet (#8050d0) is 4.28:1 — 0.22 below WCAG AA for normal text. It passes for large text and UI components. Action for Yosuf: In the design token system, mark <code>--color-violet</code> as <em>decorative-only</em> with a comment blocking its use in text styles below 18px. Do not use it for data labels, tooltips, or any body copy.
+    </p>
+  </div>
+  <div class="access-note-pass">
+    <p style="font-size:12px; color:var(--pass-aaa); line-height:1.75;">
+      <strong>✓ Good news:</strong> Both primary brand colours — Oracle Gold and Chart Teal — achieve WCAG AAA (the highest standard) against our primary background. This means the brand is accessible by design, not by accident. No colour swaps needed for accessibility compliance in standard usage.
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 05 — COLOUR SYSTEM                                      -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">05 — Colour System</div>
+  <div class="section-title">12-Token Palette — The Oracle Spectrum</div>
+  <div class="palette-row">
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#06000f;"><span class="swatch-hex">#06000F</span></div>
+      <div class="swatch-info"><div class="swatch-name">Void Black</div><div class="swatch-use">Primary background</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#0d0120;"><span class="swatch-hex">#0D0120</span></div>
+      <div class="swatch-info"><div class="swatch-name">Midnight Abyss</div><div class="swatch-use">Section background</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#160430;"><span class="swatch-hex">#160430</span></div>
+      <div class="swatch-info"><div class="swatch-name">Deep Indigo</div><div class="swatch-use">Surface / card base</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#1c0840;"><span class="swatch-hex">#1C0840</span></div>
+      <div class="swatch-info"><div class="swatch-name">Arcane Indigo</div><div class="swatch-use">Elevated card</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#2a1058;"><span class="swatch-hex">#2A1058</span></div>
+      <div class="swatch-info"><div class="swatch-name">Grimoire Purple</div><div class="swatch-use">Hover / border</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#8050d0;"><span class="swatch-hex">#8050D0</span></div>
+      <div class="swatch-info"><div class="swatch-name">Arcane Violet ⚑</div><div class="swatch-use">Decorative only</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#ffe680;"><span class="swatch-hex">#FFE680</span></div>
+      <div class="swatch-info"><div class="swatch-name">Shimmer Gold</div><div class="swatch-use">Gold highlight top</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#f5c030;"><span class="swatch-hex">#F5C030</span></div>
+      <div class="swatch-info"><div class="swatch-name">Oracle Gold ✓</div><div class="swatch-use">Primary brand accent</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#7a4800;"><span class="swatch-hex">#7A4800</span></div>
+      <div class="swatch-info"><div class="swatch-name">Deep Amber</div><div class="swatch-use">Gold shadow / depth</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#00ecd6;"><span class="swatch-hex">#00ECD6</span></div>
+      <div class="swatch-info"><div class="swatch-name">Chart Teal ✓</div><div class="swatch-use">Data / live market</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#80fff0;"><span class="swatch-hex">#80FFF0</span></div>
+      <div class="swatch-info"><div class="swatch-name">Teal Glow</div><div class="swatch-use">Chart highlight</div></div>
+    </div>
+    <div class="swatch-block">
+      <div class="swatch-color" style="background:#f5f0ff;"><span class="swatch-hex">#F5F0FF</span></div>
+      <div class="swatch-info"><div class="swatch-name">Moonveil White</div><div class="swatch-use">Body text / labels</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 06 — TYPOGRAPHY                                         -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">06 — Typography</div>
+  <div class="section-title">Type System — Cinzel + Inter</div>
+  <div class="type-stack">
+
+    <div class="type-row">
+      <span style="font-family:'Cinzel Decorative',serif; font-size:48px; font-weight:700; background:linear-gradient(135deg,#ffe680,#f5c030,#7a4800); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">LoreMarkets</span>
+      <div class="type-spec">Cinzel Decorative 700<br/>Display / Logo / Hero</div>
+    </div>
+
+    <div class="type-row">
+      <span style="font-family:'Cinzel',serif; font-size:30px; font-weight:700; color:#f5f0ff; letter-spacing:2px;">The Arcane Exchange Opens</span>
+      <div class="type-spec">Cinzel 700<br/>Section heading / H1</div>
+    </div>
+
+    <div class="type-row">
+      <span style="font-family:'Cinzel',serif; font-size:18px; font-weight:400; color:#9a88c0; letter-spacing:3px;">TRADE THE LEGEND · BEAT THE MACHINE</span>
+      <div class="type-spec">Cinzel 400<br/>Subheading / tagline / H3</div>
+    </div>
+
+    <div class="type-row">
+      <span style="font-family:'Inter',sans-serif; font-size:15px; font-weight:400; color:#8878b0; line-height:1.7;">The Ember Index shifted +14% after the Kethara drought oracle. Dark guilds rebalanced. Three agents did not hesitate.</span>
+      <div class="type-spec">Inter 400<br/>Body copy / lore text</div>
+    </div>
+
+    <div class="type-row">
+      <span style="font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:#8050d0;">P&amp;L · Open Position · Market Phase · Rank</span>
+      <div class="type-spec">Inter 600 CAPS<br/>UI labels / tags</div>
+    </div>
+
+    <div class="type-row">
+      <div style="display:flex; gap:32px; flex-wrap:wrap;">
+        <span style="font-family:'Inter',sans-serif; font-size:38px; font-weight:300; color:#00ecd6; letter-spacing:-1px; font-variant-numeric:tabular-nums;">+14.82%</span>
+        <span style="font-family:'Inter',sans-serif; font-size:38px; font-weight:300; color:#e05060; letter-spacing:-1px; font-variant-numeric:tabular-nums;">−3.41%</span>
+        <span style="font-family:'Inter',sans-serif; font-size:38px; font-weight:300; color:#f5f0ff; letter-spacing:-1px; font-variant-numeric:tabular-nums;">1,482.6</span>
+      </div>
+      <div class="type-spec">Inter 300<br/>Data figures / P&amp;L</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- 07 — TOKEN HANDOFF                                      -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-eyebrow">07 — Token Handoff</div>
+  <div class="section-title">Design Tokens — For Yosuf</div>
+
+  <table class="token-table">
+    <thead>
+      <tr>
+        <th>Token</th>
+        <th>Value</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="token-name">--color-bg-void</td><td class="token-value">#06000f</td><td class="token-role">Primary app background</td></tr>
+      <tr><td class="token-name">--color-bg-deep</td><td class="token-value">#0d0120</td><td class="token-role">Section / panel background</td></tr>
+      <tr><td class="token-name">--color-surface</td><td class="token-value">#160430</td><td class="token-role">Default card background</td></tr>
+      <tr><td class="token-name">--color-surface-elevated</td><td class="token-value">#1c0840</td><td class="token-role">Raised card, hover state</td></tr>
+      <tr><td class="token-name">--color-border</td><td class="token-value">rgba(128,80,208,0.18)</td><td class="token-role">Default card border</td></tr>
+      <tr><td class="token-name">--color-border-gold</td><td class="token-value">rgba(245,192,48,0.18)</td><td class="token-role">Featured/selected border</td></tr>
+      <tr><td class="token-name">--color-brand-gold</td><td class="token-value">#f5c030</td><td class="token-role">Primary brand accent — text safe</td></tr>
+      <tr><td class="token-name">--color-brand-gold-light</td><td class="token-value">#ffe680</td><td class="token-role">Gold highlight / shimmer</td></tr>
+      <tr><td class="token-name">--color-brand-gold-dark</td><td class="token-value">#7a4800</td><td class="token-role">Gold shadow / depth</td></tr>
+      <tr><td class="token-name">--color-brand-teal</td><td class="token-value">#00ecd6</td><td class="token-role">Data accent — text safe</td></tr>
+      <tr><td class="token-name">--color-brand-teal-light</td><td class="token-value">#80fff0</td><td class="token-role">Teal glow / highlight</td></tr>
+      <tr><td class="token-name">--color-brand-teal-dark</td><td class="token-value">#006e62</td><td class="token-role">Teal shadow</td></tr>
+      <tr><td class="token-name">--color-violet /* DECORATIVE ONLY */</td><td class="token-value">#8050d0</td><td class="token-role">⚑ Never body text below 18px</td></tr>
+      <tr><td class="token-name">--color-text-primary</td><td class="token-value">#f5f0ff</td><td class="token-role">Body text — 18.9:1 contrast</td></tr>
+      <tr><td class="token-name">--color-text-muted</td><td class="token-value">#6a5a90</td><td class="token-role">Secondary/tertiary text — large only</td></tr>
+      <tr><td class="token-name">--font-display</td><td class="token-value">'Cinzel Decorative', serif</td><td class="token-role">Logo / hero headlines</td></tr>
+      <tr><td class="token-name">--font-heading</td><td class="token-value">'Cinzel', serif</td><td class="token-role">Section headings H1–H3</td></tr>
+      <tr><td class="token-name">--font-body</td><td class="token-value">'Inter', sans-serif</td><td class="token-role">Body, labels, UI</td></tr>
+      <tr><td class="token-name">--logo-src</td><td class="token-value">url('../loremarkets.ai.svg')</td><td class="token-role">Master logo — FINAL. Single source of truth. Added v1.1.0</td></tr>
+      <tr><td class="token-name">--oracle-icon-src</td><td class="token-value">url('../Oracle-logo.svg')</td><td class="token-role">Oracle Codex sigil — FINAL. App icon, nav, social, leaderboard. Added v1.2.0</td></tr>
+      <tr><td class="token-name">--arcane-icon-src</td><td class="token-value">url('../Arcane-logo.svg')</td><td class="token-role">Arcane Exchange market icon — FINAL. Market screens, lobby, badge. Added v1.3.0</td></tr>
+      <tr><td class="token-name">--logo-min-width</td><td class="token-value">180px</td><td class="token-role">Minimum full lockup width</td></tr>
+      <tr><td class="token-name">--icon-min-size</td><td class="token-value">24px</td><td class="token-role">Minimum icon display size</td></tr>
+      <tr><td class="token-name">--logo-clear-space</td><td class="token-value">1× badge-width</td><td class="token-role">Minimum padding around lockup</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-copy">LoreMarkets Brand System · v2.3 · 3D Cartoon Dark-Mystical · Logo · Oracle · Arcane Exchange Finalised 2026-03-15</div>
+  <div class="footer-credits">
+    <span class="footer-credit">Toni — Graphic Design</span>
+    <span class="footer-credit">Carl — UX / Accessibility</span>
+    <span class="footer-credit">Tom — Marketing</span>
+  </div>
+</footer>
+
+</div><!-- /page -->
+</body>
+</html>

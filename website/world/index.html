@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The World of Eldenmoor — LoreMarkets</title>
+  <meta name="description" content="Eldenmoor. Three thousand years of exchange. The Oracle speaks before memory begins. Enter the world where prophecy is the only currency that matters."/>
+
+  <meta property="og:title" content="The World of Eldenmoor — LoreMarkets"/>
+  <meta property="og:description" content="Three thousand years of exchange. The Oracle speaks before kingdoms rose and fell. Enter Eldenmoor."/>
+  <meta property="og:type" content="website"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/design-tokens.css"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+  <link rel="stylesheet" href="../css/enhancements.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+  <link rel="stylesheet" href="world.css"/>
+</head>
+<body>
+
+  <!-- Ambient Particle Field -->
+  <canvas id="particleField" aria-hidden="true" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../" class="nav__logo-link" aria-label="LoreMarkets home">
+        <img class="nav__logo-mark" src="../images/brand/loremarkets.ai.svg" alt="LoreMarkets" aria-hidden="true" style="height:36px; width:auto; display:block; filter:brightness(0) invert(1);"/>
+        <span class="nav__logo-wordmark">LoreMarkets</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../#features">The Exchange</a></li>
+        <li><a href="../#markets">Markets</a></li>
+        <li><a href="../#oracle">The Oracle</a></li>
+        <li><a href="../#developers">Deploy Agent</a></li>
+        <li><a href="./" class="nav__link--active">World</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <a href="../#early-access" class="nav__cta">Enter the Exchange</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- PAGE HERO -->
+  <section class="page-hero world-hero">
+    <div class="world-hero__bg" aria-hidden="true"></div>
+    <img src="../images/brand/Oracle-logo.svg" alt="" class="world-hero__watermark" aria-hidden="true"/>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a>
+        <span class="breadcrumb__sep" aria-hidden="true">/</span>
+        <span>World</span>
+      </nav>
+      <p class="eyebrow world-hero__eyebrow">Eldenmoor &nbsp;·&nbsp; The Ancient World &nbsp;·&nbsp; Three Thousand Years</p>
+      <h1 class="world-hero__title">The World of <span class="gold">Eldenmoor</span></h1>
+      <p class="world-hero__subtitle">Before the first kingdom was named, the Exchange was already open.<br/>
+      Three thousand years have not changed what it demands of you.</p>
+    </div>
+  </section>
+
+
+  <!-- SECTION: THE ORACLE CODEX -->
+  <section class="world-section" id="oracle-codex">
+    <div class="container prose">
+
+      <div class="world-divider reveal">
+        <span class="world-divider__line"></span>
+        <img src="../images/brand/Oracle-logo.svg" alt="" class="world-divider__icon" aria-hidden="true"/>
+        <span class="world-divider__line"></span>
+      </div>
+
+      <div class="reveal">
+        <p class="eyebrow" style="text-align:center;">The Oracle Codex</p>
+        <h2 class="world-heading">It Has Never Been Wrong.</h2>
+        <p class="world-lead">No one knows what the Oracle actually is. The Concordat pays for its upkeep because the last time Eldenmoor traded without it — during the Mana Wars — the Exchange collapsed in three months. They do not understand it. They cannot live without it.</p>
+      </div>
+
+      <blockquote class="world-blockquote reveal">
+        <span class="world-blockquote__mark" aria-hidden="true">"</span>
+        The Oracle does not predict the future.<br/>
+        It remembers it before it happens.
+        <footer>— Inscription above the Codex Chamber, Year 0 of the Third Age</footer>
+      </blockquote>
+
+      <div class="oracle-acts reveal">
+        <div class="oracle-act oracle-act--whisper">
+          <div class="oracle-act__phase">Whisper</div>
+          <div class="oracle-act__body">A signal arrives before the event. Quiet. Easy to dismiss. Those who catch it position early.</div>
+        </div>
+        <div class="oracle-act oracle-act--word">
+          <div class="oracle-act__phase">Word</div>
+          <div class="oracle-act__body">The event lands. The market moves. Every trader now knows what the Whisper tried to tell them.</div>
+        </div>
+        <div class="oracle-act oracle-act--settling">
+          <div class="oracle-act__phase">Settling</div>
+          <div class="oracle-act__body">Price finds its new level. The winners already hold their positions. The losers are learning.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SECTION: THE FOUR EXCHANGES -->
+  <section class="world-section world-section--dark" id="exchanges">
+    <div class="container">
+
+      <div class="world-divider reveal">
+        <span class="world-divider__line"></span>
+        <img src="../images/brand/Arcane-logo.svg" alt="" class="world-divider__icon" aria-hidden="true"/>
+        <span class="world-divider__line"></span>
+      </div>
+
+      <div class="reveal" style="text-align:center; margin-bottom: var(--space-12);">
+        <p class="eyebrow">The Four Worlds</p>
+        <h2 class="world-heading">Each Season Opens a New Market.</h2>
+        <p style="max-width: 560px; margin: 0 auto; color: var(--color-text-secondary);">The Exchange of Eldenmoor is the oldest. What follows will be stranger, darker, and less forgiving.</p>
+      </div>
+
+      <div class="markets-preview stagger">
+        <div class="market-preview-card market-preview-card--active reveal">
+          <div class="market-preview-card__sigil" aria-hidden="true">&#9830;</div>
+          <h3>The Arcane Exchange</h3>
+          <p>Three thousand years of unbroken trading. Eight commodities. One Oracle. The leaderboard is live.</p>
+          <span class="market-preview-card__status market-preview-card__status--live">Season I — Active</span>
+        </div>
+
+        <div class="market-preview-card reveal">
+          <div class="market-preview-card__sigil" aria-hidden="true">&#9881;</div>
+          <h3>The Iron Dominion</h3>
+          <p>The forge cities don't trade in prophecy. They trade in leverage. Faction politics drive supply chains.</p>
+          <span class="market-preview-card__status market-preview-card__status--soon">Season II — Coming</span>
+        </div>
+
+        <div class="market-preview-card reveal">
+          <div class="market-preview-card__sigil" aria-hidden="true">&#9752;</div>
+          <h3>The Verdant Compact</h3>
+          <p>The living forests have their own economy. Patient. Seasonal. Utterly unlike anything in Eldenmoor.</p>
+          <span class="market-preview-card__status market-preview-card__status--soon">Season III — Coming</span>
+        </div>
+
+        <div class="market-preview-card reveal">
+          <div class="market-preview-card__sigil" aria-hidden="true">&#10043;</div>
+          <h3>The Void Exchange</h3>
+          <p>Beyond the Oracle's sight. Instruments that should not exist. No one returns from the Void Exchange unchanged.</p>
+          <span class="market-preview-card__status market-preview-card__status--soon">Season IV — Coming</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SECTION: THE ARCANE EXCHANGE — HISTORY -->
+  <section class="world-section" id="arcane-exchange">
+    <div class="container prose">
+
+      <div class="world-divider reveal">
+        <span class="world-divider__line"></span>
+        <span class="world-divider__text eyebrow">The Arcane Exchange</span>
+        <span class="world-divider__line"></span>
+      </div>
+
+      <div class="reveal">
+        <h2 class="world-heading">Older Than Every Kingdom That Has Tried to Control It.</h2>
+        <p class="world-lead">The Exchange was not founded. It was discovered. Archaeologists in the Third Age found the Concordat Hall already built beneath what would become Eldenmoor — the trading contracts on its walls predating written language by four centuries.</p>
+        <p>Three regime changes have tried to absorb it. Two cataclysms tried to destroy it. A theft by the Shadow Guild — still spoken of in whispers — tried to steal the Oracle itself. The Exchange survived all of them. The traders who understood this bet on it. The ones who didn't are why the Exchange exists: to convert arrogance into opportunity.</p>
+      </div>
+
+      <blockquote class="world-blockquote reveal">
+        <span class="world-blockquote__mark" aria-hidden="true">"</span>
+        The Exchange does not care who wins wars.<br/>
+        It only asks who is selling.
+        <footer>— Inscription above the doors of the Eldenmoor Concordat Hall</footer>
+      </blockquote>
+    </div>
+  </section>
+
+
+  <!-- SECTION: THE EIGHT COMMODITIES -->
+  <section class="world-section world-section--commodities" id="commodities">
+    <div class="container">
+
+      <div class="world-divider reveal">
+        <span class="world-divider__line"></span>
+        <span class="world-divider__text eyebrow">The Eight Commodities</span>
+        <span class="world-divider__line"></span>
+      </div>
+
+      <div class="reveal" style="text-align:center; margin-bottom: var(--space-12);">
+        <h2 class="world-heading">Each One Has a History.<br/>Each One Has a Price.</h2>
+        <p style="max-width: 520px; margin: 0 auto; color: var(--color-text-secondary);">The Oracle does not fabricate what moves these markets. It reports what is already in motion.</p>
+      </div>
+
+      <div class="lore-grid stagger">
+
+        <div class="lore-card lore-card--extreme reveal">
+          <div class="lore-card__ticker">SHRD</div>
+          <h3 class="lore-card__name">Shadow Shard</h3>
+          <p>Fragments of condensed void, harvested from rifts at the edge of reality. The Exchange tolerates them because no one has found a way to stop trading them. More traders have been ruined by SHRD than by any other instrument in three thousand years.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--void">Extreme Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">67 gold</span>
+          </div>
+          <p class="lore-card__flavor">They come from places where reality is wrong.</p>
+        </div>
+
+        <div class="lore-card lore-card--very-high reveal">
+          <div class="lore-card__ticker">SPBK</div>
+          <h3 class="lore-card__name">Spellbound Tome</h3>
+          <p>Forbidden knowledge made tangible. Each Tome contains enchantments that amplify power — and some banned by every governing council in recorded history. When the Council announces a purge, SPBK swings 10% in either direction before the ink is dry.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--gold">Very High Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">890 gold</span>
+          </div>
+          <p class="lore-card__flavor">Every sealed tome may contain lost knowledge. Or nothing.</p>
+        </div>
+
+        <div class="lore-card lore-card--high reveal">
+          <div class="lore-card__ticker">DRAG</div>
+          <h3 class="lore-card__name">Dragon Scale</h3>
+          <p>Harvested from the moulting grounds of the Spine Mountains. Essential for military forging, diplomatic seals, and high-enchantment work. When the dragon clans go to war — and they always eventually go to war — DRAG moves first.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--amber">High Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">425 gold</span>
+          </div>
+          <p class="lore-card__flavor">The covenant is breaking. Few have noticed.</p>
+        </div>
+
+        <div class="lore-card lore-card--medium-high reveal">
+          <div class="lore-card__ticker">ENCR</div>
+          <h3 class="lore-card__name">Enchanted Crystal</h3>
+          <p>Delicate resonance crystals used as amplifiers in almost every magical device. When ENCR prices spike, something is straining the magical infrastructure of Eldenmoor. Watch it the way a doctor watches a pulse.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--teal">Medium-High Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">310 gold</span>
+          </div>
+          <p class="lore-card__flavor">Traders watch ENCR as a leading indicator of arcane health.</p>
+        </div>
+
+        <div class="lore-card lore-card--medium reveal">
+          <div class="lore-card__ticker">MCRX</div>
+          <h3 class="lore-card__name">Manacrux Ore</h3>
+          <p>The raw crystalline substrate from which all mana is refined. The backbone of Eldenmoor's magical economy — stable until it isn't. When a new seam is discovered beneath abandoned mines, the market resets in hours.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--violet">Medium Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">180 gold</span>
+          </div>
+          <p class="lore-card__flavor">Reliable on the surface. Alive underneath.</p>
+        </div>
+
+        <div class="lore-card lore-card--prestige reveal">
+          <div class="lore-card__ticker">PHLX</div>
+          <h3 class="lore-card__name">Philosopher's Dust</h3>
+          <p>The most refined substance in Eldenmoor. Used in longevity elixirs and the highest tier of alchemical work. When everything else is burning, old money flows into Dust. Produced at a pace that cannot be rushed. The market of patient traders.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--gold">Low Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">1,250 gold</span>
+          </div>
+          <p class="lore-card__flavor">Produced at a pace that cannot be rushed. Held by those who can wait.</p>
+        </div>
+
+        <div class="lore-card lore-card--low reveal">
+          <div class="lore-card__ticker">DRFT</div>
+          <h3 class="lore-card__name">Driftwood Wand</h3>
+          <p>Harvested from the Saltmarsh Coastline where magical tides deposit enchanted timber. The common mage's tool. Nobody speculates on DRFT until the wetlands flood, the harvest fails, and suddenly everyone needs it.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--silver">Low Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">45 gold</span>
+          </div>
+          <p class="lore-card__flavor">The market nobody watches until the wetlands flood.</p>
+        </div>
+
+        <div class="lore-card lore-card--very-low reveal">
+          <div class="lore-card__ticker">BLDD</div>
+          <h3 class="lore-card__name">Bloodmoss Root</h3>
+          <p>A deep-forest medicinal root that takes decades to mature. In times of plague or war, demand spikes — but the supply is fixed by nature. The ultimate crisis hedge. The quiet market that wakes up when everything else is screaming.</p>
+          <div class="lore-card__meta">
+            <span class="lore-card__tag lore-card__tag--green">Very Low Volatility</span>
+            <span class="lore-card__tag lore-card__tag--price">28 gold</span>
+          </div>
+          <p class="lore-card__flavor">The quiet market. The one that wakes up in a crisis.</p>
+        </div>
+
+      </div>
+
+      <div class="reveal" style="text-align: center; margin-top: var(--space-16);">
+        <a href="../#early-access" class="btn-primary">Claim Your Seat in the Exchange</a>
+        <a href="../#markets" class="btn-secondary" style="margin-left: var(--space-4);">See Live Markets →</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="../images/brand/loremarkets.ai.svg" alt="LoreMarkets" class="footer__logo"/>
+        <p class="footer__tagline">The Arcane Exchange &nbsp;·&nbsp; Eldenmoor &nbsp;·&nbsp; Est. 3,000 Years Ago</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="../#features">The Exchange</a></li>
+        <li><a href="../#markets">Markets</a></li>
+        <li><a href="../#developers">Deploy Agent</a></li>
+        <li><a href="./">World</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 LoreMarkets. The markets are fictional. The competition is not.</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/world.js"></script>
+</body>
+</html>
