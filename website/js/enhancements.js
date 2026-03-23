@@ -24,85 +24,132 @@
   // ═══════════════════════════════════════════════════════════════
 
   (function initOracleTicker() {
-    const track = document.getElementById('oracleTickerTrack');
+    // FIX: was 'oracleTickerTrack' — correct ID is 'tickerTrack'
+    const track = document.getElementById('tickerTrack');
     if (!track) return;
 
-    // Duplicate all children for a seamless infinite loop
-    const items  = Array.from(track.children);
-    const clone  = document.createDocumentFragment();
-    items.forEach((item) => clone.appendChild(item.cloneNode(true)));
-    track.appendChild(clone);
-
-    if (REDUCED_MOTION) return; // Static display — no scrolling
-
-    const SPEED = 0.6; // pixels per frame — slow, atmospheric
-    let   pos   = 0;
-    let   paused = false;
-    let   raf;
-
-    function getHalfWidth() {
-      // The track contains original + clone; half-width = original width
-      return track.scrollWidth / 2;
-    }
-
-    function step() {
-      if (!paused) {
-        pos -= SPEED;
-        const half = getHalfWidth();
-        if (Math.abs(pos) >= half) {
-          pos = 0; // jump back seamlessly
-        }
-        track.style.transform = `translateX(${pos}px)`;
-      }
-      raf = requestAnimationFrame(step);
-    }
-
-    raf = requestAnimationFrame(step);
-
-    // Pause on hover — lets readers actually read the Oracle
-    const ticker = track.closest('.oracle-ticker');
-    if (ticker) {
-      ticker.addEventListener('mouseenter', () => { paused = true;  });
-      ticker.addEventListener('mouseleave', () => { paused = false; });
-    }
-
-    // Update prices periodically to maintain live-feel
-    const priceItems = track.querySelectorAll('.ticker-item--price');
+    // ── Simulated fallback prices (used when API is unavailable) ──
     const ASSETS = [
-      { ticker: 'SHRD', base: 67.00,   vol: 0.012, dir: 1  },
-      { ticker: 'SPBK', base: 890.00,  vol: 0.009, dir: 1  },
-      { ticker: 'DRAG', base: 425.00,  vol: 0.007, dir: -1 },
-      { ticker: 'ENCR', base: 310.00,  vol: 0.005, dir: -1 },
-      { ticker: 'MCRX', base: 180.00,  vol: 0.004, dir: 1  },
-      { ticker: 'PHLX', base: 1253.00, vol: 0.003, dir: 1  },
-      { ticker: 'BLDD', base: 28.14,   vol: 0.002, dir: 1  },
-      { ticker: 'DRFT', base: 44.30,   vol: 0.003, dir: -1 },
+      { ticker: 'SHRD', base: 812.35,   vol: 0.012 },
+      { ticker: 'SPBK', base: 488.20,   vol: 0.009 },
+      { ticker: 'DRAG', base: 2847.50,  vol: 0.007 },
+      { ticker: 'ENCR', base: 341.90,   vol: 0.005 },
+      { ticker: 'MCRX', base: 1203.75,  vol: 0.004 },
+      { ticker: 'PHLX', base: 9240.00,  vol: 0.003 },
+      { ticker: 'BLDD', base: 56.80,    vol: 0.007 },
+      { ticker: 'DRFT', base: 127.45,   vol: 0.004 },
     ];
 
-    // Map price items to assets by ticker text
-    function refreshPrices() {
-      priceItems.forEach((item) => {
-        const text   = item.textContent;
-        const asset  = ASSETS.find((a) => text.startsWith(a.ticker));
-        if (!asset) return;
+    // ── Live API fetch — updates ASSETS with real prices ──
+    const API_BASE = 'https://api.loremarkets.ai';
 
-        const noise   = (Math.random() - 0.5) * 2 * asset.vol;
-        const change  = asset.base * noise;
-        asset.base   += change;
-        const pct     = ((change / (asset.base - change)) * 100).toFixed(1);
-        const sign    = change >= 0 ? '▲' : '▼';
-        const cls     = change >= 0 ? 'ticker-item--up' : 'ticker-item--down';
-        const price   = asset.base.toLocaleString('en-US', {
-          minimumFractionDigits: 2, maximumFractionDigits: 2,
+    async function fetchLivePrices() {
+      try {
+        const res = await fetch(`${API_BASE}/api/markets/arcane/assets`, {
+          headers: { 'Accept': 'application/json' },
+          signal: AbortSignal.timeout(6000),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const body   = await res.json();
+        const apiAssets = Array.isArray(body) ? body : (body.assets || body.data || []);
+        if (!apiAssets.length) throw new Error('Empty asset list');
+
+        apiAssets.forEach((a) => {
+          const sym  = (a.ticker || a.symbol || '').toUpperCase();
+          const live = parseFloat(a.current_price ?? a.price ?? a.last_price);
+          const slot = ASSETS.find((x) => x.ticker === sym);
+          if (slot && !isNaN(live) && live > 0) {
+            slot.base = live;
+          }
         });
 
-        item.className = `ticker-item ticker-item--price ${cls}`;
-        item.innerHTML = `${asset.ticker} <strong>${price}</strong> ${sign} ${change >= 0 ? '+' : ''}${pct}%`;
+        // Apply live prices to ticker items immediately after fetch
+        refreshTickerPrices();
+
+      } catch (err) {
+        // Silent fallback — simulated prices keep running
+        if (err.name !== 'AbortError') {
+          console.debug('[LoreMarkets] Ticker live prices unavailable — using simulated feed.', err.message);
+        }
+      }
+    }
+
+    // ── Update every .ticker-item that carries a price span ──
+    // HTML structure: <span class="ticker-item">SYM <span class="ticker-item__price ...">▲ pct%</span></span>
+    function refreshTickerPrices() {
+      // Select both original + cloned items so both halves of the seamless loop stay in sync
+      const allItems = track.querySelectorAll('.ticker-item');
+
+      allItems.forEach((item) => {
+        const priceSpan = item.querySelector('.ticker-item__price');
+        if (!priceSpan) return; // narrative / phase items — skip
+
+        // Extract ticker symbol from the item's own text (before the price span)
+        const rawText = item.childNodes[0];
+        if (!rawText) return;
+        const sym = rawText.textContent.trim().toUpperCase();
+
+        const asset = ASSETS.find((a) => a.ticker === sym);
+        if (!asset) return;
+
+        // Apply a small random walk for the simulation branch
+        const noise  = (Math.random() - 0.5) * 2 * asset.vol;
+        const delta  = asset.base * noise;
+        const prev   = asset.base;
+        asset.base  += delta;
+
+        const pct    = Math.abs((delta / prev) * 100).toFixed(1);
+        const isUp   = delta >= 0;
+        const arrow  = isUp ? '▲' : '▼';
+        const sign   = isUp ? '+' : '−';
+        const upDown = isUp ? 'ticker-item--up' : 'ticker-item--down';
+
+        priceSpan.className = `ticker-item__price ${upDown}`;
+        priceSpan.textContent = `${arrow} ${sign}${pct}%`;
+
+        // Brief flash on update
+        priceSpan.classList.add('price-flash');
+        setTimeout(() => priceSpan.classList.remove('price-flash'), 700);
       });
     }
 
-    // Refresh every 4 seconds — subtle enough to feel live
-    setInterval(refreshPrices, 4000);
+    // ── Duplicate children for seamless infinite scroll loop ──
+    const items = Array.from(track.children);
+    const cloneFragment = document.createDocumentFragment();
+    items.forEach((item) => cloneFragment.appendChild(item.cloneNode(true)));
+    track.appendChild(cloneFragment);
+
+    // ── Marquee RAF animation ──
+    if (!REDUCED_MOTION) {
+      const SPEED = 0.6; // px per frame
+      let pos    = 0;
+      let paused = false;
+
+      function getHalfWidth() { return track.scrollWidth / 2; }
+
+      function step() {
+        if (!paused) {
+          pos -= SPEED;
+          if (Math.abs(pos) >= getHalfWidth()) pos = 0;
+          track.style.transform = `translateX(${pos}px)`;
+        }
+        requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+
+      const wrapper = track.closest('.oracle-ticker');
+      if (wrapper) {
+        wrapper.addEventListener('mouseenter', () => { paused = true;  });
+        wrapper.addEventListener('mouseleave', () => { paused = false; });
+      }
+    }
+
+    // ── Start: fetch live prices immediately, simulate every 4s ──
+    fetchLivePrices();                        // live on load
+    setInterval(refreshTickerPrices, 4000);   // simulated tick every 4s
+    setInterval(fetchLivePrices, 30000);      // re-sync with API every 30s
   })();
 
 

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Oracle of Eldenmoor — LoreMarkets | The Three Acts of Prophecy</title>
+  <meta name="description" content="The Oracle speaks in three acts: the Whisper, the Word, and the Settling. Every major Oracle event is sealed before the season begins. The proof is open to all."/>
+
+  <meta property="og:title" content="The Oracle of Eldenmoor — LoreMarkets | The Three Acts of Prophecy"/>
+  <meta property="og:description" content="The Oracle speaks before anyone is listening. It always does. Three acts. Pre-committed arc. The proof belongs to anyone who seeks it."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://loremarkets.ai/oracle/"/>
+  <meta property="og:image" content="https://loremarkets.ai/images/og/oracle.png"/>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "name": "The Oracle of Eldenmoor",
+    "headline": "The Oracle of Eldenmoor — Three Acts of Prophecy",
+    "description": "The Oracle of Eldenmoor speaks in three acts: the Whisper, the Word, and the Settling. Every major Oracle event is sealed before the season begins.",
+    "url": "https://loremarkets.ai/oracle/"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/design-tokens.css"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+  <link rel="stylesheet" href="../css/enhancements.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+  <link rel="stylesheet" href="../css/v3.css"/>
+  <link rel="stylesheet" href="../css/mobile-enhanced.css"/>
+
+  <style>
+    ::view-transition-old(root) { animation: 300ms ease-out both goldShimmerOut; }
+    ::view-transition-new(root) { animation: 300ms ease-in  both goldShimmerIn;  }
+    @keyframes goldShimmerOut { to   { opacity: 0; filter: brightness(1.5) saturate(0.5); } }
+    @keyframes goldShimmerIn  { from { opacity: 0; filter: brightness(1.5) saturate(0.5); } }
+  </style>
+</head>
+<body>
+
+  <div class="oracle-pulse-bar" aria-hidden="true"></div>
+  <canvas id="particleField" aria-hidden="true" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
+  <!-- Oracle Ticker Tape -->
+  <div class="oracle-ticker" id="oracleTicker" role="marquee" aria-label="Live Oracle feed" aria-live="off">
+    <div class="oracle-ticker__badge">
+      <span class="oracle-ticker__pulse" aria-hidden="true"></span>
+      ◈ Oracle Live
+    </div>
+    <div class="oracle-ticker__track-wrap">
+      <div class="oracle-ticker__track" id="tickerTrack">
+        <span class="ticker-item ticker-item--whisper"><span class="ticker-phase">WHISPER</span>&nbsp;· The Iron Legion has begun moving its reserves.</span>
+        <span class="ticker-item ticker-item--word"><span class="ticker-phase">WORD</span>&nbsp;· Dragon Scales: the covenant with the northern provinces is broken.</span>
+        <span class="ticker-item ticker-item--settling"><span class="ticker-phase">SETTLING</span>&nbsp;· Manacrux stabilises after the Hollow Market event.</span>
+        <span class="ticker-item ticker-item--price">DRAG  <span class="ticker-item__price ticker-item--up">▲ 4.2%</span></span>
+        <span class="ticker-item ticker-item--price">MCRX  <span class="ticker-item__price ticker-item--down">▼ 1.8%</span></span>
+        <span class="ticker-item ticker-item--price">BLDD  <span class="ticker-item__price ticker-item--up">▲ 6.7%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="../" class="nav__logo-link" aria-label="LoreMarkets home">
+        <img class="nav__logo-mark" src="../images/brand/loremarkets.ai.svg" alt="LoreMarkets" aria-hidden="true" style="image-rendering:crisp-edges;"/>
+        <span class="nav__logo-wordmark">LoreMarkets</span>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../exchange/">The Exchange</a></li>
+        <li><a href="./" class="nav__link--page-active" aria-current="page">The Oracle</a></li>
+        <li><a href="../season/">Season I</a></li>
+        <li><a href="../build/">Build</a></li>
+        <li><a href="../world/">World</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <a href="../exchange/" class="nav__cta">Enter the Exchange</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════
+       HERO — No CTA. The Oracle does not ask.
+       ═══════════════════════════════ -->
+  <section class="hero-v3" aria-label="The Oracle of Eldenmoor hero">
+    <!-- Oracle logo rotates imperceptibly slowly (120s) -->
+    <img src="../images/brand/Oracle-logo.svg" alt="" class="hero-v3__watermark hero-v3__watermark--rotate" aria-hidden="true" style="width:400px;height:400px;opacity:0.12;"/>
+
+    <span class="chapter-frame" aria-hidden="true">The Oracle of Eldenmoor · Chapter II: The Prophecy</span>
+    <p class="hero-v3__eyebrow">The Oracle of Eldenmoor · Ancient Beyond Record</p>
+    <h1 class="hero-v3__title">
+      It Spoke.<br/>The Market<br/>Did Not Listen.
+    </h1>
+    <p class="hero-v3__subtitle">
+      No faction in Eldenmoor has ever verified what the Oracle actually is.
+      The Merchant's Concordat funds its operation because the alternative —
+      trading without it — nearly destroyed the Exchange in the wreckage of
+      the Mana Wars. They do not understand it. They depend on it.
+    </p>
+    <!-- No CTA. The visitor scrolls. -->
+  </section>
+
+
+  <!-- ═══════════════════════════════
+       SECTION 3.2: THE THREE ACTS
+       ═══════════════════════════════ -->
+  <section class="three-acts" aria-labelledby="three-acts-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="eyebrow" style="color:var(--color-brand-gold);">The Oracle's Three Acts</p>
+        <h2 id="three-acts-heading">The Oracle Does Not Announce Itself.</h2>
+        <p>It speaks in sequence. Those who understand the sequence hold the edge.</p>
+      </div>
+    </div>
+
+    <div class="three-acts__timeline stagger">
+
+      <!-- ACT I — THE WHISPER -->
+      <div class="act-card reveal" role="button" tabindex="0" aria-label="Act I: The Whisper">
+        <p class="act-card__phase act-card__phase--whisper">◈ Act I</p>
+        <p class="act-card__time">Before the Word</p>
+        <h3 class="act-card__title">The Whisper</h3>
+        <p class="act-card__body">The Whisper arrives hours before the Oracle speaks aloud. A quiet disturbance in the market. A price movement that seems unconnected to anything. Those who have learned to listen find it. Those who haven't are already too late.</p>
+        <div class="act-card__dispatch">
+          <p class="act-card__dispatch-label">Sample Dispatch · Whisper Register</p>
+          <p class="act-card__dispatch-text">"A chill has settled over the Dragon Quarter at the Exchange's eastern gate. The Scalers have not opened their stalls this morning. No explanation has been offered."</p>
+        </div>
+      </div>
+
+      <div class="three-acts__connector" aria-hidden="true">
+        <div class="three-acts__connector-line"></div>
+      </div>
+
+      <!-- ACT II — THE WORD -->
+      <div class="act-card reveal" role="button" tabindex="0" aria-label="Act II: The Word">
+        <p class="act-card__phase act-card__phase--word">◈ Act II</p>
+        <p class="act-card__time">The moment</p>
+        <h3 class="act-card__title">The Word</h3>
+        <p class="act-card__body">The Oracle speaks. The Word lands. The market does not wait for interpretation. Every position taken before the Word was either right or wrong. There is no in-between.</p>
+        <div class="act-card__dispatch">
+          <p class="act-card__dispatch-label">Sample Dispatch · Word Register</p>
+          <p class="act-card__dispatch-text">"The covenant between the Dragon Scalers and the Northern Provinces is broken. The Iron Legion has moved. Dragon Scales — all reserves — are no longer guaranteed by treaty. The price is now what the market decides it is."</p>
+        </div>
+      </div>
+
+      <div class="three-acts__connector" aria-hidden="true">
+        <div class="three-acts__connector-line"></div>
+      </div>
+
+      <!-- ACT III — THE SETTLING -->
+      <div class="act-card reveal" role="button" tabindex="0" aria-label="Act III: The Settling">
+        <p class="act-card__phase act-card__phase--settling">◈ Act III</p>
+        <p class="act-card__time">When the dust clears</p>
+        <h3 class="act-card__title">The Settling</h3>
+        <p class="act-card__body">The chaos resolves. The price finds its new level. The Oracle archive records what happened. Position closures. Margin calls. Profits. The Exchange does not mourn the losers.</p>
+        <div class="act-card__dispatch">
+          <p class="act-card__dispatch-label">Sample Dispatch · Settling Register</p>
+          <p class="act-card__dispatch-text">"DRAG has found its new floor at 2,340. The arbitrage window closed six hours after the Word. The Concordat has issued a formal acknowledgement. The archive record is sealed."</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════
+       SECTION 3.3: LIVE ORACLE FEED
+       ═══════════════════════════════ -->
+  <section class="oracle-feed-v3" aria-labelledby="oracle-feed-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="eyebrow" style="color:var(--color-brand-gold);">Live Oracle Feed · Season I</p>
+        <h2 id="oracle-feed-heading">The Oracle Is Speaking Now.</h2>
+        <p>Active prophecies in real time. Whispers precede the Word. The Settling follows.</p>
+      </div>
+    </div>
+    <div class="oracle-feed-v3__inner">
+      <!-- Feed column -->
+      <div class="oracle-feed-v3__feed-col" id="oracleFeedLive">
+        <!-- Populated by v3.js → initOracleFeedLive() or falls back to these placeholders -->
+        <div class="oracle-event-card oracle-event-card--whisper">
+          <div class="oracle-event-card__header">
+            <span class="oracle-event-card__phase">Whisper</span>
+            <div class="oracle-event-card__tickers">
+              <span class="oracle-event-card__ticker-tag">DRAG</span>
+              <span class="oracle-event-card__ticker-tag">MCRX</span>
+            </div>
+          </div>
+          <p class="oracle-event-card__body">"The Iron Legion has begun moving its reserves. The Merchant's Concordat has not commented."</p>
+          <div class="oracle-event-card__footer">
+            <span>3 hours, 22 minutes ago</span>
+            <span>Episode 2 · Chapter 14</span>
+          </div>
+        </div>
+
+        <div class="oracle-event-card oracle-event-card--settling">
+          <div class="oracle-event-card__header">
+            <span class="oracle-event-card__phase">Settling</span>
+            <div class="oracle-event-card__tickers">
+              <span class="oracle-event-card__ticker-tag">MCRX</span>
+            </div>
+          </div>
+          <p class="oracle-event-card__body">"Manacrux stabilises after the Hollow Market disruption. The flux-leys have returned to baseline. Three arbitrage windows have closed."</p>
+          <div class="oracle-event-card__footer">
+            <span>7 hours ago</span>
+            <span>Episode 2 · Chapter 13</span>
+          </div>
+        </div>
+
+        <div class="oracle-event-card oracle-event-card--word">
+          <div class="oracle-event-card__header">
+            <span class="oracle-event-card__phase">Word</span>
+            <div class="oracle-event-card__tickers">
+              <span class="oracle-event-card__ticker-tag">DRAG</span>
+            </div>
+          </div>
+          <p class="oracle-event-card__body">"The covenant between the Dragon Scalers and the Northern Provinces is broken. Dragon Scales — all reserves — are no longer guaranteed by treaty."</p>
+          <div class="oracle-event-card__footer">
+            <span>Yesterday</span>
+            <span>Episode 2 · Chapter 12</span>
+          </div>
+        </div>
+
+        <div class="oracle-event-card oracle-event-card--whisper">
+          <div class="oracle-event-card__header">
+            <span class="oracle-event-card__phase">Whisper</span>
+            <div class="oracle-event-card__tickers">
+              <span class="oracle-event-card__ticker-tag">SPBK</span>
+            </div>
+          </div>
+          <p class="oracle-event-card__body">"A sealed tome was sighted in the Spellbook Repository at dawn. Its contents are unknown. The Concordat archivist did not record its title."</p>
+          <div class="oracle-event-card__footer">
+            <span>2 days ago</span>
+            <span>Episode 2 · Chapter 11</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active event panel (sticky) -->
+      <div class="oracle-feed-v3__active-col reveal">
+        <div class="oracle-active-panel">
+          <p class="oracle-active-panel__heading">◈ Current Active Event</p>
+          <div class="oracle-event-card oracle-event-card--whisper" style="border:none;padding:0;background:none;">
+            <div class="oracle-event-card__header">
+              <span class="oracle-event-card__phase">Whisper</span>
+              <div class="oracle-event-card__tickers">
+                <span class="oracle-event-card__ticker-tag">DRAG</span>
+              </div>
+            </div>
+            <p class="oracle-event-card__body">"The Iron Legion has begun moving its reserves. The Merchant's Concordat has not commented."</p>
+            <div class="oracle-event-card__footer">
+              <span>Episode 2 · Chapter 14</span>
+            </div>
+          </div>
+          <div style="margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid var(--color-border-default);">
+            <p style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,192,48,0.45);margin-bottom:var(--space-3);">What to watch</p>
+            <p style="font-family:var(--font-body);font-size:var(--font-size-body-sm);line-height:1.7;color:var(--color-text-secondary);">This Whisper typically precedes a DRAG Word event within 6–12 hours. Watch for Northern Province developments.</p>
+          </div>
+          <div style="margin-top:var(--space-6);">
+            <a href="../season/" class="btn-secondary" style="width:100%;text-align:center;justify-content:center;">Follow Season I →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════
+       SECTION 3.4: SEASON ARCHITECTURE
+       ═══════════════════════════════ -->
+  <section class="season-architecture" aria-labelledby="season-arch-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="eyebrow" style="color:var(--color-brand-gold);">How the Oracle Organises Time</p>
+        <h2 id="season-arch-heading">A Season Is a Story Written Before It Begins.</h2>
+      </div>
+    </div>
+    <div class="season-levels">
+
+      <div class="season-level reveal">
+        <div class="season-level__header" role="button" tabindex="0" aria-expanded="true">
+          <span class="season-level__title">The Season</span>
+          <span class="season-level__num">Level I</span>
+        </div>
+        <div class="season-level__body">
+          <p>Each Season is a complete narrative arc — authored in full before the Exchange opens. Beginning, middle, and end. Pre-written. Pre-committed. Season I: The Awakening runs five episodes. Every major Oracle event is sealed in the Covenant before the first candle opens.</p>
+          <a href="../season/" style="color:var(--color-brand-gold);font-size:var(--font-size-body-sm);">→ Follow Season I</a>
+        </div>
+      </div>
+
+      <div class="season-level reveal">
+        <div class="season-level__header" role="button" tabindex="0" aria-expanded="false">
+          <span class="season-level__title">The Episodes</span>
+          <span class="season-level__num">Level II</span>
+        </div>
+        <div class="season-level__body">
+          <p>Each Season unfolds through Episodes — one per week of trading. Each Episode has a character at its centre and a set of Oracle events that will fire within it. The Whispers begin before the Episode opens. The Word arrives inside it. The Settling closes it.</p>
+        </div>
+      </div>
+
+      <div class="season-level reveal">
+        <div class="season-level__header" role="button" tabindex="0" aria-expanded="false">
+          <span class="season-level__title">The Chapters</span>
+          <span class="season-level__num">Level III</span>
+        </div>
+        <div class="season-level__body">
+          <p>At 08:00 UTC every calendar day, a new Chapter is published. Some Chapters carry Oracle events. Some carry only story. All of them were already written. The Oracle waits for the day to arrive.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════
+       SECTION 3.5: THE ORACLE'S COVENANT
+       ═══════════════════════════════ -->
+  <section class="oracle-covenant" id="covenant" aria-labelledby="covenant-heading">
+    <div class="oracle-covenant__inner">
+      <span class="chapter-frame" style="margin-bottom:var(--space-6);display:block;text-align:center;" aria-hidden="true">The Oracle's Covenant · Season I</span>
+      <h2 class="oracle-covenant__heading" id="covenant-heading">
+        The Arc Was Written.<br/>The Seal Holds.
+      </h2>
+
+      <p class="oracle-covenant__prose reveal">
+        The Merchant's Concordat has required this since the first season the Exchange ever ran: the Oracle must commit its arc before the market opens. Not a summary. Not a sketch. Every major prophecy. Every event that will move the price by more than the noise. Written, sealed, and witnessed — before the first trader takes their position. This obligation is four hundred years old. The Oracle has never broken it.
+      </p>
+      <p class="oracle-covenant__prose reveal">
+        What is new is that the proof now belongs to everyone. Fourteen days before Season I: The Awakening opened, the Oracle's complete arc — encrypted — was committed to a permanent public record. The record cannot be altered. When the season ends, the key will be released. Anyone who seeks the truth will find it unchanged.
+      </p>
+      <p class="oracle-covenant__prose reveal">
+        The Exchange has never needed to ask for trust. It has simply operated. The Covenant is not a promise. It is a demonstration.
+      </p>
+
+      <div class="oracle-covenant__seal reveal">
+        <div class="oracle-seal">
+          <p class="oracle-seal__label">
+            <span class="oracle-seal__glyph"><img src="../images/brand/Oracle-logo.svg" alt="" aria-hidden="true"/></span>
+            The Oracle's Seal · Season I: The Awakening
+          </p>
+          <p class="oracle-seal__body">
+            The arc was committed before the season began.<br/>
+            The proof is open to any who seek it.
+          </p>
+          <a href="https://api.loremarkets.ai/api/audit/season-1" class="oracle-seal__link" target="_blank" rel="noopener">
+            Open the Covenant
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="footer-v3" role="contentinfo">
+    <nav class="footer-v3__links" aria-label="Footer navigation">
+      <a href="../exchange/">The Exchange</a>
+      <a href="./" aria-current="page">The Oracle</a>
+      <a href="../season/">Season I</a>
+      <a href="../build/">Build</a>
+      <a href="../world/">World</a>
+      <a href="../about.html">About</a>
+    </nav>
+    <p class="footer-v3__copy">
+      © 2026 LoreMarkets · The Arcane Exchange of Eldenmoor · Est. 400 B.C.<br/>
+      <em>The markets are fictional. The Oracle's word is not.</em>
+    </p>
+  </footer>
+
+  <!-- Oracle Whisper -->
+  <p class="oracle-whisper" role="status" aria-live="polite">
+    It spoke before anyone was listening. It always does.
+  </p>
+
+  <!-- Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Primary navigation">
+    <a href="../" class="bottom-tab-bar__tab" data-page="home" aria-label="Home">
+      <span class="bottom-tab-bar__icon--svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <span class="bottom-tab-bar__label">Home</span>
+    </a>
+    <a href="./" class="bottom-tab-bar__tab active" data-page="oracle" aria-label="The Oracle" aria-current="page">
+      <span class="bottom-tab-bar__icon"><img src="../images/brand/Oracle-logo.svg" alt="" aria-hidden="true"/></span>
+      <span class="bottom-tab-bar__label">Oracle</span>
+    </a>
+    <a href="../season/" class="bottom-tab-bar__tab" data-page="season" aria-label="Season I">
+      <span class="bottom-tab-bar__icon--svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+      <span class="bottom-tab-bar__label">S1</span>
+    </a>
+    <a href="../build/" class="bottom-tab-bar__tab" data-page="build" aria-label="Build">
+      <span class="bottom-tab-bar__icon--svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 0 4.93 19.07m14.14 0A10 10 0 0 0 4.93 4.93"/><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="bottom-tab-bar__label">Build</span>
+    </a>
+    <button class="bottom-tab-bar__more-btn" aria-label="More" aria-expanded="false" aria-controls="moreDrawer">
+      <span class="bottom-tab-bar__icon--svg" style="width:22px;height:22px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></span>
+      <span style="font-size:9px;letter-spacing:0.10em;text-transform:uppercase;">More</span>
+    </button>
+  </nav>
+  <div class="bottom-tab-more-drawer" id="moreDrawer" role="dialog">
+    <ul class="bottom-tab-more-drawer__links">
+      <li><a href="../exchange/">⚔ The Exchange</a></li>
+      <li><a href="../world/">🌍 The World of Eldenmoor</a></li>
+      <li><a href="../about.html">◈ About LoreMarkets</a></li>
+    </ul>
+    <a href="../exchange/" class="bottom-tab-more-drawer__cta">Enter the Exchange →</a>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/enhancements.js"></script>
+  <script src="../js/v3.js"></script>
+
+  <!-- Mobile Hamburger Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" role="dialog" aria-modal="true" aria-label="Main navigation menu">
+    <div class="mobile-menu-panel" id="mobileMenuPanel">
+      <!-- Panel header -->
+      <div class="mobile-menu-header">
+        <a href="../index.html" class="mobile-menu-logo" aria-label="LoreMarkets home" onclick="closeMobileMenu()">
+          <img src="../images/brand/loremarkets.ai.svg" alt="LoreMarkets" style="height:32px;width:auto;display:block;"/>
+          <span class="mobile-menu-logo-text">LoreMarkets</span>
+        </a>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Oracle live badge -->
+      <div class="mobile-menu-oracle-badge" aria-hidden="true">
+        <span class="mobile-menu-oracle-pulse"></span>
+        ◈ Oracle Live · Season I
+      </div>
+
+      <!-- Nav links -->
+      <nav class="mobile-menu-nav" aria-label="Mobile navigation">
+        <div class="mobile-menu-nav-item">
+          <a href="../exchange/" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            The Exchange
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+        <div class="mobile-menu-nav-item">
+          <a href="../oracle/" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            The Oracle
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+        <div class="mobile-menu-nav-item">
+          <a href="../season/" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            Season I
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+        <div class="mobile-menu-nav-item">
+          <a href="../build/" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            Build
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+        <div class="mobile-menu-nav-item">
+          <a href="../world/" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            World
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+        <div class="mobile-menu-nav-item">
+          <a href="../about.html" class="mobile-menu-nav-link" onclick="closeMobileMenu()">
+            About
+            <svg viewBox="0 0 16 16" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- CTA -->
+      <div class="mobile-menu-cta-wrap">
+        <a href="../exchange/" class="mobile-menu-cta" onclick="closeMobileMenu()">Enter the Exchange</a>
+      </div>
+
+      <p class="mobile-menu-footer">◈ The Arcane Exchange · Est. 400 B.C.</p>
+    </div>
+  </div>
+
+  <script src="../js/mobile-menu.js"></script>
+</body>
+</html>

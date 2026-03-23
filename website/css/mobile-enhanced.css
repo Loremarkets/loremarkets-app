@@ -1,0 +1,950 @@
+/**
+ * LoreMarkets — Mobile Enhanced UX
+ * Carl (UX/UI) · March 2026
+ *
+ * Sections:
+ *   1.  Hamburger Menu — full-screen overlay with stagger animation
+ *   2.  Nav mobile refinements (CTA visible, logo spacing)
+ *   3.  Hero section — mobile layout improvements
+ *   4.  Section spacing — tighter on mobile, better rhythm
+ *   5.  Portal cards — full-width stacked on mobile
+ *   6.  Asset cards — 2-col grid on mobile
+ *   7.  Prose section — improved readability, visual interest
+ *   8.  Oracle ticker — mobile scroll optimised
+ *   9.  Background enhancements — deeper, more atmospheric
+ *  10.  Interactive logos — pulse glow, hover effects
+ *  11.  Bottom tab bar — refinements
+ *  12.  Typography — mobile-first fluid scaling
+ *  13.  Keyframes
+ */
+
+
+/* ════════════════════════════════════════════════════════
+   1. HAMBURGER MENU — Full-Screen Overlay
+   ════════════════════════════════════════════════════════ */
+
+/* The overlay — sits above everything */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(6, 0, 15, 0.0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    background 0.4s ease,
+    backdrop-filter 0.4s ease;
+  pointer-events: none;
+}
+
+.mobile-menu-overlay.open {
+  display: block;
+  background: rgba(6, 0, 15, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  pointer-events: all;
+}
+
+/* The panel — slides in from the right */
+.mobile-menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(340px, 90vw);
+  height: 100dvh;
+  background: linear-gradient(
+    160deg,
+    rgba(13, 1, 32, 0.98) 0%,
+    rgba(6, 0, 15, 0.99) 60%,
+    rgba(18, 2, 38, 0.98) 100%
+  );
+  border-left: 1px solid rgba(245, 192, 48, 0.14);
+  z-index: 9001;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-menu-overlay.open .mobile-menu-panel {
+  transform: translateX(0);
+}
+
+/* Decorative top accent */
+.mobile-menu-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-brand-gold), transparent);
+  opacity: 0.7;
+}
+
+/* Header row inside the panel */
+.mobile-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 20px;
+  border-bottom: 1px solid rgba(128, 80, 208, 0.14);
+  flex-shrink: 0;
+}
+
+.mobile-menu-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.mobile-menu-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.mobile-menu-logo-text {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-teal);
+  letter-spacing: 0.04em;
+}
+
+/* Close button */
+.mobile-menu-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(128, 80, 208, 0.12);
+  border: 1px solid rgba(128, 80, 208, 0.22);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mobile-menu-close:hover {
+  background: rgba(245, 192, 48, 0.12);
+  border-color: rgba(245, 192, 48, 0.35);
+  color: var(--color-brand-gold);
+}
+
+.mobile-menu-close svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* Oracle live badge */
+.mobile-menu-oracle-badge {
+  margin: 16px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(245, 192, 48, 0.05);
+  border: 1px solid rgba(245, 192, 48, 0.14);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.65);
+}
+
+.mobile-menu-oracle-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-gold);
+  animation: menuPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Navigation links */
+.mobile-menu-nav {
+  padding: 24px 0 16px;
+  flex: 1;
+}
+
+.mobile-menu-nav-item {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mobile-menu-overlay.open .mobile-menu-nav-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger the nav items */
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(1) { transition-delay: 0.10s; }
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(2) { transition-delay: 0.16s; }
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(3) { transition-delay: 0.22s; }
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(4) { transition-delay: 0.28s; }
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(5) { transition-delay: 0.34s; }
+.mobile-menu-overlay.open .mobile-menu-nav-item:nth-child(6) { transition-delay: 0.40s; }
+
+.mobile-menu-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(128, 80, 208, 0.08);
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-nav-link:hover,
+.mobile-menu-nav-link:active {
+  color: var(--color-brand-gold);
+  background: rgba(245, 192, 48, 0.04);
+  padding-left: 30px;
+}
+
+.mobile-menu-nav-link.active-page {
+  color: var(--color-brand-gold);
+}
+
+.mobile-menu-nav-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-menu-nav-link:hover svg {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* CTA inside the menu */
+.mobile-menu-cta-wrap {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(245, 192, 48, 0.10);
+}
+
+.mobile-menu-cta {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #06000f;
+  background: var(--color-brand-gold);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(245, 192, 48, 0.25);
+}
+
+.mobile-menu-cta:hover,
+.mobile-menu-cta:active {
+  background: var(--color-brand-gold-light, #fcd35a);
+  box-shadow: 0 0 32px rgba(245, 192, 48, 0.45);
+  transform: translateY(-1px);
+  color: #06000f;
+}
+
+/* Footer note inside the menu */
+.mobile-menu-footer {
+  padding: 16px 24px 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.28);
+  text-align: center;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   2. NAV — HAMBURGER TOGGLE (Mobile)
+   Show the hamburger on mobile, hidden on desktop.
+   Override v3.css which hides it.
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* Reveal hamburger on mobile */
+  .nav__toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: rgba(128, 80, 208, 0.10);
+    border: 1px solid rgba(128, 80, 208, 0.22);
+    border-radius: var(--radius-md, 8px);
+    cursor: pointer;
+    color: var(--color-text-primary);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    order: 3; /* after logo and cta */
+  }
+
+  .nav__toggle:hover {
+    background: rgba(245, 192, 48, 0.10);
+    border-color: rgba(245, 192, 48, 0.35);
+    color: var(--color-brand-gold);
+  }
+
+  .nav__toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  /* Show a small CTA on mobile nav */
+  .nav__cta {
+    display: none; /* hidden on very small screens, inside hamburger menu */
+  }
+
+  /* Tighten up the nav on mobile */
+  .nav__inner {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  /* Logo area on mobile — slightly smaller but still prominent */
+  .nav__logo-link {
+    gap: 10px;
+  }
+
+  .nav__logo-mark {
+    height: 36px !important;
+    width: 36px !important;
+    object-fit: contain;
+  }
+
+  .nav__logo-wordmark {
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   3. HERO SECTION — Mobile Polish
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .hero-v3 {
+    padding: calc(110px + env(safe-area-inset-top)) 20px 60px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-v3__eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    margin-bottom: 16px;
+  }
+
+  .hero-v3__title {
+    font-size: clamp(1.85rem, 8vw, 2.6rem);
+    line-height: 1.18;
+    margin-bottom: 20px;
+  }
+
+  .hero-v3__subtitle {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+    color: var(--color-text-secondary);
+  }
+
+  .hero-v3__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .hero-v3__actions .btn-primary,
+  .hero-v3__actions .btn-secondary {
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 0.88rem;
+  }
+
+  /* Hero watermark — subtler on mobile */
+  .hero-v3__watermark {
+    width: 220px;
+    height: 220px;
+    opacity: 0.04;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   4. SECTION SPACING — Mobile Rhythm
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .section-header {
+    margin-bottom: 32px;
+    padding: 0 4px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.3rem, 5.5vw, 1.8rem);
+    line-height: 1.25;
+  }
+
+  .section-header p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Buttons — full width on mobile when stacked */
+  .btn-primary, .btn-secondary {
+    padding: 14px 20px;
+    font-size: 0.88rem;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   5. PORTAL CARDS — Single column stack on mobile
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .portals__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 20px;
+  }
+
+  .portal-card {
+    min-height: 280px;
+    padding: 28px 24px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    grid-template-rows: auto;
+    align-items: start;
+    gap: 0 20px;
+  }
+
+  .portal-card__icon {
+    margin-bottom: 0;
+    grid-row: 1;
+    grid-column: 1;
+    width: 52px;
+    height: 52px;
+    align-self: center;
+  }
+
+  .portal-card__text {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .portal-card__bg-icon {
+    right: -10px;
+    bottom: -10px;
+    width: 130px;
+    height: 130px;
+    opacity: 0.04;
+  }
+
+  .portal-card__title {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .portal-card__body {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .portals {
+    padding: 48px 0;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   6. ASSET CARDS — 2-column grid on mobile
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .assets__grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+    padding: 0 20px;
+  }
+
+  .asset-card {
+    padding: 16px 14px;
+  }
+
+  .asset-card__symbol {
+    font-size: 1rem;
+  }
+
+  .asset-card__name {
+    font-size: 0.72rem;
+    margin-top: 2px;
+  }
+
+  .asset-card__price {
+    font-size: 1.1rem;
+    margin: 8px 0 4px;
+  }
+
+  .asset-card__meta {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  .markets {
+    padding: 48px 0;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   7. PROSE SECTION — Visual Engagement
+   "Four Hundred Years of Exchange History"
+   Add left-border accent, larger chapter eyebrow,
+   subtle background texture, and first-letter drop cap.
+   ════════════════════════════════════════════════════════ */
+
+.prose-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Atmospheric gradient behind the prose text */
+.prose-section::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -20%;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(
+    ellipse 70% 80% at 30% 50%,
+    rgba(128, 80, 208, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.prose-section::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: -10%;
+  width: 40%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse 60% 70% at 80% 40%,
+    rgba(245, 192, 48, 0.04) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.prose-section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.prose-section__watermark {
+  transition: opacity 0.6s ease;
+  animation: proseWatermarkBreath 10s ease-in-out infinite;
+}
+
+@keyframes proseWatermarkBreath {
+  0%, 100% { opacity: 0.04; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  50% { opacity: 0.07; transform: translate(-50%, -50%) rotate(8deg) scale(1.06); }
+}
+
+/* Left-side gold accent rule */
+.prose-section__inner > div:last-child {
+  border-left: 2px solid rgba(245, 192, 48, 0.22);
+  padding-left: var(--space-8);
+  margin-left: 2px;
+}
+
+/* Paragraph styling within prose */
+.prose-section__inner p {
+  font-size: var(--font-size-body-lg);
+  line-height: 1.9;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  position: relative;
+}
+
+/* Drop cap on first paragraph */
+.prose-section__inner > div p:first-child::first-letter {
+  font-family: var(--font-heading);
+  font-size: 3.5em;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-gold);
+  float: left;
+  line-height: 0.75;
+  margin-right: 0.12em;
+  margin-top: 0.08em;
+  text-shadow: 0 0 20px rgba(245, 192, 48, 0.3);
+}
+
+@media (max-width: 767px) {
+
+  .prose-section__inner > div:last-child {
+    padding-left: 16px;
+    border-left-width: 2px;
+  }
+
+  .prose-section__inner p {
+    font-size: 0.9rem;
+    line-height: 1.85;
+  }
+
+  /* Drop cap smaller on mobile */
+  .prose-section__inner > div p:first-child::first-letter {
+    font-size: 2.8em;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.25rem, 6vw, 1.7rem) !important;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   8. ORACLE TICKER — Mobile optimisation
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .oracle-ticker {
+    font-size: 11px;
+    padding: 0 12px;
+  }
+
+  .oracle-ticker__badge {
+    font-size: 9px;
+    padding: 0 10px 0 0;
+    gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   FIX: MORE DRAWER — hide on desktop, keeps fixed+slide on mobile
+   The drawer element sits outside .bottom-tab-bar in the DOM,
+   so it doesn't inherit the bar's display:none on desktop.
+   ════════════════════════════════════════════════════════ */
+
+.bottom-tab-more-drawer {
+  display: none; /* hidden on desktop — only mounted by mobile CSS */
+}
+
+@media (max-width: 767px) {
+  .bottom-tab-more-drawer {
+    display: block; /* mobile shows it; v3.css handles position+transform */
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   9. BACKGROUND ENHANCEMENTS
+   Slightly more visible atmosphere — still dark void,
+   just enough to feel alive and cinematic.
+   ════════════════════════════════════════════════════════ */
+
+/* Enhanced body background — deeper atmosphere */
+body {
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% 0%,  rgba(128, 80, 208, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 70%  50% at 0%  65%, rgba(0, 236, 214, 0.07)  0%, transparent 60%),
+    radial-gradient(ellipse 70%  50% at 100% 75%, rgba(245, 192, 48, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50%  40% at 50% 100%, rgba(128, 80, 208, 0.08) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+/* Subtle scanline texture — extremely faint, z-index 0 so nothing breaks */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(128, 80, 208, 0.010) 2px,
+    rgba(128, 80, 208, 0.010) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   10. INTERACTIVE LOGOS — Pulse Glow + Hover Effects
+   ════════════════════════════════════════════════════════ */
+
+/* Hero watermark logo — slow pulse breathe.
+   IMPORTANT: must include translate(-50%,-50%) to preserve absolute centering. */
+.hero-v3__watermark {
+  animation: logoBreath 8s ease-in-out infinite;
+}
+
+@keyframes logoBreath {
+  0%, 100% { opacity: 0.07; transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+  50%       { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05) rotate(6deg); }
+}
+
+/* Portal card icons — interactive glow on hover */
+.portal-card__icon img,
+.portal-card__icon--glyph {
+  transition:
+    filter 0.4s ease,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.portal-card:hover .portal-card__icon img {
+  filter: drop-shadow(0 0 12px rgba(245, 192, 48, 0.55))
+          drop-shadow(0 0 24px rgba(128, 80, 208, 0.30));
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.portal-card--exchange:hover .portal-card__icon img {
+  filter: drop-shadow(0 0 14px rgba(128, 80, 208, 0.65))
+          drop-shadow(0 0 28px rgba(128, 80, 208, 0.25));
+  transform: scale(1.10) rotate(5deg);
+}
+
+.portal-card--oracle:hover .portal-card__icon img {
+  filter: drop-shadow(0 0 14px rgba(245, 192, 48, 0.70))
+          drop-shadow(0 0 28px rgba(245, 192, 48, 0.25));
+  transform: scale(1.12) rotate(-5deg);
+}
+
+.portal-card:hover .portal-card__icon--glyph {
+  filter: drop-shadow(0 0 12px rgba(0, 236, 214, 0.65));
+  transform: scale(1.10);
+}
+
+/* Portal bg icons — reveal on hover */
+.portal-card__bg-icon {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.portal-card:hover .portal-card__bg-icon {
+  opacity: 0.14 !important;
+  transform: scale(1.08) rotate(8deg);
+}
+
+/* Oracle seal logo — breathes */
+.oracle-seal__glyph img {
+  animation: sealGlyphPulse 4s ease-in-out infinite;
+}
+
+@keyframes sealGlyphPulse {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 3px rgba(245,192,48,0.3)); }
+  50% { filter: brightness(1.2) drop-shadow(0 0 8px rgba(245,192,48,0.6)); }
+}
+
+/* Oracle ambient line glyph */
+.oracle-ambient-glyph img {
+  transition: filter 0.3s ease;
+}
+
+.oracle-ambient-line:hover .oracle-ambient-glyph img {
+  filter: brightness(1.4) drop-shadow(0 0 6px rgba(245,192,48,0.5));
+}
+
+/* Season teaser watermark — slow drift */
+.season-teaser__watermark {
+  animation: watermarkDrift 12s ease-in-out infinite !important;
+}
+
+@keyframes watermarkDrift {
+  0% { opacity: 0.06; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  33% { opacity: 0.10; transform: translate(-50%, -50%) rotate(12deg) scale(1.06); }
+  66% { opacity: 0.07; transform: translate(-50%, -50%) rotate(-6deg) scale(0.97); }
+  100% { opacity: 0.06; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+}
+
+/* Trust pillar glyphs — hover spark */
+.trust-pillar__glyph {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              text-shadow 0.3s ease;
+  display: inline-block;
+}
+
+.trust-pillar:hover .trust-pillar__glyph {
+  transform: scale(1.25) rotate(-8deg);
+  text-shadow: 0 0 16px rgba(245, 192, 48, 0.65);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   11. BOTTOM TAB BAR — Visual Refinements
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  .bottom-tab-bar {
+    box-shadow:
+      0 -1px 0 rgba(245, 192, 48, 0.12),
+      0 -8px 24px rgba(6, 0, 15, 0.6);
+  }
+
+  /* Show labels always (not just active) — clearer for mobile */
+  .bottom-tab-bar__label {
+    display: block;
+    font-size: 8.5px;
+    color: rgba(255, 255, 255, 0.30);
+  }
+
+  .bottom-tab-bar__tab.active .bottom-tab-bar__label {
+    color: var(--color-brand-gold);
+  }
+
+  /* Active indicator dot above active tab */
+  .bottom-tab-bar__tab.active::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-brand-gold);
+    box-shadow: 0 0 6px rgba(245, 192, 48, 0.8);
+  }
+
+  /* Tap feedback */
+  .bottom-tab-bar__tab:active {
+    background: rgba(245, 192, 48, 0.06);
+    border-radius: 8px;
+  }
+
+  /* More drawer — nicer pull indicator */
+  .bottom-tab-more-drawer::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  /* Give bottom tab bar a slight blur-glass effect upgrade */
+  .bottom-tab-bar {
+    background: rgba(6, 0, 15, 0.90);
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   12. TYPOGRAPHY — Fluid mobile scaling
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+
+  /* Tighten up the heading on very small phones */
+  h1 { font-size: clamp(1.5rem, 7vw, 2rem); }
+  h2 { font-size: clamp(1.2rem, 5.5vw, 1.6rem); }
+  h3 { font-size: clamp(1rem, 4.5vw, 1.3rem); }
+
+  .hero-v3__title {
+    font-size: clamp(1.7rem, 8.5vw, 2.4rem);
+  }
+
+}
+
+
+/* ════════════════════════════════════════════════════════
+   13. KEYFRAMES
+   ════════════════════════════════════════════════════════ */
+
+@keyframes menuPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   14. LIVE PRICE TICKER — Flash animation on update
+   ════════════════════════════════════════════════════════ */
+
+.price-flash {
+  animation: priceFlash 0.6s ease forwards;
+}
+
+@keyframes priceFlash {
+  0% { opacity: 0.3; }
+  40% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Live event badge in ticker */
+.ticker-item--live .ticker-item__phase {
+  animation: liveBadgePulse 2s ease-in-out infinite;
+}
+
+@keyframes liveBadgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 192, 48, 0.3); }
+  50% { box-shadow: 0 0 0 3px rgba(245, 192, 48, 0.0); }
+}

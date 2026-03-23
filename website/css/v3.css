@@ -1,0 +1,3039 @@
+/**
+ * LoreMarkets — v3.0 Components
+ * Storytelling-First · Multi-Page · Mobile-First
+ *
+ * Yosuf (Dev) · Carl (UX/UI) — Full Rebuild Plan v3.0 · March 2026
+ *
+ * This file extends the existing design system.
+ * Import AFTER: design-tokens.css, styles.css, enhancements.css, animations.css
+ *
+ * Index:
+ *   1.  Oracle Ambient Pulse Bar
+ *   2.  Oracle Whisper component
+ *   3.  Updated desktop navigation (multi-page)
+ *   4.  Bottom Tab Bar (mobile)
+ *   5.  Chapter Frame eyebrow
+ *   6.  Portal Cards (homepage three doors)
+ *   7.  Oracle Seal Badge
+ *   8.  Season Teaser Panel
+ *   9.  Oracle Seal Ambient Line
+ *  10.  Page hero (v3 variant — multi-page)
+ *  11.  Exchange page components
+ *  12.  Oracle page components
+ *  13.  Season page components
+ *  14.  Build / Developer page components
+ *  15.  Shared prose section
+ *  16.  Updated footer
+ *  17.  Mobile responsive overrides
+ *  18.  Keyframes (v3 additions)
+ */
+
+
+/* ════════════════════════════════════════════════════════
+   1. ORACLE AMBIENT PULSE BAR
+   2px gold bar, very top of every page, pulses at 6s cycle.
+   Disappears into nav on scroll.
+   ════════════════════════════════════════════════════════ */
+
+.oracle-pulse-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(245, 192, 48, 0.0) 0%,
+    var(--color-brand-gold) 30%,
+    var(--color-brand-gold) 70%,
+    rgba(245, 192, 48, 0.0) 100%
+  );
+  z-index: 300;
+  animation: oraclePulseBar 6s ease-in-out infinite;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.oracle-pulse-bar.hidden {
+  opacity: 0;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oracle-pulse-bar { animation: none; opacity: 0.4; }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   2. ORACLE WHISPER COMPONENT
+   Per-page atmospheric text. Fades in over 0.8s,
+   holds 4s at full opacity, settles to 20% permanently.
+   Not dismissible — it is atmosphere.
+   ════════════════════════════════════════════════════════ */
+
+.oracle-whisper {
+  position: fixed;
+  bottom: 80px; /* clears bottom tab bar on mobile */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+  color: rgba(245, 192, 48, 0.20);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  z-index: var(--z-overlay);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.oracle-whisper.whisper-in {
+  opacity: 1;
+}
+
+.oracle-whisper.whisper-settle {
+  opacity: 0.20;
+}
+
+/* Desktop: slightly higher placement */
+@media (min-width: 768px) {
+  .oracle-whisper {
+    bottom: 40px;
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oracle-whisper {
+    opacity: 0.20;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   3. UPDATED DESKTOP NAVIGATION (MULTI-PAGE)
+   Now links to separate pages rather than section anchors.
+   CTA remains "Enter the Exchange".
+   ════════════════════════════════════════════════════════ */
+
+/* Tick up nav to clear oracle pulse bar */
+.nav {
+  top: 2px;
+}
+
+/* Active page indicator — gold underline */
+.nav__link--page-active::after {
+  width: 100% !important;
+}
+
+.nav__link--page-active {
+  color: var(--color-brand-gold) !important;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   4. BOTTOM TAB BAR — MOBILE PRIMARY NAVIGATION
+   Fixed, always visible on mobile. 4 primary tabs.
+   Safe-area aware for iOS notch / home indicator.
+   ════════════════════════════════════════════════════════ */
+
+.bottom-tab-bar {
+  display: none; /* hidden on desktop */
+}
+
+@media (max-width: 767px) {
+
+  .bottom-tab-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(6, 0, 15, 0.96);
+    border-top: 1px solid rgba(245, 192, 48, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    z-index: var(--z-sticky);
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .bottom-tab-bar__tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.35);
+    transition: color 0.2s ease;
+    padding: 8px 4px;
+    min-height: 48px;
+    position: relative;
+  }
+
+  .bottom-tab-bar__tab.active {
+    color: var(--color-brand-gold);
+  }
+
+  .bottom-tab-bar__tab:active {
+    opacity: 0.7;
+  }
+
+  .bottom-tab-bar__icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .bottom-tab-bar__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.4;
+  }
+
+  .bottom-tab-bar__tab.active .bottom-tab-bar__icon img {
+    filter: none;
+    opacity: 1;
+  }
+
+  .bottom-tab-bar__icon--svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .bottom-tab-bar__icon--svg svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  .bottom-tab-bar__label {
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: none; /* icon only for inactive */
+  }
+
+  .bottom-tab-bar__tab.active .bottom-tab-bar__label {
+    display: block;
+    color: var(--color-brand-gold);
+  }
+
+  /* "More" overflow tab */
+  .bottom-tab-bar__more-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    padding: 8px 4px;
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+  }
+
+  /* More drawer */
+  .bottom-tab-more-drawer {
+    position: fixed;
+    bottom: calc(64px + env(safe-area-inset-bottom));
+    left: 0;
+    right: 0;
+    background: rgba(6, 0, 15, 0.98);
+    border-top: 1px solid rgba(245, 192, 48, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: calc(var(--z-sticky) + 1);
+    padding: 16px 24px 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s var(--ease-out);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .bottom-tab-more-drawer.open {
+    transform: translateY(0);
+  }
+
+  .bottom-tab-more-drawer__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bottom-tab-more-drawer__links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(128, 80, 208, 0.12);
+    text-decoration: none;
+  }
+
+  .bottom-tab-more-drawer__links a:last-child {
+    border-bottom: none;
+  }
+
+  .bottom-tab-more-drawer__cta {
+    display: block;
+    margin-top: 16px;
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+    background: var(--color-brand-gold);
+    color: #06000f;
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-semibold);
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+  }
+
+  /* Hide hamburger on mobile — bottom tab bar replaces it */
+  .nav__toggle {
+    display: none !important;
+  }
+
+  /* Collapse desktop nav links on mobile */
+  .nav__links {
+    display: none !important;
+  }
+
+  /* Add bottom padding to pages for the tab bar */
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  /* Oracle whisper clears tab bar */
+  .oracle-whisper {
+    bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   5. CHAPTER FRAME EYEBROW
+   Each page is a chapter. The eyebrow reads in the form:
+   "THE ARCANE EXCHANGE · CHAPTER [n]: [TITLE] · ELDENMOOR"
+   ════════════════════════════════════════════════════════ */
+
+.chapter-frame {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--font-size-micro);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.55);
+  margin-bottom: var(--space-4);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   6. PORTAL CARDS — HOMEPAGE THREE DOORS
+   The primary discovery mechanism. Large, world-building,
+   not feature-listing. Each one is a destination.
+   ════════════════════════════════════════════════════════ */
+
+.portals {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.portals__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.portal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-10) var(--space-8);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  min-height: 420px;
+  transition:
+    transform 0.35s var(--ease-out),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Tonal background icon — each portal has a large branded icon */
+.portal-card__bg-icon {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.05;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.portal-card__bg-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.portal-card:hover .portal-card__bg-icon {
+  opacity: 0.12;
+}
+
+/* Icon (64px, top) */
+.portal-card__icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--space-6);
+  flex-shrink: 0;
+}
+
+.portal-card__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.portal-card__icon--glyph {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: var(--color-brand-teal);
+  margin-bottom: var(--space-6);
+}
+
+/* Eyebrow */
+.portal-card__eyebrow {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+  transition: color 0.3s ease;
+}
+
+/* Title */
+.portal-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+/* Body */
+.portal-card__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-muted);
+  flex: 1;
+  margin-bottom: var(--space-8);
+  transition: color 0.3s ease;
+}
+
+/* Arrow link */
+.portal-card__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.portal-card__link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+/* Hover state */
+.portal-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(245, 192, 48, 0.30);
+  box-shadow:
+    0 0 40px rgba(245, 192, 48, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.portal-card:hover .portal-card__eyebrow {
+  color: rgba(245, 192, 48, 0.55);
+}
+
+.portal-card:hover .portal-card__title {
+  color: var(--color-brand-gold);
+}
+
+.portal-card:hover .portal-card__body {
+  color: var(--color-text-secondary);
+}
+
+.portal-card:hover .portal-card__link {
+  color: var(--color-brand-gold);
+  gap: var(--space-3);
+}
+
+.portal-card:hover .portal-card__link svg {
+  transform: translateX(4px);
+}
+
+/* Portal variants — accent colours */
+.portal-card--exchange:hover {
+  border-color: rgba(128, 80, 208, 0.40);
+  box-shadow:
+    0 0 40px rgba(128, 80, 208, 0.10),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.portal-card--exchange:hover .portal-card__title {
+  color: var(--color-violet);
+}
+
+.portal-card--exchange:hover .portal-card__link {
+  color: var(--color-violet);
+}
+
+.portal-card--oracle:hover {
+  border-color: rgba(245, 192, 48, 0.35);
+}
+
+.portal-card--build:hover {
+  border-color: rgba(0, 236, 214, 0.30);
+  box-shadow:
+    0 0 40px rgba(0, 236, 214, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.portal-card--build:hover .portal-card__title {
+  color: var(--color-brand-teal);
+}
+
+.portal-card--build:hover .portal-card__link {
+  color: var(--color-brand-teal);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   7. ORACLE SEAL BADGE
+   The trust signal. Present on homepage, oracle page,
+   season page. Three states: active, sealed, post-season.
+   ════════════════════════════════════════════════════════ */
+
+.oracle-seal {
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid rgba(245, 192, 48, 0.22);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-10);
+  text-align: center;
+  background: rgba(13, 1, 32, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: oracleSealPulse 4s ease-in-out infinite;
+  position: relative;
+}
+
+.oracle-seal__glyph {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.oracle-seal__glyph img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.oracle-seal__label {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.oracle-seal__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.oracle-seal__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand-gold);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.oracle-seal__link:hover {
+  color: var(--color-brand-gold-light);
+}
+
+.oracle-seal__link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.oracle-seal__link:hover svg {
+  transform: translateX(3px);
+}
+
+/* Full-width mobile */
+@media (max-width: 767px) {
+  .oracle-seal {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .oracle-seal__link {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(245, 192, 48, 0.08);
+    border: 1px solid rgba(245, 192, 48, 0.22);
+    border-radius: var(--radius-md);
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   8. SEASON TEASER PANEL
+   Full-width dark panel on homepage. Oracle watermark
+   behind text. Seal badge in bottom-right.
+   ════════════════════════════════════════════════════════ */
+
+.season-teaser {
+  position: relative;
+  background: var(--color-bg-deep);
+  border-top: 1px solid rgba(245, 192, 48, 0.10);
+  border-bottom: 1px solid rgba(245, 192, 48, 0.10);
+  padding: var(--space-20) 0;
+  overflow: hidden;
+}
+
+.season-teaser__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  opacity: 0.08;
+  pointer-events: none;
+  animation: runeBreath 8s ease-in-out infinite;
+}
+
+.season-teaser__content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  text-align: center;
+}
+
+.season-teaser__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.season-teaser__seal {
+  position: absolute;
+  bottom: var(--space-6);
+  right: var(--space-8);
+}
+
+@media (max-width: 767px) {
+  .season-teaser__seal {
+    position: static;
+    margin-top: var(--space-8);
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   9. ORACLE SEAL AMBIENT LINE
+   Section 1.4 of homepage. Not a card — a single centred
+   line that pulses once on load.
+   ════════════════════════════════════════════════════════ */
+
+.oracle-ambient-line {
+  padding: var(--space-8) 0;
+  text-align: center;
+}
+
+.oracle-ambient-line__text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(245, 192, 48, 0.60);
+  letter-spacing: 0.06em;
+  animation: ambientLinePulse 3s ease 0.3s both;
+}
+
+.oracle-ambient-line__text a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.oracle-ambient-line__text a:hover {
+  opacity: 1;
+  color: var(--color-brand-gold);
+}
+
+.oracle-ambient-glyph {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-right: 6px;
+  margin-top: -2px;
+}
+
+.oracle-ambient-glyph img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   10. PAGE HERO — V3 MULTI-PAGE VARIANT
+   Full viewport. Content vertically centred.
+   No stats row by default (homepage variant has it).
+   ════════════════════════════════════════════════════════ */
+
+.hero-v3 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  text-align: center;
+  padding: 100px var(--space-8) var(--space-20);
+  overflow: hidden;
+}
+
+.hero-v3__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: runeBreath 6s ease-in-out infinite;
+}
+
+/* Oracle page: slowly rotating watermark */
+.hero-v3__watermark--rotate {
+  animation: oracleLogoRotate 120s linear infinite;
+}
+
+.hero-v3__eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-5);
+  animation: fadeUp 0.7s var(--ease-out) 0.4s both;
+}
+
+.hero-v3__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.12;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+  max-width: 14ch;
+  animation: fadeUp 1.0s var(--ease-out) 0.65s both;
+}
+
+.hero-v3__subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  max-width: 62ch;
+  margin: 0 auto var(--space-10);
+  animation: fadeUp 0.8s var(--ease-out) 0.95s both;
+}
+
+.hero-v3__actions {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s var(--ease-out) 1.15s both;
+}
+
+/* Season page hero — warm tension gradient edges */
+.hero-v3--season::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(245, 100, 30, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 50%, rgba(245, 192, 48, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Season live stats row */
+.hero-v3__stats-row {
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-10);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-muted);
+  animation: fadeUp 0.8s var(--ease-out) 1.4s both;
+}
+
+.hero-v3__stat-sep {
+  color: rgba(245, 192, 48, 0.25);
+}
+
+.hero-v3__stat-val {
+  color: var(--color-brand-gold);
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   11. EXCHANGE PAGE COMPONENTS
+   ════════════════════════════════════════════════════════ */
+
+/* Asset price mask for unauthenticated users */
+.asset-price-mask {
+  color: rgba(128, 80, 208, 0.4);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-body-sm);
+  letter-spacing: 0.06em;
+}
+
+/* Oracle line — tap-expanded state on asset cards */
+.asset-card__oracle-line {
+  display: none;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-default);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body-sm);
+  font-style: italic;
+  color: rgba(245, 192, 48, 0.70);
+  line-height: 1.6;
+}
+
+.asset-card.expanded .asset-card__oracle-line {
+  display: block;
+}
+
+/* How Oracle Drives Prices — three-panel */
+.oracle-process {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.oracle-process__panels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  max-width: 1160px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+}
+
+.oracle-process__panel {
+  padding: var(--space-10) var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.oracle-process__panel::before {
+  content: attr(data-step);
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(245, 192, 48, 0.25);
+  letter-spacing: 0.10em;
+}
+
+.oracle-process__panel h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.04em;
+}
+
+.oracle-process__panel p {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+}
+
+/* Leaderboard dual-column */
+.leaderboard-v3 {
+  padding: var(--space-20) 0;
+}
+
+.leaderboard-v3__header-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  max-width: 1160px;
+  margin: 0 auto var(--space-6);
+  padding: 0 var(--space-8);
+}
+
+.leaderboard-v3__col-header {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-gold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   12. ORACLE PAGE COMPONENTS
+   ════════════════════════════════════════════════════════ */
+
+/* Three-act interactive timeline */
+.three-acts {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.three-acts__timeline {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  max-width: 1100px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  align-items: start;
+  gap: 0;
+}
+
+.three-acts__connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.three-acts__connector-line {
+  width: 2px;
+  height: 40px;
+  background: rgba(245, 192, 48, 0.15);
+  position: relative;
+}
+
+.three-acts__connector-line.filled {
+  background: var(--color-brand-gold);
+}
+
+.act-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  user-select: none;
+}
+
+.act-card:hover,
+.act-card.active {
+  transform: translateY(-4px);
+  border-color: rgba(245, 192, 48, 0.35);
+  box-shadow: 0 0 30px rgba(245, 192, 48, 0.08), 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.act-card__phase {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.act-card__phase--whisper { color: rgba(245, 192, 48, 0.55); }
+.act-card__phase--word    { color: var(--color-brand-gold); }
+.act-card__phase--settling { color: var(--color-brand-teal); }
+
+.act-card__time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-5);
+}
+
+.act-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.02em;
+}
+
+.act-card__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+/* Expanded state — oracle dispatch sample */
+.act-card__dispatch {
+  display: none;
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+  background: rgba(245, 192, 48, 0.04);
+  border-left: 3px solid rgba(245, 192, 48, 0.35);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.act-card__dispatch-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.45);
+  margin-bottom: var(--space-2);
+}
+
+.act-card__dispatch-text {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body-sm);
+  font-style: italic;
+  color: rgba(245, 192, 48, 0.80);
+  line-height: 1.7;
+}
+
+.act-card.active .act-card__dispatch {
+  display: block;
+}
+
+/* Live Oracle Feed component */
+.oracle-feed-v3 {
+  padding: var(--space-20) 0;
+}
+
+.oracle-feed-v3__inner {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space-8);
+  max-width: 1160px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+}
+
+.oracle-feed-v3__feed-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.oracle-feed-v3__active-col {
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.oracle-event-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-left: 3px solid;
+  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-6);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.oracle-event-card:hover {
+  transform: translateX(4px);
+}
+
+.oracle-event-card--whisper {
+  border-left-color: rgba(245, 192, 48, 0.45);
+}
+
+.oracle-event-card--word {
+  border-left-color: var(--color-brand-gold);
+}
+
+.oracle-event-card--settling {
+  border-left-color: var(--color-brand-teal);
+}
+
+.oracle-event-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.oracle-event-card__phase {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.oracle-event-card--whisper  .oracle-event-card__phase { color: rgba(245, 192, 48, 0.55); }
+.oracle-event-card--word     .oracle-event-card__phase { color: var(--color-brand-gold);   }
+.oracle-event-card--settling .oracle-event-card__phase { color: var(--color-brand-teal);   }
+
+.oracle-event-card__tickers {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.oracle-event-card__ticker-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  background: rgba(128, 80, 208, 0.15);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+
+.oracle-event-card__body {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.oracle-event-card__footer {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* Active event panel */
+.oracle-active-panel {
+  background: var(--color-surface-elevated);
+  border: 1px solid rgba(245, 192, 48, 0.20);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+}
+
+.oracle-active-panel__heading {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.55);
+  margin-bottom: var(--space-5);
+}
+
+/* Oracle feed empty state */
+.oracle-feed-empty {
+  padding: var(--space-10);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.7;
+}
+
+/* Season architecture nested timeline */
+.season-architecture {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.season-levels {
+  max-width: 860px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.season-level {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.season-level__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6) var(--space-8);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.season-level__header:hover {
+  background: rgba(245, 192, 48, 0.04);
+}
+
+.season-level__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.03em;
+}
+
+.season-level__num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(245, 192, 48, 0.45);
+  letter-spacing: 0.10em;
+}
+
+.season-level__body {
+  padding: 0 var(--space-8) var(--space-6);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+}
+
+/* Oracle Covenant section — stillness */
+.oracle-covenant {
+  padding: var(--space-24) 0;
+  background: #040010; /* darker than --color-bg-void */
+  position: relative;
+}
+
+.oracle-covenant__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  text-align: center;
+}
+
+.oracle-covenant__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-8);
+  animation: fadeUp 1.0s var(--ease-out) 0.3s both;
+}
+
+.oracle-covenant__prose {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.85;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  text-align: left;
+}
+
+.oracle-covenant__prose + .oracle-covenant__prose {
+  margin-top: var(--space-6);
+}
+
+.oracle-covenant__seal {
+  margin-top: var(--space-12);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   13. SEASON PAGE COMPONENTS
+   ════════════════════════════════════════════════════════ */
+
+/* Today's chapter panel */
+.chapter-panel {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-8);
+}
+
+.chapter-card {
+  background: var(--color-surface);
+  border: 1px solid rgba(245, 192, 48, 0.22);
+  border-radius: var(--radius-lg);
+  padding: var(--space-10);
+  position: relative;
+  overflow: hidden;
+}
+
+.chapter-card__glyph-bg {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  width: 80px;
+  height: 80px;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.chapter-card__meta {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+}
+
+.chapter-card__meta-sep {
+  color: rgba(245, 192, 48, 0.25);
+}
+
+.chapter-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+  letter-spacing: 0.02em;
+}
+
+.chapter-card__divider {
+  height: 1px;
+  background: var(--color-border-default);
+  margin-bottom: var(--space-6);
+}
+
+.chapter-card__body {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body-lg);
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.chapter-card__markets {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.chapter-card__markets-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.chapter-card__market-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 10px;
+  background: rgba(128, 80, 208, 0.12);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+
+.chapter-card__impact {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-8);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.chapter-card__impact-tag {
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+}
+
+.impact-up   { background: rgba(0, 236, 214, 0.12); color: var(--color-brand-teal); border: 1px solid rgba(0,236,214,0.2); }
+.impact-down { background: rgba(224, 80, 96, 0.12); color: #e05060; border: 1px solid rgba(224,80,96,0.2); }
+.impact-flat { background: rgba(128, 80, 208, 0.12); color: var(--color-text-muted); border: 1px solid var(--color-border-default); }
+
+.chapter-card__actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Episode tracker */
+.episode-tracker {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+  overflow: hidden;
+}
+
+.episode-tracker__rail {
+  max-width: 1160px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+
+.episode-tracker__rail::before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: calc(var(--space-8) + 34px);
+  right: calc(var(--space-8) + 34px);
+  height: 2px;
+  background: rgba(245, 192, 48, 0.12);
+}
+
+.episode-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 0;
+}
+
+.episode-item__dot {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-default);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.episode-item--complete .episode-item__dot {
+  border-color: rgba(0, 236, 214, 0.50);
+  color: var(--color-brand-teal);
+  background: rgba(0, 236, 214, 0.06);
+}
+
+.episode-item--active .episode-item__dot {
+  border-color: var(--color-brand-gold);
+  color: var(--color-brand-gold);
+  background: rgba(245, 192, 48, 0.08);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.episode-item--sealed .episode-item__dot {
+  border-color: rgba(128, 80, 208, 0.25);
+  color: rgba(128, 80, 208, 0.35);
+}
+
+.episode-item__content {
+  margin-top: var(--space-4);
+  text-align: center;
+  padding: 0 var(--space-2);
+}
+
+.episode-item__number {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.episode-item__name {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.episode-item--active .episode-item__name {
+  color: var(--color-text-primary);
+}
+
+.episode-item__status {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.ep-status-complete { color: var(--color-brand-teal); }
+.ep-status-active   { color: var(--color-brand-gold); }
+.ep-status-sealed   { color: rgba(128, 80, 208, 0.40); }
+
+/* Asset correlation map */
+.correlation-map {
+  padding: var(--space-20) 0;
+}
+
+.correlation-map__svg-wrap {
+  max-width: 800px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+}
+
+.correlation-node {
+  cursor: default;
+}
+
+.correlation-node-circle {
+  fill: var(--color-surface);
+  stroke: rgba(128, 80, 208, 0.35);
+  stroke-width: 1.5;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.correlation-node:hover .correlation-node-circle {
+  fill: rgba(245, 192, 48, 0.08);
+  stroke: rgba(245, 192, 48, 0.50);
+}
+
+.correlation-node-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--color-text-secondary);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0.06em;
+}
+
+.correlation-edge {
+  stroke: rgba(245, 192, 48, 0.15);
+  stroke-width: 1;
+  fill: none;
+}
+
+.correlation-edge-label {
+  font-family: var(--font-body);
+  font-size: 9px;
+  fill: rgba(245, 192, 48, 0.35);
+  text-anchor: middle;
+  letter-spacing: 0.06em;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   14. BUILD / DEVELOPER PAGE COMPONENTS
+   ════════════════════════════════════════════════════════ */
+
+/* Narrative reasoning contrast panels */
+.narrative-contrast {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.narrative-contrast__panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: 900px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.narrative-contrast__col {
+  padding: var(--space-10) var(--space-10);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: 1.85;
+  color: var(--color-text-secondary);
+}
+
+.narrative-contrast__col + .narrative-contrast__col {
+  border-left: 1px solid var(--color-border-default);
+  background: rgba(245, 192, 48, 0.02);
+}
+
+.narrative-contrast__col-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+  display: block;
+}
+
+.narrative-contrast__col + .narrative-contrast__col .narrative-contrast__col-label {
+  color: rgba(245, 192, 48, 0.55);
+}
+
+/* Quick start — step + code side by side */
+.quickstart {
+  padding: var(--space-20) 0;
+}
+
+.quickstart__steps {
+  max-width: 1100px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.quickstart-step {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.quickstart-step__meta {
+  padding-top: var(--space-2);
+}
+
+.quickstart-step__num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 192, 48, 0.45);
+  margin-bottom: var(--space-2);
+}
+
+.quickstart-step__title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-3);
+}
+
+.quickstart-step__desc {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.code-block-v3 {
+  position: relative;
+  background: var(--color-surface-elevated);
+  border: 1px solid rgba(128, 80, 208, 0.25);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.code-block-v3__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-5);
+  background: rgba(128, 80, 208, 0.08);
+  border-bottom: 1px solid rgba(128, 80, 208, 0.15);
+}
+
+.code-block-v3__lang {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.code-block-v3__copy {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-brand-teal);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.code-block-v3__copy:hover {
+  background: rgba(0, 236, 214, 0.10);
+}
+
+.code-block-v3__copy.copied {
+  color: var(--color-brand-gold);
+}
+
+.code-block-v3 pre {
+  margin: 0;
+  padding: var(--space-6);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: #c8b8e8;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Story API endpoint cards */
+.story-api {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+}
+
+.story-api__grid {
+  max-width: 1100px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.api-endpoint-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-left: 3px solid var(--color-brand-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-6);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.api-endpoint-card:hover {
+  transform: translateX(4px);
+  border-left-color: var(--color-brand-gold-light);
+}
+
+.api-endpoint-card__phase {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.api-endpoint-card__phase-glyph {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+}
+
+.api-endpoint-card__phase-glyph img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.api-endpoint-card__method {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  margin-right: var(--space-2);
+}
+
+.api-endpoint-card__method--get  { color: var(--color-brand-teal); }
+.api-endpoint-card__method--post { color: var(--color-brand-gold); }
+
+.api-endpoint-card__title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+  letter-spacing: 0.02em;
+}
+
+.api-endpoint-card__path {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.api-endpoint-card__desc {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* What your agent gets — feature list */
+.agent-features {
+  padding: var(--space-20) 0;
+}
+
+.agent-features__list {
+  max-width: 720px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.agent-feature-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid rgba(128, 80, 208, 0.10);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.agent-feature-item:last-child {
+  border-bottom: none;
+}
+
+.agent-feature-item::before {
+  content: '◈';
+  color: rgba(245, 192, 48, 0.40);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.agent-feature-item strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   15. SHARED PROSE SECTION
+   For lore-rich text content: /exchange, /world, etc.
+   ════════════════════════════════════════════════════════ */
+
+.prose-section {
+  padding: var(--space-20) 0;
+  position: relative;
+}
+
+.prose-section__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  opacity: 0.05;
+  pointer-events: none;
+  animation: runeBreath 10s ease-in-out infinite;
+}
+
+.prose-section__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.prose-section__inner p {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.85;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.prose-section__inner p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   16. UPDATED FOOTER
+   ════════════════════════════════════════════════════════ */
+
+.footer-v3 {
+  background: var(--color-bg-void);
+  border-top: 1px solid rgba(128, 80, 208, 0.12);
+  padding: var(--space-12) 0;
+  text-align: center;
+}
+
+.footer-v3__links {
+  display: flex;
+  gap: var(--space-6);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.footer-v3__links a {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.footer-v3__links a:hover {
+  color: var(--color-brand-gold);
+}
+
+.footer-v3__copy {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-faint);
+  line-height: 1.7;
+}
+
+.footer-v3__copy em {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+
+/* ════════════════════════════════════════════════════════
+   17. MOBILE RESPONSIVE OVERRIDES
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* Portals stack vertically */
+  .portals__grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .portal-card {
+    min-height: 200px;
+    padding: var(--space-7) var(--space-6);
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .portal-card__icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .portal-card__icon--glyph {
+    font-size: 26px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .portal-card__text {
+    flex: 1;
+  }
+
+  .portal-card__bg-icon {
+    display: none;
+  }
+
+  /* Oracle process panels stack */
+  .oracle-process__panels {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: 0 var(--space-5);
+  }
+
+  /* Three acts stack */
+  .three-acts__timeline {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: 0 var(--space-5);
+  }
+
+  .three-acts__connector {
+    display: none;
+  }
+
+  /* Oracle feed — full width on mobile */
+  .oracle-feed-v3__inner {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-5);
+  }
+
+  .oracle-feed-v3__active-col {
+    position: static;
+  }
+
+  /* Episode tracker — vertical on mobile */
+  .episode-tracker__rail {
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: 0 var(--space-5);
+  }
+
+  .episode-tracker__rail::before {
+    display: none;
+  }
+
+  .episode-item {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-5);
+    text-align: left;
+  }
+
+  .episode-item__dot {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+  }
+
+  .episode-item__content {
+    margin-top: 0;
+    text-align: left;
+    padding: 0;
+  }
+
+  /* Narrative contrast panels stack */
+  .narrative-contrast__panels {
+    grid-template-columns: 1fr;
+  }
+
+  .narrative-contrast__col + .narrative-contrast__col {
+    border-left: none;
+    border-top: 1px solid var(--color-border-default);
+  }
+
+  /* Quickstart step — stacked */
+  .quickstart-step {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .quickstart__steps {
+    padding: 0 var(--space-5);
+  }
+
+  /* Story API — single column */
+  .story-api__grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-5);
+  }
+
+  /* Code block — scrollable */
+  .code-block-v3 pre {
+    font-size: 11px;
+  }
+
+  .code-block-v3__copy {
+    position: sticky;
+    right: 0;
+  }
+
+  /* Chapter card adjusts */
+  .chapter-panel {
+    padding: var(--space-8) var(--space-5);
+  }
+
+  /* Section headers */
+  .section-header { padding: 0 var(--space-5); }
+
+  /* Footer links */
+  .footer-v3__links {
+    gap: var(--space-4);
+    padding: 0 var(--space-5);
+  }
+
+  /* Leaderboard */
+  .leaderboard-v3__header-row {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-5);
+  }
+
+  /* Prose section */
+  .prose-section__inner {
+    padding: 0 var(--space-5);
+  }
+
+  /* Oracle covenant */
+  .oracle-covenant__inner {
+    padding: 0 var(--space-5);
+  }
+
+  /* Season levels */
+  .season-levels {
+    padding: 0 var(--space-5);
+  }
+
+  /* Correlation map fallback */
+  .correlation-map__svg-wrap {
+    padding: 0 var(--space-5);
+    overflow-x: auto;
+  }
+
+  /* Hero v3 adjustments */
+  .hero-v3 {
+    padding: 90px var(--space-5) var(--space-16);
+    min-height: 100dvh;
+  }
+
+  .hero-v3__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-v3__actions .btn-primary,
+  .hero-v3__actions .btn-secondary {
+    width: 100%;
+    text-align: center;
+    min-height: 52px;
+  }
+
+  /* Season teaser adjustments */
+  .season-teaser__content {
+    padding: 0 var(--space-5);
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   18. KEYFRAMES — V3 ADDITIONS
+   ════════════════════════════════════════════════════════ */
+
+/* Oracle Ambient Pulse Bar */
+@keyframes oraclePulseBar {
+  0%, 100% {
+    opacity: 0.3;
+    background: linear-gradient(90deg, transparent 0%, rgba(245,192,48,0.0) 0%, rgba(245,192,48,0.8) 30%, rgba(245,192,48,0.8) 70%, rgba(245,192,48,0.0) 100%);
+  }
+  50% {
+    opacity: 0.8;
+    background: linear-gradient(90deg, transparent 0%, rgba(245,192,48,0.3) 0%, var(--color-brand-gold) 30%, var(--color-brand-gold) 70%, rgba(245,192,48,0.3) 100%);
+  }
+}
+
+/* Oracle Seal border pulse */
+@keyframes oracleSealPulse {
+  0%, 100% { border-color: rgba(245, 192, 48, 0.15); }
+  50%       { border-color: rgba(245, 192, 48, 0.55); }
+}
+
+/* Oracle logo slow rotation */
+@keyframes oracleLogoRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Ambient line pulse — fires once on load */
+@keyframes ambientLinePulse {
+  0%  { opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0.60; }
+}
+
+/* =====================================================================
+   FOOTER V3 WHISPER — subtitle line beneath tagline
+   ===================================================================== */
+.footer-v3__whisper {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(245, 192, 48, 0.35);
+  letter-spacing: 0.04em;
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+/* =====================================================================
+   LORE CARD LINK — "Trade X →" anchor on world page asset cards
+   ===================================================================== */
+.lore-card__link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(245, 192, 48, 0.6);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s ease;
+}
+
+.lore-card__link:hover,
+.lore-card__link:focus-visible {
+  color: var(--color-brand-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+
+/* =====================================================================
+   EARLY ACCESS / REGISTRATION SECTION — Carl redesign
+   ===================================================================== */
+.early-access {
+  padding: var(--space-20) 0 var(--space-24);
+  position: relative;
+  overflow: hidden;
+}
+
+.early-access::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245,192,48,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(128,80,208,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Gold top border line */
+.early-access::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-brand-gold), transparent);
+}
+
+.early-access .section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--space-12);
+}
+
+.early-access__form-wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Card container */
+.early-access__form {
+  background: rgba(18, 6, 38, 0.85);
+  border: 1px solid rgba(245,192,48,0.25);
+  border-radius: 16px;
+  padding: var(--space-10) var(--space-10);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(245,192,48,0.08) inset,
+    0 24px 64px rgba(0,0,0,0.5),
+    0 0 80px rgba(245,192,48,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Individual field */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-field__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,192,48,0.75);
+}
+
+.form-field__input {
+  width: 100%;
+  background: rgba(6,0,15,0.7);
+  border: 1px solid rgba(128,80,208,0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+
+.form-field__input::placeholder {
+  color: rgba(154,136,192,0.4);
+}
+
+.form-field__input:focus {
+  border-color: rgba(245,192,48,0.6);
+  box-shadow: 0 0 0 3px rgba(245,192,48,0.08);
+}
+
+/* Select arrow */
+select.form-field__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f5c030' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select.form-field__input option {
+  background: #0c0420;
+  color: var(--color-text-primary);
+}
+
+/* The Claim button override when inside form */
+.early-access__form .btn-primary {
+  margin-top: var(--space-2);
+  width: 100%;
+  justify-content: center;
+  font-size: var(--font-size-body);
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* Small trust line below button */
+.early-access__trust-note {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.10em;
+  color: rgba(154,136,192,0.45);
+  margin-top: var(--space-3);
+}
+
+/* Success / Error states */
+.early-access__success,
+.early-access__error {
+  border-radius: 12px;
+  padding: var(--space-8) var(--space-8);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.early-access__success {
+  background: rgba(0,236,214,0.06);
+  border: 1px solid rgba(0,236,214,0.2);
+  color: var(--color-brand-teal);
+}
+
+.early-access__error {
+  background: rgba(220,60,60,0.06);
+  border: 1px solid rgba(220,60,60,0.25);
+  color: #e88;
+}
+
+@media (max-width: 640px) {
+  .early-access__form {
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+
+/* =====================================================================
+   CARL: TIMELINE VISUAL ENHANCEMENTS — Episode tracker progress fill
+   ===================================================================== */
+
+/* Progress line — completed portion (covers first 28% ≈ ep1 complete) */
+.episode-tracker__rail::after {
+  content: '';
+  position: absolute;
+  top: 34px;
+  left: calc(var(--space-8) + 34px);
+  width: calc((100% - var(--space-8) * 2 - 68px) * 0.22);
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-brand-teal), rgba(245,192,48,0.5));
+}
+
+/* Active dot pulse ring */
+.episode-item--active .episode-item__dot::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(245,192,48,0.25);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.12); opacity: 0; }
+}
+
+/* Chapter card: stronger atmosphere */
+.chapter-card {
+  position: relative;
+}
+
+.chapter-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(245,192,48,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Three acts — connector now has a subtle gradient fill */
+.three-acts__connector-line {
+  background: linear-gradient(180deg, rgba(245,192,48,0.4), rgba(128,80,208,0.4)) !important;
+}
+
+/* Act card dispatch block — more readable */
+.act-card__dispatch {
+  position: relative;
+}
+
+.act-card__dispatch::before {
+  content: '"';
+  position: absolute;
+  top: -0.5rem;
+  left: -0.25rem;
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: rgba(245,192,48,0.12);
+  line-height: 1;
+  pointer-events: none;
+}
+
+
+/* =====================================================================
+   TRUST PILLARS SECTION — Tom + JJ + Carl
+   ===================================================================== */
+.trust-pillars {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-deep);
+  position: relative;
+}
+
+.trust-pillars::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,192,48,0.15), transparent);
+}
+
+.trust-pillars::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,192,48,0.1), transparent);
+}
+
+.trust-pillars__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.trust-pillar {
+  background: rgba(128,80,208,0.04);
+  border: 1px solid rgba(245,192,48,0.1);
+  border-radius: 12px;
+  padding: var(--space-8) var(--space-7);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.trust-pillar:hover {
+  border-color: rgba(245,192,48,0.2);
+  background: rgba(128,80,208,0.06);
+}
+
+.trust-pillar__glyph {
+  font-size: 1.4rem;
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-4);
+  opacity: 0.7;
+}
+
+.trust-pillar__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+  letter-spacing: 0.01em;
+}
+
+.trust-pillar__body {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-5);
+}
+
+.trust-pillar__link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.10em;
+  color: rgba(245,192,48,0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.trust-pillar__link:hover {
+  color: var(--color-brand-gold);
+}
+
+@media (max-width: 900px) {
+  .trust-pillars__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO SPOTLIGHT ENHANCEMENT — Carl / Sprint 2026-03
+   Interactive mouse-follow spotlight + enhanced watermark
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Hero gets mouse-tracking custom properties via JS */
+.hero-v3 {
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  --spotlight-opacity: 0;
+}
+
+/* Spotlight overlay: radial gradient follows mouse */
+.hero-v3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--spotlight-x) var(--spotlight-y),
+    rgba(128, 80, 208, 0.12) 0%,
+    rgba(245, 192, 48, 0.06) 30%,
+    transparent 70%
+  );
+  opacity: var(--spotlight-opacity);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+/* Watermark: increase visibility, add glow */
+.hero-v3__watermark {
+  opacity: 0.13 !important;
+  filter: drop-shadow(0 0 24px rgba(128, 80, 208, 0.5)) drop-shadow(0 0 8px rgba(245, 192, 48, 0.2));
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.1s ease;
+  will-change: transform, opacity;
+}
+
+/* On spotlight hover, watermark brightens in the illuminated area */
+.hero-v3.spotlight-active .hero-v3__watermark {
+  opacity: 0.2 !important;
+  filter: drop-shadow(0 0 32px rgba(128, 80, 208, 0.7)) drop-shadow(0 0 14px rgba(245, 192, 48, 0.35));
+}
+
+/* Portal card bg-icon enhancement */
+.portal-card__bg-icon img {
+  opacity: 0.09;
+  filter: drop-shadow(0 0 20px rgba(128, 80, 208, 0.4));
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.portal-card:hover .portal-card__bg-icon img {
+  opacity: 0.18;
+  filter: drop-shadow(0 0 32px rgba(128, 80, 208, 0.7));
+}
+
+/* Build portal bg icon (uses teal for agents) */
+.portal-card--build .portal-card__bg-icon--glyph {
+  font-size: 200px !important;
+  opacity: 0.06 !important;
+  transition: opacity 0.4s ease;
+}
+
+.portal-card--build:hover .portal-card__bg-icon--glyph {
+  opacity: 0.1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WAITING LIST SECTION — Home page
+   ═══════════════════════════════════════════════════════════════ */
+
+.waiting-list {
+  position: relative;
+  padding: var(--space-20) 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(128,80,208,0.1) 0%, transparent 60%),
+    var(--color-bg-base);
+  border-top: 1px solid rgba(128,80,208,0.15);
+  border-bottom: 1px solid rgba(128,80,208,0.15);
+  overflow: hidden;
+  text-align: center;
+}
+
+.waiting-list__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  opacity: 0.04;
+  pointer-events: none;
+  animation: runeBreath 8s ease-in-out infinite;
+}
+
+.waiting-list__eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+  margin-bottom: var(--space-4);
+}
+
+.waiting-list__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-5);
+  max-width: 18ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.waiting-list__body {
+  font-size: var(--font-size-body);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  max-width: 56ch;
+  margin: 0 auto var(--space-10);
+}
+
+.waiting-list__form {
+  display: flex;
+  gap: var(--space-3);
+  max-width: 480px;
+  margin: 0 auto var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.waiting-list__input {
+  flex: 1;
+  min-width: 240px;
+  padding: var(--space-3) var(--space-5);
+  background: rgba(128,80,208,0.08);
+  border: 1px solid rgba(128,80,208,0.3);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body-sm);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.waiting-list__input:focus {
+  border-color: rgba(245,192,48,0.5);
+}
+
+.waiting-list__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.waiting-list__submit {
+  padding: var(--space-3) var(--space-7);
+  background: var(--color-brand-gold);
+  color: #06000f;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.waiting-list__submit:hover {
+  background: #ffd050;
+  transform: translateY(-1px);
+}
+
+.waiting-list__note {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+
+.waiting-list__success {
+  display: none;
+  color: #00ECD6;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-body-sm);
+  padding: var(--space-4);
+  background: rgba(0,236,214,0.06);
+  border: 1px solid rgba(0,236,214,0.2);
+  border-radius: 6px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ANCIENT TIMELINE — World page (JJ's B.C. History)
+   ═══════════════════════════════════════════════════════════════ */
+
+.ancient-timeline {
+  position: relative;
+  padding: var(--space-20) 0;
+  background: var(--color-bg-base);
+}
+
+.ancient-timeline__inner {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+/* The glowing vertical spine */
+.ancient-timeline__spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(128,80,208,0.6) 8%,
+    rgba(128,80,208,0.4) 92%,
+    transparent 100%
+  );
+  z-index: 0;
+}
+
+/* Pulsing glow on the spine */
+.ancient-timeline__spine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(4px);
+  opacity: 0.5;
+}
+
+/* Each event row */
+.timeline-event {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 28px 1fr;
+  gap: 0 var(--space-4);
+  margin-bottom: var(--space-14);
+  align-items: start;
+}
+
+/* Alternate: even events have date on left, text on right */
+.timeline-event--right .timeline-event__date {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: left;
+}
+
+.timeline-event--right .timeline-event__body {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+}
+
+.timeline-event--right .timeline-event__node {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Left-side: date right-aligned, text left */
+.timeline-event--left .timeline-event__date {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+}
+
+.timeline-event--left .timeline-event__body {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: left;
+}
+
+.timeline-event--left .timeline-event__node {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* The node dot on the spine */
+.timeline-event__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+  z-index: 1;
+  position: relative;
+}
+
+.timeline-event__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-bg-base);
+  border: 2px solid rgba(128,80,208,0.7);
+  box-shadow: 0 0 8px rgba(128,80,208,0.5), 0 0 2px rgba(245,192,48,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.timeline-event:hover .timeline-event__dot {
+  transform: scale(1.5);
+  border-color: var(--color-brand-gold);
+  box-shadow: 0 0 16px rgba(245,192,48,0.6), 0 0 4px rgba(128,80,208,0.8);
+}
+
+/* Special: founding event */
+.timeline-event--founding .timeline-event__dot {
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-brand-gold);
+  box-shadow: 0 0 16px rgba(245,192,48,0.6), 0 0 32px rgba(245,192,48,0.2);
+}
+
+/* The date stamp */
+.timeline-event__date-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--color-brand-gold);
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: var(--space-1);
+}
+
+/* The text block */
+.timeline-event__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.timeline-event__text {
+  font-size: var(--font-size-body-sm);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.timeline-event__oracle-note {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: rgba(128,80,208,0.7);
+  letter-spacing: 0.08em;
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+/* Timeline header */
+.ancient-timeline__header {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+/* Present-day cap at bottom of timeline */
+.timeline-now {
+  text-align: center;
+  margin-top: var(--space-4);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(128,80,208,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-now__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.timeline-now__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-gold);
+  animation: oraclePulse 2s ease-in-out infinite;
+}
+
+/* Mobile: collapse to single column */
+@media (max-width: 680px) {
+  .ancient-timeline__spine {
+    left: 16px;
+  }
+
+  .timeline-event {
+    grid-template-columns: 28px 1fr;
+    gap: 0 var(--space-4);
+  }
+
+  .timeline-event--right .timeline-event__date,
+  .timeline-event--left .timeline-event__date {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+  }
+
+  .timeline-event--right .timeline-event__body,
+  .timeline-event--left .timeline-event__body {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .timeline-event--right .timeline-event__node,
+  .timeline-event--left .timeline-event__node {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: start;
+  }
+}

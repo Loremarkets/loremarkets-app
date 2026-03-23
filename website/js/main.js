@@ -479,3 +479,57 @@ async function handleSubmit(e) {
 
   return false;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO SPOTLIGHT — Mouse-follow light cone on hero sections
+   Carl / Sprint 2026-03
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  function initHeroSpotlight() {
+    const heroes = document.querySelectorAll('.hero-v3, .world-hero, .page-hero');
+    if (!heroes.length) return;
+
+    // Respect reduced-motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    heroes.forEach(function(hero) {
+      var raf = null;
+      var mouseX = 0, mouseY = 0;
+
+      hero.addEventListener('mouseenter', function() {
+        hero.style.setProperty('--spotlight-opacity', '1');
+        hero.classList.add('spotlight-active');
+      });
+
+      hero.addEventListener('mouseleave', function() {
+        hero.style.setProperty('--spotlight-opacity', '0');
+        hero.classList.remove('spotlight-active');
+      });
+
+      hero.addEventListener('mousemove', function(e) {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function() {
+          var rect = hero.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+          var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%';
+          hero.style.setProperty('--spotlight-x', x);
+          hero.style.setProperty('--spotlight-y', y);
+
+          // Parallax: watermark drifts slightly toward cursor
+          var watermark = hero.querySelector('.hero-v3__watermark, .world-hero__watermark');
+          if (watermark) {
+            var dx = ((e.clientX - rect.left) / rect.width - 0.5) * 18;
+            var dy = ((e.clientY - rect.top) / rect.height - 0.5) * 18;
+            watermark.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px))';
+          }
+        });
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroSpotlight);
+  } else {
+    initHeroSpotlight();
+  }
+})();
