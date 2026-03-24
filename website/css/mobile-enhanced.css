@@ -948,3 +948,188 @@ body::before {
   0%, 100% { box-shadow: 0 0 0 0 rgba(245, 192, 48, 0.3); }
   50% { box-shadow: 0 0 0 3px rgba(245, 192, 48, 0.0); }
 }
+
+
+/* ════════════════════════════════════════════════════════
+   PORTAL CARDS — Pokémon card layout
+   Loads last (after v3.css) so overrides stick cleanly.
+   Desktop: tall 3-col grid with art panel + info strip.
+   Mobile:  horizontal snap carousel, one card at a time.
+   ════════════════════════════════════════════════════════ */
+
+/* ── Reset old padding/height, enforce column direction ── */
+.portal-card {
+  flex-direction: column !important;
+  padding: 0 !important;
+  border-radius: 20px !important;
+  border-width: 2px !important;
+  min-height: 500px !important;
+  overflow: hidden !important;
+  align-items: unset !important;
+  display: flex !important;
+}
+
+/* Per-card border accents */
+.portal-card--exchange { border-color: rgba(128, 80, 208, 0.50) !important; }
+.portal-card--oracle   { border-color: rgba(245, 192, 48,  0.45) !important; }
+.portal-card--build    { border-color: rgba(0,  236, 214,  0.40) !important; }
+
+/* ── Art zone — fills top portion of card ── */
+.portal-card__art {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 44px 32px 36px;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.portal-card--exchange .portal-card__art {
+  background: linear-gradient(155deg, #1a0630 0%, #200848 55%, #160430 100%);
+}
+.portal-card--oracle .portal-card__art {
+  background: linear-gradient(155deg, #160420 0%, #1e0c10 55%, #160418 100%);
+}
+.portal-card--build .portal-card__art {
+  background: linear-gradient(155deg, #040d14 0%, #071520 55%, #060f1a 100%);
+}
+
+/* Ambient radial glow */
+.portal-card--exchange .portal-card__art::before,
+.portal-card--oracle   .portal-card__art::before,
+.portal-card--build    .portal-card__art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.portal-card--exchange .portal-card__art::before {
+  background: radial-gradient(ellipse at 50% 65%, rgba(128,80,208,0.30) 0%, transparent 65%);
+}
+.portal-card--oracle .portal-card__art::before {
+  background: radial-gradient(ellipse at 50% 65%, rgba(245,192,48,0.22) 0%, transparent 65%);
+}
+.portal-card--build .portal-card__art::before {
+  background: radial-gradient(ellipse at 50% 65%, rgba(0,236,214,0.20) 0%, transparent 65%);
+}
+
+/* Illustration / logo */
+.portal-card__art img {
+  width: auto;
+  height: 180px;
+  max-width: 85%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.portal-card:hover .portal-card__art img {
+  transform: scale(1.07) translateY(-6px);
+}
+
+/* Type badge — top-right corner, like Pokémon type tag */
+.portal-card__art-type {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.57rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+
+/* ── Info strip — bottom of card ── */
+.portal-card__info {
+  flex-shrink: 0;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--color-surface);
+}
+
+.portal-card--exchange .portal-card__info { border-top: 2px solid rgba(128, 80, 208, 0.35); }
+.portal-card--oracle   .portal-card__info { border-top: 2px solid rgba(245, 192, 48,  0.35); }
+.portal-card--build    .portal-card__info { border-top: 2px solid rgba(0,  236, 214,  0.30); }
+
+/* Title and body sizing inside info strip */
+.portal-card .portal-card__title {
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  margin-bottom: 0;
+  line-height: 1.25;
+  color: var(--color-text-secondary);
+}
+
+.portal-card .portal-card__body {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  margin-bottom: 4px;
+  color: var(--color-text-muted);
+  flex: unset;
+}
+
+/* Hover state overrides */
+.portal-card--exchange:hover { border-color: rgba(128, 80, 208, 0.70) !important; box-shadow: 0 0 48px rgba(128,80,208,0.12), 0 20px 60px rgba(0,0,0,0.5) !important; }
+.portal-card--oracle:hover   { border-color: rgba(245, 192, 48,  0.65) !important; box-shadow: 0 0 48px rgba(245,192,48,0.10), 0 20px 60px rgba(0,0,0,0.5) !important; }
+.portal-card--build:hover    { border-color: rgba(0,  236, 214,  0.60) !important; box-shadow: 0 0 48px rgba(0,236,214,0.08), 0 20px 60px rgba(0,0,0,0.5) !important; }
+
+.portal-card--exchange:hover .portal-card__title { color: var(--color-violet) !important; }
+.portal-card--oracle:hover   .portal-card__title { color: var(--color-brand-gold) !important; }
+.portal-card--build:hover    .portal-card__title { color: var(--color-brand-teal) !important; }
+
+.portal-card--exchange:hover .portal-card__link { color: var(--color-violet) !important; }
+.portal-card--oracle:hover   .portal-card__link { color: var(--color-brand-gold) !important; }
+.portal-card--build:hover    .portal-card__link { color: var(--color-brand-teal) !important; }
+
+/* ── Mobile only: horizontal snap carousel ── */
+@media (max-width: 767px) {
+  .portals__grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: unset !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding: 4px 20px 20px !important;
+    max-width: unset !important;
+    margin: 0 !important;
+    scrollbar-width: none;
+  }
+
+  .portals__grid::-webkit-scrollbar { display: none; }
+
+  /* Fixed-width portrait cards — one + peek of next */
+  .portal-card {
+    flex: 0 0 78vw !important;
+    min-width: 240px !important;
+    max-width: 320px !important;
+    min-height: 440px !important;
+    scroll-snap-align: center;
+    transform: none !important;   /* kill the hover lift on mobile */
+  }
+
+  .portal-card__art {
+    min-height: 230px;
+    padding: 28px 20px 24px;
+  }
+
+  .portal-card__art img {
+    height: 140px;
+  }
+
+  .portal-card__info {
+    padding: 16px 18px 20px;
+  }
+}

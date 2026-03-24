@@ -289,4 +289,18 @@
     });
   })();
 
+
+  // ═══════════════════════════════════════════════════════════════
+  // 4. WHAT-IS STICKY STACK — full-screen takeover
+  //    Each card is 100vh tall, position:sticky, z-index stacked.
+  //    Card 2 slides up and fully covers card 1 as you scroll.
+  //    No JS transforms needed — CSS handles the whole effect.
+  // ═══════════════════════════════════════════════════════════════
+
+  (function initStackCards() {
+    // No scroll logic needed — pure CSS sticky + z-index stack.
+    // This function is a placeholder for any future enhancements
+    // (e.g. progress dots, card label animations on entry).
+  })();
+
 })();
