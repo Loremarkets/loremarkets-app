@@ -18,8 +18,8 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 200;
-  height: 32px;
+  z-index: 250; /* Above nav (--z-sticky: 200) */
+  height: 36px;
   display: flex;
   align-items: center;
   background: rgba(6, 0, 15, 0.92);
@@ -35,9 +35,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 14px 0 12px;
+  padding: 0 16px 0 14px;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-brand-gold, #f5c030);
@@ -90,12 +90,12 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-text-secondary, #9a88c0);
-  padding: 0 20px;
+  padding: 0 22px;
   border-right: 1px solid rgba(128, 80, 208, 0.15);
-  height: 32px;
-  line-height: 32px;
+  height: 36px;
+  line-height: 36px;
 }
 
 /* Phase labels */
@@ -149,9 +149,25 @@
 .ticker-item--up   { color: var(--color-chart-up,   #22c55e); }
 .ticker-item--down { color: var(--color-chart-down,  #ef4444); }
 
-/* Push nav down so ticker doesn't overlap */
+/* ── Sticky header enforcement ─────────────────────────────
+   Both oracle ticker and nav are position:fixed.
+   These !important rules prevent any downstream CSS or media
+   query from undoing sticky behaviour on any page or viewport.
+   ────────────────────────────────────────────────────────── */
+.oracle-ticker {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 250 !important;
+}
+
 .nav {
-  top: 32px !important;
+  position: fixed !important;
+  top: 36px !important;   /* below the 36px ticker */
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 200 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -162,8 +178,8 @@
 
 @media (max-width: 600px) {
   .oracle-ticker__badge {
-    padding: 0 8px;
-    font-size: 8px;
+    padding: 0 10px 0 8px;
+    font-size: 11px;  /* was 8px — keep readable on small screens */
     gap: 4px;
   }
 }
@@ -234,13 +250,12 @@
 
 
 /* ═══════════════════════════════════════════════════════
-   HERO SECTION — body-offset for fixed ticker
-   The ticker is 32px tall, nav is ~64px, so hero padding-top
-   must account for both.
+   HERO SECTION — body-offset for fixed ticker + nav
+   Ticker is 36px, nav is ~72px. Hero padding clears both.
    ═══════════════════════════════════════════════════════ */
 
-.hero {
-  padding-top: calc(64px + 32px + var(--space-20, 5rem)) !important;
+.hero, .hero-v3 {
+  padding-top: calc(72px + 36px + var(--space-20, 5rem)) !important;
 }
 
 
@@ -284,10 +299,13 @@
 /* ══════════════════════════════════════════
    WHAT IS LOREMARKETS — full-screen sticky stack
    Cards take over one at a time as you scroll.
+   Next card always peeks from below as a scroll affordance.
    ══════════════════════════════════════════ */
 
-/* Nav is ~68px tall (padding-top/bottom 16px + 36px logo) */
-:root { --nav-h: 68px; }
+:root {
+  --nav-h: 68px;
+  --card-peek: 62px;   /* gap at card bottom — next card's top is visible here */
+}
 
 .what-is {
   padding-top: var(--space-20);
@@ -296,94 +314,113 @@
   position: relative;
 }
 
-/* ── Stack container ── */
+/* ── Stack container — bleeds edge-to-edge ── */
 .what-is__stack {
-  /* Break out of .container so cards can stretch edge-to-edge */
   margin-left: calc(-1 * var(--space-6));
   margin-right: calc(-1 * var(--space-6));
   position: relative;
 }
 
-/* ── Each scroll segment ──
-   100vh per segment means the next card starts covering
-   the moment the current one fills the screen.            */
+/* ── Each scroll segment: 100vh of scroll travel per card ── */
 .what-is__sticky-wrap {
   height: 100vh;
   position: relative;
 }
 
-/* Last wrap only needs enough room for the card itself */
+/* Pull cards 2 & 3 upward so the next card's top edge peeks
+   through the gap left at the bottom of the current card     */
+.what-is__sticky-wrap:nth-child(2),
+.what-is__sticky-wrap:nth-child(3) {
+  margin-top: calc(-1 * var(--card-peek));
+}
+
+/* Last wrap: only needs to hold the final card */
 .what-is__sticky-wrap--last {
   height: calc(100vh - var(--nav-h));
 }
 
-/* ── Z-index stack: later cards always render above earlier ── */
+/* ── Z-index: each new card slides up and covers the previous ── */
 .what-is__sticky-wrap:nth-child(1) .what-is__card { z-index: 1; }
 .what-is__sticky-wrap:nth-child(2) .what-is__card { z-index: 2; }
 .what-is__sticky-wrap:nth-child(3) .what-is__card { z-index: 3; }
 
-/* ── The card: full viewport height below nav ── */
+/* ── The card ──
+   Height = viewport minus nav minus the peek gap.
+   The remaining peek-gap space shows the next card below.   */
 .what-is__card {
   position: sticky;
   top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
-  /* centred column — max-width keeps text readable on ultrawide */
+  height: calc(100vh - var(--nav-h) - var(--card-peek));
   max-width: 720px;
   margin: 0 auto;
-  border-radius: 0;               /* edge-to-edge feel within centred column */
+  /* Rounded corners visible when the next card peeks beneath */
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   background: var(--color-surface);
+  box-shadow:
+    0 2px 8px  rgba(0,0,0,0.35),
+    0 20px 56px rgba(0,0,0,0.55);
 }
 
-/* Round only the visible corners when the card is centred on desktop */
-@media (min-width: 760px) {
-  .what-is__card {
-    border-radius: 20px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-  }
-}
-
-/* ── Per-card accent top stripe ── */
+/* ── Per-card accent top stripe — the visible colour hint when peeking ── */
 .what-is__card--gold   { border-top: 3px solid var(--color-brand-gold); }
 .what-is__card--teal   { border-top: 3px solid var(--color-brand-teal); }
 .what-is__card--violet { border-top: 3px solid var(--color-violet); }
 
-/* ── Illustration area — fills all remaining vertical space ── */
+/* ── Illustration area — 55% of card, image truly fills it ── */
 .what-is__card-media {
-  flex: 1;                        /* grows to fill card height minus text body */
-  min-height: 0;                  /* allows flex child to shrink below content size */
+  flex: 0 0 55%;
+  min-height: 0;
   overflow: hidden;
   background: var(--color-bg-deep);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6);
+  padding: 20px 24px 0;
+  position: relative;
 }
 
+/* Gradient fade into text body — eases the hard edge */
+.what-is__card-media::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: linear-gradient(to bottom, transparent 0%, var(--color-surface) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Image fills the media area completely — no artificial caps */
 .what-is__card-media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;            /* show the full SVG, no cropping */
+  object-fit: contain;
   display: block;
+  position: relative;
+  z-index: 0;
 }
 
-/* ── Text body — fixed at bottom, compact ── */
+/* ── Text body — 45% of card ── */
 .what-is__card-body {
-  flex-shrink: 0;
-  padding: var(--space-5) var(--space-8) var(--space-7);
+  flex: 1;
+  padding: 20px 28px 28px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 10px;
   background: var(--color-surface);
-  border-top: 1px solid rgba(128, 80, 208, 0.15);
+  justify-content: center;
 }
 
+/* Number tag: small mono label */
 .what-is__card-num {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
@@ -391,20 +428,24 @@
 .what-is__card--teal   .what-is__card-num { color: var(--color-brand-teal); }
 .what-is__card--violet .what-is__card-num { color: var(--color-violet); }
 
+/* Title: dominant, display-weight, fills the width */
 .what-is__label {
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  font-size: clamp(2rem, 6.5vw, 2.75rem);
   font-weight: 700;
   color: var(--color-text-primary);
-  line-height: 1.2;
+  line-height: 1.08;
   margin: 0;
+  letter-spacing: -0.025em;
 }
 
+/* Body copy: comfortably readable, full width */
 .what-is__card-sub {
-  font-size: 0.85rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
   color: var(--color-text-secondary);
-  line-height: 1.6;
-  margin: 0;
+  line-height: 1.68;
+  margin: 2px 0 0;
+  max-width: none;
 }
 
 /* ── Closing line — appears below the full stack ── */
@@ -420,14 +461,41 @@
 
 /* ── Mobile tweaks ── */
 @media (max-width: 600px) {
-  :root { --nav-h: 64px; }
+  :root {
+    --nav-h: 64px;
+    --card-peek: 56px;
+  }
 
-  .what-is__card-body {
-    padding: var(--space-4) var(--space-5) var(--space-6);
+  /* On narrow screens keep cards within the container (no bleed) */
+  .what-is__stack {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Flat bottom corners on mobile (card fills screen width) */
+  .what-is__card {
+    border-radius: 18px 18px 0 0;
   }
 
   .what-is__card-media {
-    padding: var(--space-4);
+    flex: 0 0 54%;
+    padding: 16px 18px 0;
+  }
+
+  .what-is__card-body {
+    padding: 18px 24px 24px;
+    gap: 8px;
+  }
+
+  /* On mobile, title should be bold and large — fills the card width */
+  .what-is__label {
+    font-size: clamp(1.85rem, 7.5vw, 2.2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .what-is__card-sub {
+    font-size: 0.95rem;
+    line-height: 1.65;
   }
 }
 

@@ -140,28 +140,14 @@
    Safe-area aware for iOS notch / home indicator.
    ════════════════════════════════════════════════════════ */
 
-.bottom-tab-bar {
-  display: none; /* hidden on desktop */
+.bottom-tab-bar,
+.bottom-tab-more-drawer {
+  display: none !important; /* Removed entirely — hamburger nav handles mobile navigation */
 }
 
 @media (max-width: 767px) {
 
-  .bottom-tab-bar {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: calc(64px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
-    background: rgba(6, 0, 15, 0.96);
-    border-top: 1px solid rgba(245, 192, 48, 0.15);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    z-index: var(--z-sticky);
-    align-items: stretch;
-    justify-content: stretch;
-  }
+  /* .bottom-tab-bar removed — handled by global display:none !important above */
 
   .bottom-tab-bar__tab {
     flex: 1;
@@ -323,14 +309,11 @@
     display: none !important;
   }
 
-  /* Add bottom padding to pages for the tab bar */
-  body {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
-  }
+  /* Bottom tab bar removed — no bottom padding needed */
 
-  /* Oracle whisper clears tab bar */
+  /* Oracle whisper: restore to normal bottom position */
   .oracle-whisper {
-    bottom: calc(80px + env(safe-area-inset-bottom));
+    bottom: 24px;
   }
 }
 
